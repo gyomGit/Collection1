@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="546.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="39.0" prefWidth="669.0" style="-fx-background-color: #4dc3ff#4dc3ff;" BorderPane.alignment="CENTER" />
+   </bottom>
+   <left>
+      <Pane prefHeight="483.0" prefWidth="163.0" style="-fx-background-color: #1f1f7a;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="25.0" layoutY="27.0" prefHeight="43.0" prefWidth="137.0" text="Collection" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Book" size="29.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutY="77.0" prefHeight="286.0" prefWidth="163.0">
+               <children>
+                  <Label layoutX="18.0" layoutY="33.0" prefHeight="23.0" prefWidth="137.0" text="Your Profile" textFill="WHITE">
+                     <font>
+                        <Font name="Avenir Book" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="14.0" prefHeight="30.0" prefWidth="137.0" text="Update your zipcode" textFill="WHITE">
+                     <font>
+                        <Font name="Avenir Book" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="47.0" prefHeight="16.0" prefWidth="137.0" text="and locatiion" textFill="WHITE">
+                     <font>
+                        <Font name="Avenir Book" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="contactIdField" layoutX="14.0" layoutY="99.0" prefHeight="27.0" prefWidth="137.0" promptText="Contact ID" />
+                  <TextField fx:id="firstNameField" layoutX="13.0" layoutY="132.0" prefHeight="27.0" prefWidth="137.0" promptText="First Name" />
+                  <TextField fx:id="lastNameField" layoutX="12.0" layoutY="165.0" prefHeight="27.0" prefWidth="137.0" promptText="Last Name" />
+                  <TextField fx:id="emailField" layoutX="12.0" layoutY="198.0" prefHeight="27.0" prefWidth="137.0" promptText="Email" />
+                  <TextField fx:id="phoneField" layoutX="12.0" layoutY="231.0" prefHeight="27.0" prefWidth="137.0" promptText="Phone" />
+               </children>
+            </AnchorPane>
+         </children>
+      </Pane>
+   </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="browseImage" mnemonicParsing="false" onAction="#handle" prefHeight="150.0" prefWidth="116.0" text="Image" />
+            <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
+            <Button fx:id="update" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="150.0" prefWidth="116.0" text="Update" textAlignment="CENTER" />
+            <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" prefHeight="150.0" prefWidth="116.0" text="Delete" textAlignment="JUSTIFY" />
+            <Button fx:id="back" minWidth="34.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="116.0" text="l&lt;" textAlignment="CENTER" />
+            <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="150.0" prefWidth="116.0" text="&lt;&lt;" textAlignment="CENTER" />
+            <Button fx:id="forward" mnemonicParsing="false" onAction="#handleForward" prefHeight="150.0" prefWidth="116.0" text="&gt;&gt;" textAlignment="CENTER" />
+            <Button fx:id="upfront" mnemonicParsing="false" onAction="#handleUpfront" prefHeight="150.0" prefWidth="116.0" text="&gt;l" textAlignment="CENTER" />
+         </children>
+      </VBox>
+   </right>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imv" fitHeight="122.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true" />
+            <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
+            <TableView fx:id="table" prefHeight="359.0" prefWidth="477.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="Contact ID" />
+                  <TableColumn prefWidth="75.0" text="First Name" />
+                  <TableColumn prefWidth="75.0" text="Last Name" />
+                  <TableColumn prefWidth="75.0" text="Email" />
+                  <TableColumn prefWidth="75.0" text="Phone" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
