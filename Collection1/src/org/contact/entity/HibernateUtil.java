@@ -3,9 +3,9 @@ package org.contact.entity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.SessionFactoryObserver;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 // The class HibernateUtil.java contains all the configuration requirements
 // for our project to interact with the database. The Hibernate configuration
@@ -23,10 +23,13 @@ public class HibernateUtil {
                serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
                          config.getProperties()).build();
                config.setSessionFactoryObserver(new SessionFactoryObserver() {
+            	   
+            	   
                     private static final long  serialVersionUID = 1L;
 
                     @Override
                     public void sessionFactoryCreated(SessionFactory factory) {
+                    	
                     }
 
                     @Override
@@ -42,8 +45,10 @@ public class HibernateUtil {
      }
 
      public static  Session openSession() {
+    	 
           return sessionFactory.openSession();
      }
+     
 
      private static  Configuration getConfiguration() {
           Configuration cfg = new Configuration();

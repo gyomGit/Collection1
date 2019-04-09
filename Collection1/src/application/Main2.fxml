@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="546.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<BorderPane prefHeight="623.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar prefHeight="30.0" prefWidth="740.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -39,7 +39,7 @@
       </MenuBar>
    </top>
    <bottom>
-      <AnchorPane prefHeight="39.0" prefWidth="669.0" style="-fx-background-color: #4dc3ff#4dc3ff;" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="36.0" prefWidth="726.0" style="-fx-background-color: #4dc3ff#4dc3ff;" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
       <Pane prefHeight="483.0" prefWidth="163.0" style="-fx-background-color: #1f1f7a;" BorderPane.alignment="CENTER">
@@ -49,7 +49,7 @@
                   <Font name="Avenir Book" size="29.0" />
                </font>
             </Label>
-            <AnchorPane layoutY="77.0" prefHeight="286.0" prefWidth="163.0">
+            <AnchorPane layoutY="77.0" prefHeight="400.0" prefWidth="163.0">
                <children>
                   <Label layoutX="18.0" layoutY="33.0" prefHeight="23.0" prefWidth="137.0" text="Your Profile" textFill="WHITE">
                      <font>
@@ -71,6 +71,8 @@
                   <TextField fx:id="lastNameField" layoutX="12.0" layoutY="165.0" prefHeight="27.0" prefWidth="137.0" promptText="Last Name" />
                   <TextField fx:id="emailField" layoutX="12.0" layoutY="198.0" prefHeight="27.0" prefWidth="137.0" promptText="Email" />
                   <TextField fx:id="phoneField" layoutX="12.0" layoutY="231.0" prefHeight="27.0" prefWidth="137.0" promptText="Phone" />
+                  <Button fx:id="browseImage" layoutX="14.0" layoutY="273.0" mnemonicParsing="false" onAction="#handle" text="Upload Image" />
+                  <ImageView fx:id="imv" fitHeight="122.0" fitWidth="135.0" layoutX="14.0" layoutY="318.0" onDragDetected="#handle" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
          </children>
@@ -79,7 +81,6 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="browseImage" mnemonicParsing="false" onAction="#handle" prefHeight="150.0" prefWidth="116.0" text="Image" />
             <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
             <Button fx:id="update" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="150.0" prefWidth="116.0" text="Update" textAlignment="CENTER" />
             <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" prefHeight="150.0" prefWidth="116.0" text="Delete" textAlignment="JUSTIFY" />
@@ -93,7 +94,6 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="imv" fitHeight="122.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true" />
             <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
             <TableView fx:id="table" prefHeight="359.0" prefWidth="477.0">
                <columns>

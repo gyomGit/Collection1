@@ -76,7 +76,8 @@ public class Main extends Application {
 	private ContactController controller = new ContactController();
 
 	private static int index;
-
+	
+	
 	public static void main(String[] args) throws Exception {
 		Application.launch(args);
 
@@ -237,7 +238,7 @@ public class Main extends Application {
 			button[i] = new Button(buttonCaption[i]);
 			button[i].setStyle(style);
 			button[i].setMinWidth(width);
-			button[i].setOnAction(new ButtonHandler());
+//			button[i].setOnAction(new ButtonHandler());
 			box.getChildren().add(button[i]);
 		}
 		button[0].setTooltip(new Tooltip("Add this Contact to the list as new one"));
@@ -245,41 +246,41 @@ public class Main extends Application {
 		return box;
 	}
 
-	private class ButtonHandler implements EventHandler<ActionEvent> {
-		@Override
-		public void handle(ActionEvent event) {
-			if (event.getSource().equals(button[0])) {
-				Contact c = new Contact(111, textField[1].getText(), textField[2].getText(), textField[3].getText(),
-						textField[4].getText());
-				controller.addContact(c);
-			} else if (event.getSource().equals(button[1])) {
-				Contact c = new Contact(Integer.parseInt(textField[0].getText()), textField[1].getText(),
-						textField[2].getText(), textField[3].getText(), textField[4].getText());
-				controller.updateContact(c);
-				System.out.println("update button clicked");
-			} else if (event.getSource().equals(button[2])) {
-				Contact c = (Contact) controller.getContactList().get(index);
-				controller.removeContact(c.getContactId());
-			} else if (event.getSource().equals(button[4])) {
-				if (index > 0) {
-					index--;
-				} else
-					event.consume();
-			} else if (event.getSource().equals(button[3])) {
-				index = 0;
-			} else if (event.getSource().equals(button[5])) {
-				if (index < controller.getContactList().size() - 1) {
-					index++;
-				} else
-					event.consume();
-			} else if (event.getSource().equals(button[6])) {
-				index = controller.getContactList().size() - 1;
-			}
-			populateForm(index);
-			populateTable();
-		}
-
-	}
+//	private class ButtonHandler implements EventHandler<ActionEvent> {
+//		@Override
+//		public void handle(ActionEvent event) {
+//			if (event.getSource().equals(button[0])) {
+//				Contact c = new Contact(111, textField[1].getText(), textField[2].getText(), textField[3].getText(),
+//						textField[4].getText());
+//				controller.addContact(c);
+//			} else if (event.getSource().equals(button[1])) {
+//				Contact c = new Contact(Integer.parseInt(textField[0].getText()), textField[1].getText(),
+//						textField[2].getText(), textField[3].getText(), textField[4].getText());
+//				controller.updateContact(c);
+//				System.out.println("update button clicked");
+//			} else if (event.getSource().equals(button[2])) {
+//				Contact c = (Contact) controller.getContactList().get(index);
+//				controller.removeContact(c.getContactId());
+//			} else if (event.getSource().equals(button[4])) {
+//				if (index > 0) {
+//					index--;
+//				} else
+//					event.consume();
+//			} else if (event.getSource().equals(button[3])) {
+//				index = 0;
+//			} else if (event.getSource().equals(button[5])) {
+//				if (index < controller.getContactList().size() - 1) {
+//					index++;
+//				} else
+//					event.consume();
+//			} else if (event.getSource().equals(button[6])) {
+//				index = controller.getContactList().size() - 1;
+//			}
+//			populateForm(index);
+//			populateTable();
+//		}
+//
+//	}
 
 	private void populateForm(int i) {
 		if (controller.getContactList().isEmpty())
