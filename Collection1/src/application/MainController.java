@@ -1,18 +1,17 @@
 package application;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.contact.entity.Contact;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,7 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public class MainController<BitmapDrawable, Bitmap> {
+public class MainController {
 
 	@FXML
 	private Button browseImage;
@@ -55,19 +54,19 @@ public class MainController<BitmapDrawable, Bitmap> {
 // --------------------------------------	
 
 	@FXML
-	private TextField contactIdField;
+	private TextField objetIdField;
 
 	@FXML
-	private TextField firstNameField;
+	private TextField identificationField;
 
 	@FXML
-	private TextField lastNameField;
+	private TextField prefixeMuseeField;
 
 	@FXML
-	private TextField emailField;
+	private TextField inventaireField;
 
 	@FXML
-	private TextField phoneField;
+	private TextField localisationField;
 
 	// --------------------------------------
 
@@ -85,6 +84,20 @@ public class MainController<BitmapDrawable, Bitmap> {
 	private static int index;
 
 	private byte[] imageBytes;
+	
+	ObservableList<String> prefixeList = FXCollections.
+			observableArrayList("Préfixe Musée","ADN","CEC","CG04",
+					"EXPO","FOR","MAR","MDLV","MGD","MMHV","MMV",
+					"MPGV","MST","SIST","SLG", "UBAY");
+	
+	@FXML
+	private ChoiceBox<String> prefixeBox;
+	
+	@FXML
+	private void initialize() {
+		prefixeBox.setValue("Préfixe Musée");
+		prefixeBox.setItems(prefixeList);
+	}
 
 	@FXML
 	public void handle(ActionEvent t) throws IOException {
@@ -122,11 +135,11 @@ public class MainController<BitmapDrawable, Bitmap> {
 
 		Contact c = new Contact();
 
-		c.setContactId(111);
-		c.setFirstName(firstNameField.getText());
-		c.setLastName(lastNameField.getText());
-		c.setEmail(emailField.getText());
-		c.setPhone(phoneField.getText());
+		c.setObjetId(111);
+		c.setIdentification(identificationField.getText());
+		c.setPrefixeMusee(prefixeBox.getValue());
+		c.setInventaire(inventaireField.getText());
+		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
 		controller.addContact(c);
@@ -141,11 +154,11 @@ public class MainController<BitmapDrawable, Bitmap> {
 
 		Contact c = new Contact();
 
-		c.setContactId(Integer.parseInt(contactIdField.getText()));
-		c.setFirstName(firstNameField.getText());
-		c.setLastName(lastNameField.getText());
-		c.setEmail(emailField.getText());
-		c.setPhone(phoneField.getText());
+		c.setObjetId(Integer.parseInt(objetIdField.getText()));
+		c.setIdentification(identificationField.getText());
+		c.setPrefixeMusee(prefixeBox.getValue());
+		c.setInventaire(inventaireField.getText());
+		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
 		controller.updateContact(c);
@@ -157,7 +170,7 @@ public class MainController<BitmapDrawable, Bitmap> {
 	public void handleDelete(ActionEvent event) {
 
 		Contact c = (Contact) controller.getContactList().get(index);
-		controller.removeContact(c.getContactId());
+		controller.removeContact(c.getObjetId());
 
 		populate();
 	}
@@ -224,32 +237,32 @@ public class MainController<BitmapDrawable, Bitmap> {
 		if (controller.getContactList().isEmpty())
 			return;
 		Contact c = (Contact) controller.getContactList().get(i);
-		contactIdField.setText(c.getContactId().toString());
-		firstNameField.setText(c.getFirstName());
-		lastNameField.setText(c.getLastName());
-		emailField.setText(c.getEmail());
-		phoneField.setText(c.getPhone());
+		objetIdField.setText(c.getObjetId().toString());
+		identificationField.setText(c.getIdentification());
+		prefixeBox.setValue(c.getPrefixeMusee());
+		inventaireField.setText(c.getInventaire());
+		localisationField.setText(c.getLocalisation());
 	    imv.getImage();
 	}
 
 	private void populateTable() {
 		table.getItems().clear();
 		table.setItems(controller.getContactList());
-		TableColumn<Contact, Integer> contactIdCol = new TableColumn<Contact, Integer>("Contact ID");
-		contactIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("contactId"));
-		TableColumn<Contact, String> firstNameCol = new TableColumn<Contact, String>("First Name");
-		firstNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("firstName"));
-		TableColumn<Contact, String> lastNameCol = new TableColumn<Contact, String>("Last Name");
-		lastNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("lastName"));
-		TableColumn<Contact, String> emailCol = new TableColumn<Contact, String>("Email");
-		emailCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("email"));
-		TableColumn<Contact, String> phoneCol = new TableColumn<Contact, String>("Phone");
-		phoneCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("phone"));
+		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
+		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
+		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
+		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
+		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
+		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("prefixeMusee"));
+		TableColumn<Contact, String> inventaireCol = new TableColumn<Contact, String>("Inventaire");
+		inventaireCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("inventaire"));
+		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
+		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
 
-		table.getColumns().setAll(contactIdCol, firstNameCol, lastNameCol, emailCol, phoneCol, imageCol);
+		table.getColumns().setAll(objetIdCol, identificationCol, prefixeMuseeCol, inventaireCol, localisationCol, imageCol);
 	}
 
 }

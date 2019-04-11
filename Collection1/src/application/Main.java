@@ -286,29 +286,31 @@ public class Main extends Application {
 		if (controller.getContactList().isEmpty())
 			return;
 		Contact c = (Contact) controller.getContactList().get(i);
-		textField[0].setText(c.getContactId().toString());
-		textField[1].setText(c.getFirstName());
-		textField[2].setText(c.getLastName());
-		textField[3].setText(c.getEmail());
-		textField[4].setText(c.getPhone());
+		textField[0].setText(c.getObjetId().toString());
+		textField[1].setText(c.getIdentification());
+		textField[2].setText(c.getPrefixeMusee());
+		textField[3].setText(c.getInventaire());
+		textField[4].setText(c.getLocalisation());
 	}
 
 	private void populateTable() {
 		table.getItems().clear();
-		table.setStyle(style);
 		table.setItems(controller.getContactList());
-		TableColumn<Contact, Integer> contactIdCol = new TableColumn<Contact, Integer>("Contact ID");
-		contactIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("contactId"));
-		TableColumn<Contact, String> firstNameCol = new TableColumn<Contact, String>("First Name");
-		firstNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("firstName"));
-		TableColumn<Contact, String> lastNameCol = new TableColumn<Contact, String>("Last Name");
-		lastNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("lastName"));
-		TableColumn<Contact, String> emailCol = new TableColumn<Contact, String>("Email");
-		emailCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("email"));
-		TableColumn<Contact, String> phoneCol = new TableColumn<Contact, String>("Phone");
-		phoneCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("phone"));
-		table.getColumns().setAll(contactIdCol, firstNameCol, lastNameCol, emailCol, phoneCol);
-	}
+		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
+		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
+		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
+		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
+		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
+		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("prefixeMusee"));
+		TableColumn<Contact, String> inventaireCol = new TableColumn<Contact, String>("Inventaire");
+		inventaireCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("inventaire"));
+		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
+		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
+		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
+		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
+
+		table.getColumns().setAll(objetIdCol, identificationCol, prefixeMuseeCol, inventaireCol, localisationCol, imageCol);
+	}
 }
 

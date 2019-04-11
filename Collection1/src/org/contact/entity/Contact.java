@@ -22,19 +22,19 @@ public class Contact {
 	@Id
 	@GeneratedValue
 	@Column(name = "CONTACTID")
-	private Integer contactId;
+	private Integer objetId;
 	
 	@Column(name = "FIRSTNAME")
-	private String firstName;
+	private String identification;
 	
 	@Column(name = "LASTNAME")
-	private String lastName;
+	private String prefixeMusee;
 	
 	@Column(name = "EMAIL")
-	private String email;
+	private String inventaire;
 	
 	@Column(name = "PHONE")
-	private String phone;
+	private String localisation;
 	
 	@Lob
 	@Column(name = "IMAGE")
@@ -44,54 +44,54 @@ public class Contact {
 		super();
 	}
 
-	public Contact(Integer contactId, String firstName, String lastName, String email, String phone, byte[] image) {
+	public Contact(Integer objetId, String identification, String prefixeMusee, String inventaire, String localisation, byte[] image) {
 		super();
-		this.contactId = contactId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phone = phone;
+		this.objetId = objetId;
+		this.identification = identification;
+		this.prefixeMusee = prefixeMusee;
+		this.inventaire = inventaire;
+		this.localisation = localisation;
 		this.image = image;
 	}
 
-	public Integer getContactId() {
-		return contactId;
+	public Integer getObjetId() {
+		return objetId;
 	}
 
-	public void setContactId(Integer contactId) {
-		this.contactId = contactId;
+	public void setObjetId(Integer objetId) {
+		this.objetId = objetId;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setIdentification(String identification) {
+		this.identification = identification;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getPrefixeMusee() {
+		return prefixeMusee;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setPrefixeMusee(String prefixeMusee) {
+		this.prefixeMusee = prefixeMusee;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getInventaire() {
+		return inventaire;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setInventaire(String inventaire) {
+		this.inventaire = inventaire;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getLocalisation() {
+		return localisation;
 	}
 	
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setLocalisation(String localisation) {
+		this.localisation = localisation;
 	}
 
 	public void setImage(byte[] image) {
