@@ -85,15 +85,13 @@ public class MainController {
 	private static int index;
 
 	private byte[] imageBytes;
-	
-	ObservableList<String> prefixeList = FXCollections.
-			observableArrayList("Préfixe Musée","ADN","CEC","CG04",
-					"EXPO","FOR","MAR","MDLV","MGD","MMHV","MMV",
-					"MPGV","MST","SIST","SLG", "UBAY");
-	
+
+	ObservableList<String> prefixeList = FXCollections.observableArrayList("Préfixe Musée", "ADN", "CEC", "CG04",
+			"EXPO", "FOR", "MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
+
 	@FXML
 	private ChoiceBox<String> prefixeBox;
-	
+
 	@FXML
 	private void initialize() {
 		prefixeBox.setValue("Préfixe Musée");
@@ -172,7 +170,7 @@ public class MainController {
 
 		Contact c = (Contact) controller.getContactList().get(index);
 		controller.removeContact(c.getObjetId());
-		
+
 		populate();
 	}
 
@@ -229,7 +227,7 @@ public class MainController {
 //		}
 
 	private void populate() {
-		
+
 		populateForm(index);
 		populateTable();
 
@@ -245,26 +243,23 @@ public class MainController {
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
 //	    imv.setImage()(c.getImage());
-		
 
-		byte[] getImageInBytes = c.getImage();  // image convert in byte form
-		
-		try{
-		    FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
-		    outputstream.write(getImageInBytes);
-		    
+		byte[] getImageInBytes = c.getImage(); // image convert in byte form
 
-		
-		Image image = new Image("file:photo.jpg");
-		imv.setImage(image);
-		imv.setFitWidth(130);
-		imv.setFitHeight(130);
-		imv.setPreserveRatio(true);
-		
-	    outputstream.close();
-	}catch(Exception e){
-	    e.printStackTrace();
-	}
+		try {
+			FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
+			outputstream.write(getImageInBytes);
+
+			Image image = new Image("file:photo.jpg");
+			imv.setImage(image);
+			imv.setFitWidth(130);
+			imv.setFitHeight(130);
+			imv.setPreserveRatio(true);
+
+			outputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void populateTable() {
@@ -284,7 +279,8 @@ public class MainController {
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
 
-		table.getColumns().setAll(objetIdCol, identificationCol, prefixeMuseeCol, inventaireCol, localisationCol, imageCol);
+		table.getColumns().setAll(objetIdCol, identificationCol, prefixeMuseeCol, inventaireCol, localisationCol,
+				imageCol);
 	}
 
 }

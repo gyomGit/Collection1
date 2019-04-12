@@ -23,28 +23,29 @@ public class Contact {
 	@GeneratedValue
 	@Column(name = "OBJETID")
 	private Integer objetId;
-	
+
 	@Column(name = "IDENTIFICATION")
 	private String identification;
-	
+
 	@Column(name = "PREFIXEMUSEE")
 	private String prefixeMusee;
-	
+
 	@Column(name = "INVENTAIRE")
 	private String inventaire;
-	
+
 	@Column(name = "LOCALISATION")
 	private String localisation;
-	
+
 	@Lob
 	@Column(name = "IMAGE")
-	private byte[]image;
+	private byte[] image;
 
 	public Contact() {
 		super();
 	}
 
-	public Contact(Integer objetId, String identification, String prefixeMusee, String inventaire, String localisation, byte[] image) {
+	public Contact(Integer objetId, String identification, String prefixeMusee, String inventaire, String localisation,
+			byte[] image) {
 		super();
 		this.objetId = objetId;
 		this.identification = identification;
@@ -89,7 +90,7 @@ public class Contact {
 	public String getLocalisation() {
 		return localisation;
 	}
-	
+
 	public void setLocalisation(String localisation) {
 		this.localisation = localisation;
 	}
@@ -97,8 +98,9 @@ public class Contact {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
+
 	public byte[] getImage() {
 		return image;
 	}
-	
+
 }
