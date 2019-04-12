@@ -16,24 +16,24 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "CONTACTS")
+@Table(name = "OBJET")
 public class Contact {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "CONTACTID")
+	@Column(name = "OBJETID")
 	private Integer objetId;
 	
-	@Column(name = "FIRSTNAME")
+	@Column(name = "IDENTIFICATION")
 	private String identification;
 	
-	@Column(name = "LASTNAME")
+	@Column(name = "PREFIXEMUSEE")
 	private String prefixeMusee;
 	
-	@Column(name = "EMAIL")
+	@Column(name = "INVENTAIRE")
 	private String inventaire;
 	
-	@Column(name = "PHONE")
+	@Column(name = "LOCALISATION")
 	private String localisation;
 	
 	@Lob

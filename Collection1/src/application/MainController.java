@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.contact.entity.Contact;
@@ -171,7 +172,7 @@ public class MainController {
 
 		Contact c = (Contact) controller.getContactList().get(index);
 		controller.removeContact(c.getObjetId());
-
+		
 		populate();
 	}
 
@@ -228,6 +229,7 @@ public class MainController {
 //		}
 
 	private void populate() {
+		
 		populateForm(index);
 		populateTable();
 
@@ -242,7 +244,27 @@ public class MainController {
 		prefixeBox.setValue(c.getPrefixeMusee());
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
-	    imv.getImage();
+//	    imv.setImage()(c.getImage());
+		
+
+		byte[] getImageInBytes = c.getImage();  // image convert in byte form
+		
+		try{
+		    FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
+		    outputstream.write(getImageInBytes);
+		    
+
+		
+		Image image = new Image("file:photo.jpg");
+		imv.setImage(image);
+		imv.setFitWidth(130);
+		imv.setFitHeight(130);
+		imv.setPreserveRatio(true);
+		
+	    outputstream.close();
+	}catch(Exception e){
+	    e.printStackTrace();
+	}
 	}
 
 	private void populateTable() {
