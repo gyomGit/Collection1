@@ -90,9 +90,10 @@
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
-            <TableView fx:id="table" prefHeight="359.0" prefWidth="477.0">
+            <TableView fx:id="table" editable="true" prefHeight="359.0" prefWidth="477.0">
                <columns>
                   <TableColumn fx:id="index" prefWidth="75.0" text="Objet ID" />
+                  <TableColumn fx:id="select" prefWidth="75.0" text="Select" />
                   <TableColumn prefWidth="75.0" text="Identification" />
                   <TableColumn prefWidth="75.0" text="Préfixe Musée" />
                   <TableColumn prefWidth="75.0" text="Inventaire" />

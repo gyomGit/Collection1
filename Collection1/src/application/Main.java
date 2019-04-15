@@ -99,7 +99,7 @@ public class Main extends Application {
 		
 		Scene scene = new Scene(root, 800, 650);
 		imv = new ImageView();
-//		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		border.setTop(createButtonBox());
 		border.setLeft(createForm());
 		rootBox.getChildren().addAll(btnLoad, imv);

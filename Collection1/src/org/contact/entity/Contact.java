@@ -23,7 +23,10 @@ public class Contact {
 	@GeneratedValue
 	@Column(name = "OBJETID")
 	private Integer objetId;
-
+	
+//	@Column(name = "SELECT")
+//	private Boolean select;
+	
 	@Column(name = "IDENTIFICATION")
 	private String identification;
 
@@ -44,10 +47,11 @@ public class Contact {
 		super();
 	}
 
-	public Contact(Integer objetId, String identification, String prefixeMusee, String inventaire, String localisation,
+	public Contact(Integer objetId, Boolean select, String identification, String prefixeMusee, String inventaire, String localisation,
 			byte[] image) {
 		super();
 		this.objetId = objetId;
+//		this.select = select;
 		this.identification = identification;
 		this.prefixeMusee = prefixeMusee;
 		this.inventaire = inventaire;
@@ -62,6 +66,14 @@ public class Contact {
 	public void setObjetId(Integer objetId) {
 		this.objetId = objetId;
 	}
+	
+//	public Boolean getSelect() {
+//		return select;
+//	}
+//
+//	public void setSelect(Boolean select) {
+//		this.select = select;
+//	}
 
 	public String getIdentification() {
 		return identification;

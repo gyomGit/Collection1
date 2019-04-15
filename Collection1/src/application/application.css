@@ -1,1 +1,21 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
+
+
+
+.table-view{
+	-fx-background-color:transparent ;
+}
+
+.table-view:focused{
+	-fx-background-color:transparent ;
+}
+
+.table-row-cell:odd{
+	-fx-background-color:rgb(255,191,16);
+}
+
+.table-row-cell:even{
+	-fx-background-color:rgb(83,225,255);
+}
