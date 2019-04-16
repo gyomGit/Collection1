@@ -7,23 +7,23 @@ import java.io.IOException;
 
 import org.contact.entity.Contact;
 
+import javafx.beans.binding.ListBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,13 +60,15 @@ public class MainController {
 	@FXML
 	private Button upfront;
 
+	@FXML
+	private Button exportButton;
+
+	private CheckBox selectAllCheckBox;
+
 // --------------------------------------	
 
 	@FXML
 	private TextField objetIdField;
-	
-	@FXML
-	private CheckBoxTableCell<?, ?> checkBoxTableCell;
 
 	@FXML
 	private TextField identificationField;
@@ -84,28 +86,27 @@ public class MainController {
 
 	@FXML
 	private TableView<Contact> table = new TableView<>();
-	
+
 	@FXML
 	TableColumn<Contact, Integer> objetIdCol;
-	
+
 	@FXML
 	TableColumn<Contact, CheckBox> selectCol;
-	
+
 	@FXML
 	TableColumn<Contact, String> identificationCol;
-	
+
 	@FXML
 	TableColumn<Contact, String> prefixeMuseeCol;
-	
+
 	@FXML
 	TableColumn<Contact, String> inventaireCol;
-	
+
 	@FXML
 	TableColumn<Contact, String> localisationCol;
-	
+
 	@FXML
 	TableColumn<Contact, byte[]> imageCol;
-	
 
 	// --------------------------------------
 
@@ -125,7 +126,7 @@ public class MainController {
 	@FXML
 	private ChoiceBox<String> prefixeBox;
 
-	private TableColumn<Contact, Integer> active;
+//	private TableColumn<Contact, Integer> active;
 
 	@FXML
 	private void initialize() {
@@ -162,6 +163,18 @@ public class MainController {
 
 		imageBytes = imageInBytes;
 
+	}
+
+	@FXML
+	private void handleExport(ActionEvent event) {
+
+		System.out.print("employees Selected : [");
+		for (Contact contact : table.getItems()) {
+			if (contact.getSelected()) {
+				System.out.print(contact.getImage() + ", ");
+			}
+		}
+		System.out.print(" ]\n");
 	}
 
 	@FXML
@@ -242,7 +255,6 @@ public class MainController {
 		populate();
 	}
 
-
 	private void populate() {
 
 		populateForm(index);
@@ -255,7 +267,7 @@ public class MainController {
 			return;
 		Contact c = (Contact) controller.getContactList().get(i);
 		objetIdField.setText(c.getObjetId().toString());
-		
+
 		identificationField.setText(c.getIdentification());
 		prefixeBox.setValue(c.getPrefixeMusee());
 		inventaireField.setText(c.getInventaire());
@@ -279,139 +291,13 @@ public class MainController {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
 		table.getItems().clear();
 		table.setItems(controller.getContactList());
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
-		
-		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("Select");
-//		selectCol.setMinWidth(50);
-//		selectCol.setGraphic(getSelectAllCheckBox());
-		selectCol.setCellValueFactory(new PropertyValueFactory<Contact, Boolean>("select"));
-		
-		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(selectCol));
-		
-// -----------------------------------------------------------------------------------		
-		
-//		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, 
-//				ObservableValue<Boolean>>() {
-//
-//				        @Override
-//				        public ObservableValue<Boolean> call(Integer param) {
-//				            System.out.println("Cours "+ controller.getContactList().get(param).getIdentification()+" changed value to " +controller.getContactList().get(param).isSelected());
-//				            for (Integer i = 0; i < controller.getContactList().size(); i++) {
-//				                if (i != param && controller.getContactList().get(param).isSelected()) {
-//				                	controller.getContactList().get(i).setSelect(false);
-//				                } // if
-//				            } //  for
-//				            return controller.getContactList().get(param).selectedProperty();
-//				        }
-//				    }));
-		
-// -------------------------------------------------------------------------------		
-		
-		
-//		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
-//			
-//		    @Override
-//		    public ObservableValue<Boolean> call(Integer param) {
-//		        System.out.println("Cours "+item.get(param).getCours()+" changed value to " +items.get(param).isChecked());
-//		        return items.get(param).checkedProperty();
-//		    }
-//		}));
-
-// ---------------------------------------------------------------------------		
-		
-//		selectCol.setCellFactory(new Callback  <TableColumn<Contact, Boolean>, TableCell <Contact, Boolean>>() {
-//		public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
-//			final TableCell<Contact, Boolean> cell = new TableCell<Contact, Boolean>() {
-//				@Override
-//				public void updateItem(final Boolean item, boolean empty) {
-//					if (item == null)
-//						return;
-//					super.updateItem(item, empty);
-//					if (!isEmpty()) {
-//						final Contact c = getTableView().getItems().get(getIndex());
-//						CheckBox checkBox = new CheckBox();
-//						checkBox.selectedProperty().bindBidirectional(c.selectedProperty());
-//						// checkBox.setOnAction(event);
-//						setGraphic(checkBox);
-//					}
-//				}
-//			};
-//			cell.setAlignment(Pos.CENTER);
-//			return cell;
-//		}
-//	});
-
-		
-// -----------------------------------------------------------------
-		
-		
-//		Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>> booleanCellFactory = 
-//	            new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
-//	            @Override
-//	                public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
-//	                    return new TableCell<Contact, Boolean>();
-//	            }
-//	        };
-//	        active.setCellValueFactory(new PropertyValueFactory<Contact,Boolean>("select"));
-//	        active.setCellFactory(booleanCellFactory);
-//
-//	class BooleanCell extends TableCell<Contact, Boolean> {
-//	        private CheckBox checkBox;
-//	        public BooleanCell() {
-//	            checkBox = new CheckBox();
-//	            checkBox.setDisable(true);
-//	            checkBox.selectedProperty().addListener(new ChangeListener<Boolean> () {
-//	                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//	                    if(isEditing())
-//	                        commitEdit(newValue == null ? false : newValue);
-//	                }
-//	            });
-//	            this.setGraphic(checkBox);
-//	            this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//	            this.setEditable(true);
-//	        }
-//	        @Override
-//	        public void startEdit() {
-//	            super.startEdit();
-//	            if (isEmpty()) {
-//	                return;
-//	            }
-//	            checkBox.setDisable(false);
-//	            checkBox.requestFocus();
-//	        }
-//	        @Override
-//	        public void cancelEdit() {
-//	            super.cancelEdit();
-//	            checkBox.setDisable(true);
-//	        }
-//	        public void commitEdit(Boolean value) {
-//	            super.commitEdit(value);
-//	            checkBox.setDisable(true);
-//	        }
-//	        @Override
-//	        public void updateItem(Boolean item, boolean empty) {
-//	            super.updateItem(item, empty);
-//	            if (!isEmpty()) {
-//	                checkBox.setSelected(item);
-//	            }
-//	        }
-//	    }
-	
-		
-// -----------------------------------------------------------------		
-		
-	
-		
-		
-			
-		
 		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
 		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
 		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
@@ -424,8 +310,140 @@ public class MainController {
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
 
-		table.getColumns().setAll(objetIdCol, selectCol, identificationCol, prefixeMuseeCol, inventaireCol, localisationCol,
-				imageCol);
+		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("");
+		selectCol.setMinWidth(50);
+		selectCol.setGraphic(getSelectAllCheckBox());
+		selectCol.setCellValueFactory(new PropertyValueFactory<Contact, Boolean>("selected"));
+
+		selectCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
+			public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
+				final TableCell<Contact, Boolean> cell = new TableCell<Contact, Boolean>() {
+					@Override
+					public void updateItem(final Boolean item, boolean empty) {
+						if (item == null)
+							return;
+						super.updateItem(item, empty);
+						if (!isEmpty()) {
+							final Contact c = getTableView().getItems().get(getIndex());
+							CheckBox checkBox = new CheckBox();
+							checkBox.selectedProperty().bindBidirectional(c.selectedProperty());
+//						 checkBox.setOnAction(event);
+							setGraphic(checkBox);
+						}
+					}
+				};
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
+
+		table.getColumns().setAll(objetIdCol, selectCol, identificationCol, prefixeMuseeCol, inventaireCol,
+				localisationCol, imageCol);
+
+		ListBinding<Boolean> lb = new ListBinding<Boolean>() {
+			{
+				bind(table.getItems());
+			}
+
+			@Override
+			protected ObservableList<Boolean> computeValue() {
+				ObservableList<Boolean> list = FXCollections.observableArrayList();
+				for (Contact c : table.getItems()) {
+					list.add(c.getSelected());
+				}
+				return list;
+			}
+		};
+		lb.addListener(new ChangeListener<ObservableList<Boolean>>() {
+			@Override
+			public void changed(ObservableValue<? extends ObservableList<Boolean>> arg0, ObservableList<Boolean> arg1,
+					ObservableList<Boolean> l) {
+				// Checking for an unselected employee in the table view.
+				boolean unSelectedFlag = false;
+				for (boolean b : l) {
+					if (!b) {
+						unSelectedFlag = true;
+						break;
+					}
+				}
+				/*
+				 * If at least one employee is not selected, then deselecting the check box in
+				 * the table column header, else if all employees are selected, then selecting
+				 * the check box in the header.
+				 */
+				if (unSelectedFlag) {
+					getSelectAllCheckBox().setSelected(false);
+				} else {
+					getSelectAllCheckBox().setSelected(true);
+				}
+
+				// Checking for a selected employee in the table view.
+				boolean selectedFlag = false;
+				for (boolean b : l) {
+					if (!b) {
+						selectedFlag = true;
+						break;
+					}
+				}
+
+				/*
+				 * If at least one employee is selected, then enabling the "Export" button, else
+				 * if none of the employees are selected, then disabling the "Export" button.
+				 */
+				if (selectedFlag) {
+					enableExportButton();
+				} else {
+					disableExportButton();
+				}
+			}
+		});
+
+	}
+
+	public CheckBox getSelectAllCheckBox() {
+		if (selectAllCheckBox == null) {
+			final CheckBox selectAllCheckBox = new CheckBox();
+
+			// Adding EventHandler to the CheckBox to select/deselect all employees in
+			// table.
+			selectAllCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					// Setting the value in all the employees.
+					for (Contact item : table.getItems()) {
+						item.setSelected(selectAllCheckBox.isSelected());
+					}
+					getExportButton().setDisable(!selectAllCheckBox.isSelected());
+				}
+			});
+
+			this.selectAllCheckBox = selectAllCheckBox;
+		}
+		return selectAllCheckBox;
+	}
+
+	public Button getExportButton() {
+		if (this.exportButton == null) {
+			final Button exportButton = new Button();
+			exportButton.setDisable(true);
+			this.exportButton = exportButton;
+		}
+		return this.exportButton;
+	}
+
+	/**
+	 * Enables the "Export" button.
+	 */
+	public void enableExportButton() {
+		getExportButton().setDisable(false);
+	}
+
+	/**
+	 * Disables the "Export" button.
+	 */
+	public void disableExportButton() {
+		getExportButton().setDisable(true);
+
 	}
 
 }

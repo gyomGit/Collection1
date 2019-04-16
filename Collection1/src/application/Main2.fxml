@@ -76,6 +76,7 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="exportButton" disable="true" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export" />
             <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
             <Button fx:id="update" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="150.0" prefWidth="116.0" text="Update" textAlignment="CENTER" />
             <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" prefHeight="150.0" prefWidth="116.0" text="Delete" textAlignment="JUSTIFY" />
@@ -92,12 +93,13 @@
             <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
             <TableView fx:id="table" editable="true" prefHeight="359.0" prefWidth="477.0">
                <columns>
-                  <TableColumn fx:id="index" prefWidth="75.0" text="Objet ID" />
-                  <TableColumn fx:id="select" prefWidth="75.0" text="Select" />
-                  <TableColumn prefWidth="75.0" text="Identification" />
-                  <TableColumn prefWidth="75.0" text="Préfixe Musée" />
-                  <TableColumn prefWidth="75.0" text="Inventaire" />
-                  <TableColumn prefWidth="75.0" text="Localisation" />
+                  <TableColumn fx:id="objetIdCol" prefWidth="75.0" text="Objet ID" />
+                  <TableColumn fx:id="selectCol" prefWidth="75.0" text="Select" />
+                  <TableColumn fx:id="identificationCol" prefWidth="75.0" text="Identification" />
+                  <TableColumn fx:id="prefixeMuseeCol" prefWidth="75.0" text="Préfixe Musée" />
+                  <TableColumn fx:id="inventaireCol" prefWidth="75.0" text="Inventaire" />
+                  <TableColumn fx:id="localisationCol" prefWidth="75.0" text="Localisation" />
+                  <TableColumn fx:id="imageCol" prefWidth="75.0" text="Image" />
                </columns>
             </TableView>
          </children>
