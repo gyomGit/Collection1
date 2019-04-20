@@ -2,10 +2,18 @@ package application;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.contact.entity.Contact;
+
+import com.sun.istack.logging.Logger;
 
 import javafx.beans.binding.ListBinding;
 import javafx.beans.value.ChangeListener;
@@ -16,6 +24,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -165,16 +175,58 @@ public class MainController {
 
 	}
 
+	@SuppressWarnings("resource")
 	@FXML
 	private void handleExport(ActionEvent event) {
 
-		System.out.print("employees Selected : [");
-		for (Contact contact : table.getItems()) {
+		try {
+//			System.out.print("employees Selected : [");
+//			for (Contact contact : table.getItems()) {
+//				if (contact.getSelected()) {
+//					System.out.print(contact.getImage() + ", ");
+//				}
+//			}
+//			System.out.print(" ]\n");
+			
+			XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
+			XSSFSheet sheet = wb.createSheet("Objets selection");
+			XSSFRow header = sheet.createRow(0);
+			header.createCell(0).setCellValue("Objet ID");
+			header.createCell(1).setCellValue("Identification");
+			header.createCell(2).setCellValue("Préfixe Muséee");
+			header.createCell(3).setCellValue("Inventaire");
+			header.createCell(4).setCellValue("Localisation");
+			
+			
+			int index = 1;
+			for (Contact contact : table.getItems())
 			if (contact.getSelected()) {
-				System.out.print(contact.getImage() + ", ");
+				XSSFRow row = sheet.createRow(index);
+				row.createCell(0).setCellValue(contact.getObjetId().toString());
+				row.createCell(1).setCellValue(contact.getIdentification());
+				row.createCell(2).setCellValue(contact.getPrefixeMusee());
+				row.createCell(3).setCellValue(contact.getInventaire());
+				row.createCell(4).setCellValue(contact.getLocalisation());
+				index++;
 			}
+			
+			FileOutputStream fileOut = new FileOutputStream("ObjetSelection1.xlsx"); // before 2007 version xls 
+			wb.write(fileOut);
+			fileOut.close();
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Objets Selection has been exported as an Excel sheet");
+			alert.showAndWait();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			Logger.getLogger(MainController.class.getName(), null).log(Level.SEVERE, null, e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.print(" ]\n");
 	}
 
 	@FXML
