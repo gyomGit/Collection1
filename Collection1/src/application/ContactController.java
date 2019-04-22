@@ -42,4 +42,5 @@ public class ContactController
      public void updateContact(Contact contact){
           contactService.updateContact(contact);
      }
+     
 }

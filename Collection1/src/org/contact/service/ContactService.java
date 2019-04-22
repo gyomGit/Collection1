@@ -22,4 +22,5 @@ public interface ContactService {
 	public void removeContact(Integer id);
 
 	public void updateContact(Contact contact);
+	
 }

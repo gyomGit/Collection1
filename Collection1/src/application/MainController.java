@@ -5,13 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.contact.entity.Contact;
+import org.contact.entity.HibernateUtil;
+import org.hibernate.Session;
 
 import com.sun.istack.logging.Logger;
 
@@ -71,7 +73,7 @@ public class MainController {
 	private Button upfront;
 
 	@FXML
-	private Button exportButton;
+	private Button exportButton, importButton;
 
 	private CheckBox selectAllCheckBox;
 
@@ -187,7 +189,7 @@ public class MainController {
 //				}
 //			}
 //			System.out.print(" ]\n");
-			
+
 			XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
 			XSSFSheet sheet = wb.createSheet("Objets selection");
 			XSSFRow header = sheet.createRow(0);
@@ -196,37 +198,116 @@ public class MainController {
 			header.createCell(2).setCellValue("Préfixe Muséee");
 			header.createCell(3).setCellValue("Inventaire");
 			header.createCell(4).setCellValue("Localisation");
-			
-			
+
+			sheet.autoSizeColumn(1);
+			sheet.autoSizeColumn(2);
+			sheet.autoSizeColumn(3);
+			sheet.autoSizeColumn(4);
+
 			int index = 1;
 			for (Contact contact : table.getItems())
-			if (contact.getSelected()) {
-				XSSFRow row = sheet.createRow(index);
-				row.createCell(0).setCellValue(contact.getObjetId().toString());
-				row.createCell(1).setCellValue(contact.getIdentification());
-				row.createCell(2).setCellValue(contact.getPrefixeMusee());
-				row.createCell(3).setCellValue(contact.getInventaire());
-				row.createCell(4).setCellValue(contact.getLocalisation());
-				index++;
-			}
-			
-			FileOutputStream fileOut = new FileOutputStream("ObjetSelection1.xlsx"); // before 2007 version xls 
+				if (contact.getSelected()) {
+					XSSFRow row = sheet.createRow(index);
+					row.createCell(0).setCellValue(contact.getObjetId().toString());
+					row.createCell(1).setCellValue(contact.getIdentification());
+					row.createCell(2).setCellValue(contact.getPrefixeMusee());
+					row.createCell(3).setCellValue(contact.getInventaire());
+					row.createCell(4).setCellValue(contact.getLocalisation());
+					index++;
+				}
+
+			FileOutputStream fileOut = new FileOutputStream("ObjetSelection1.xlsx"); // before 2007 version xls
 			wb.write(fileOut);
 			fileOut.close();
-			
+
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("Objets Selection has been exported as an Excel sheet");
 			alert.showAndWait();
-			
+
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			Logger.getLogger(MainController.class.getName(), null).log(Level.SEVERE, null, e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@SuppressWarnings("resource")
+	@FXML
+	private void handleImport(ActionEvent event) throws IOException {
+
+		try {
+
+			Session s = HibernateUtil.openSession();
+
+			FileInputStream fileIn = new FileInputStream(new File("ObjetInfo.xlsx"));
+
+			XSSFWorkbook wb = new XSSFWorkbook(fileIn);
+			XSSFSheet sheet = wb.getSheetAt(0);
+			Row row;
+			for (int i = 1; i < sheet.getLastRowNum(); i++) {
+				row = (Row) sheet.getRow(i);
+
+//				String objetId;
+//				if (row.getCell(0) == null) {
+//					objetId = "0";
+//				} else
+//					objetId = row.getCell(0).toString();
+
+				String identification;
+				if (row.getCell(1) == null) {
+					identification = "null";
+				} // suppose excel cell is empty then its set to 0 the variable
+				else
+					identification = row.getCell(1).toString(); // else copies cell data to name variable
+				
+				String prefixeMusee;
+				if (row.getCell(2) == null) {
+					prefixeMusee = "null";
+				} else
+					prefixeMusee = row.getCell(2).toString();
+				
+				String inventaire;
+				if (row.getCell(3) == null) {
+					inventaire = "null";
+				} else
+					inventaire = row.getCell(3).toString();
+				
+				String localisation;
+				if (row.getCell(4) == null) {
+					localisation = "null";
+				} else
+					localisation = row.getCell(4).toString();
+				
+				s.beginTransaction();
+				Contact c = new Contact();
+//				c.setObjetId(Integer.parseInt(objetId));
+				c.setIdentification(identification);
+				c.setPrefixeMusee(prefixeMusee);
+				c.setInventaire(inventaire);
+				c.setLocalisation(localisation);
+				System.out.println(c.getObjetId() 
+						+ " " + c.getIdentification() 
+						+ " " + c.getPrefixeMusee()
+						+ " " + c.getInventaire()
+						+ " " + c.getLocalisation());
+				s.saveOrUpdate(c);
+				s.getTransaction().commit();
+			}
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Objets Details imported from Excel sheet to Database");
+			alert.showAndWait();
+			
+			fileIn.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@FXML
@@ -248,8 +329,6 @@ public class MainController {
 	@FXML
 	public void handleUpdate(ActionEvent event) {
 
-//		Contact c = new Contact(Integer.parseInt(contactIdField.getText()), firstNameField.getText(), lastNameField.getText(), emailField.getText(),
-//				phoneField.getText(), imv.getImage());
 
 		Contact c = new Contact();
 
@@ -270,7 +349,7 @@ public class MainController {
 
 		Contact c = (Contact) controller.getContactList().get(index);
 		controller.removeContact(c.getObjetId());
-
+		
 		populate();
 	}
 

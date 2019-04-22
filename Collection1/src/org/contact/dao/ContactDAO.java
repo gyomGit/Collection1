@@ -20,4 +20,5 @@ public interface ContactDAO {
 	public void removeContact(Integer id);
 
 	public void updateContact(Contact contact);
+	
 }

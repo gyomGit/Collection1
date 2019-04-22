@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="623.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<BorderPane prefHeight="815.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <top>
       <MenuBar prefHeight="30.0" prefWidth="740.0" BorderPane.alignment="CENTER">
         <menus>
@@ -77,6 +77,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="exportButton" disable="true" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export" />
+            <Button fx:id="importButton" mnemonicParsing="false" onAction="#handleImport" prefHeight="150.0" prefWidth="116.0" text="Import" />
             <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
             <Button fx:id="update" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="150.0" prefWidth="116.0" text="Update" textAlignment="CENTER" />
             <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" prefHeight="150.0" prefWidth="116.0" text="Delete" textAlignment="JUSTIFY" />
@@ -91,7 +92,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
-            <TableView fx:id="table" editable="true" prefHeight="359.0" prefWidth="477.0">
+            <TableView fx:id="table" editable="true" prefHeight="544.0" prefWidth="489.0">
                <columns>
                   <TableColumn fx:id="objetIdCol" prefWidth="75.0" text="Objet ID" />
                   <TableColumn fx:id="selectCol" prefWidth="75.0" text="Select" />

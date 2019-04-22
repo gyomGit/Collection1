@@ -12,28 +12,28 @@ import org.contact.entity.Contact;
 
 // ContactServiceImpl.java
 
-public class ContactServiceImpl implements ContactService{
+public class ContactServiceImpl implements ContactService {
 
-     private ContactDAO contactDAO = new ContactDAOImpl();
+	private ContactDAO contactDAO = new ContactDAOImpl();
 
-     @Override
-     public void addContact(Contact contact) {
-          contactDAO.addContact(contact);
-     }
+	@Override
+	public void addContact(Contact contact) {
+		contactDAO.addContact(contact);
+	}
 
-     @Override
-     public List<Contact> listContact() {
-          return contactDAO.listContact();
-     }
+	@Override
+	public List<Contact> listContact() {
+		return contactDAO.listContact();
+	}
 
-     @Override
-     public void removeContact(Integer id) {
-          contactDAO.removeContact(id);
-     }
+	@Override
+	public void removeContact(Integer id) {
+		contactDAO.removeContact(id);
+	}
 
-     @Override
-     public void updateContact(Contact contact) {
-          contactDAO.updateContact(contact);
-     }
+	@Override
+	public void updateContact(Contact contact) {
+		contactDAO.updateContact(contact);
+	}
 
 }
