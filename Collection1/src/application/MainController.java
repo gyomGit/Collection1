@@ -132,7 +132,7 @@ public class MainController {
 
 	private byte[] imageBytes;
 
-	ObservableList<String> prefixeList = FXCollections.observableArrayList("Préfixe Musée", "ADN", "CEC", "CG04",
+	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04",
 			"EXPO", "FOR", "MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
 
 	@FXML
@@ -142,7 +142,7 @@ public class MainController {
 
 	@FXML
 	private void initialize() {
-		prefixeBox.setValue("Préfixe Musée");
+		prefixeBox.setValue(null);
 		prefixeBox.setItems(prefixeList);
 	}
 
@@ -261,25 +261,25 @@ public class MainController {
 				} // suppose excel cell is empty then its set to 0 the variable
 				else
 					identification = row.getCell(1).toString(); // else copies cell data to name variable
-				
+
 				String prefixeMusee;
 				if (row.getCell(2) == null) {
 					prefixeMusee = "null";
 				} else
 					prefixeMusee = row.getCell(2).toString();
-				
+
 				String inventaire;
 				if (row.getCell(3) == null) {
 					inventaire = "null";
 				} else
 					inventaire = row.getCell(3).toString();
-				
+
 				String localisation;
 				if (row.getCell(4) == null) {
 					localisation = "null";
 				} else
 					localisation = row.getCell(4).toString();
-				
+
 				s.beginTransaction();
 				Contact c = new Contact();
 //				c.setObjetId(Integer.parseInt(objetId));
@@ -287,21 +287,18 @@ public class MainController {
 				c.setPrefixeMusee(prefixeMusee);
 				c.setInventaire(inventaire);
 				c.setLocalisation(localisation);
-				System.out.println(c.getObjetId() 
-						+ " " + c.getIdentification() 
-						+ " " + c.getPrefixeMusee()
-						+ " " + c.getInventaire()
-						+ " " + c.getLocalisation());
+				System.out.println(c.getObjetId() + " " + c.getIdentification() + " " + c.getPrefixeMusee() + " "
+						+ c.getInventaire() + " " + c.getLocalisation());
 				s.saveOrUpdate(c);
 				s.getTransaction().commit();
 			}
-			
+
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("Objets Details imported from Excel sheet to Database");
 			alert.showAndWait();
-			
+
 			fileIn.close();
 
 		} catch (FileNotFoundException e) {
@@ -322,13 +319,14 @@ public class MainController {
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
+		if (validateFields()) {
 		controller.addContact(c);
 		populate();
+		}
 	}
 
 	@FXML
 	public void handleUpdate(ActionEvent event) {
-
 
 		Contact c = new Contact();
 
@@ -339,9 +337,11 @@ public class MainController {
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
+		if (validateFields()) {
 		controller.updateContact(c);
 		System.out.println("update button clicked");
 		populate();
+		}
 	}
 
 	@FXML
@@ -349,7 +349,7 @@ public class MainController {
 
 		Contact c = (Contact) controller.getContactList().get(index);
 		controller.removeContact(c.getObjetId());
-		
+
 		populate();
 	}
 
@@ -426,6 +426,7 @@ public class MainController {
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
 		table.getItems().clear();
+		listView.getItems().clear();
 		table.setItems(controller.getContactList());
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
@@ -458,8 +459,8 @@ public class MainController {
 							final Contact c = getTableView().getItems().get(getIndex());
 							CheckBox checkBox = new CheckBox();
 							checkBox.selectedProperty().bindBidirectional(c.selectedProperty());
-//						 checkBox.setOnAction(event);
 							setGraphic(checkBox);
+							getExportButton().setDisable(!checkBox.isSelected());
 						}
 					}
 				};
@@ -471,6 +472,8 @@ public class MainController {
 		table.getColumns().setAll(objetIdCol, selectCol, identificationCol, prefixeMuseeCol, inventaireCol,
 				localisationCol, imageCol);
 
+// -------------------------------------------------------------------------------------------------------------		
+		
 		ListBinding<Boolean> lb = new ListBinding<Boolean>() {
 			{
 				bind(table.getItems());
@@ -485,51 +488,19 @@ public class MainController {
 				return list;
 			}
 		};
+		
+// -------------------------------------------------------------------------------------------------------------		
 		lb.addListener(new ChangeListener<ObservableList<Boolean>>() {
 			@Override
 			public void changed(ObservableValue<? extends ObservableList<Boolean>> arg0, ObservableList<Boolean> arg1,
 					ObservableList<Boolean> l) {
-				// Checking for an unselected employee in the table view.
-				boolean unSelectedFlag = false;
-				for (boolean b : l) {
-					if (!b) {
-						unSelectedFlag = true;
-						break;
-					}
-				}
-				/*
-				 * If at least one employee is not selected, then deselecting the check box in
-				 * the table column header, else if all employees are selected, then selecting
-				 * the check box in the header.
-				 */
-				if (unSelectedFlag) {
-					getSelectAllCheckBox().setSelected(false);
-				} else {
-					getSelectAllCheckBox().setSelected(true);
-				}
-
-				// Checking for a selected employee in the table view.
-				boolean selectedFlag = false;
-				for (boolean b : l) {
-					if (!b) {
-						selectedFlag = true;
-						break;
-					}
-				}
-
-				/*
-				 * If at least one employee is selected, then enabling the "Export" button, else
-				 * if none of the employees are selected, then disabling the "Export" button.
-				 */
-				if (selectedFlag) {
-					enableExportButton();
-				} else {
-					disableExportButton();
-				}
 			}
 		});
 
+// -------------------------------------------------------------------------------------------------------------			
+		
 	}
+
 
 	public CheckBox getSelectAllCheckBox() {
 		if (selectAllCheckBox == null) {
@@ -561,20 +532,54 @@ public class MainController {
 		}
 		return this.exportButton;
 	}
-
-	/**
-	 * Enables the "Export" button.
-	 */
-	public void enableExportButton() {
-		getExportButton().setDisable(false);
-	}
-
-	/**
-	 * Disables the "Export" button.
-	 */
-	public void disableExportButton() {
-		getExportButton().setDisable(true);
-
+	
+	private boolean validateFields() {
+		
+		if(identificationField.getText().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Validate fields");
+			alert.setHeaderText(null);
+			alert.setContentText("Le champ Identification est vide");
+			alert.showAndWait();
+		return false;
+		}
+		
+		else if(prefixeBox.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Validate fields");
+			alert.setHeaderText(null);
+			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
+			alert.showAndWait();
+		return false;
+		}
+		
+		else if(inventaireField.getText().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Validate fields");
+			alert.setHeaderText(null);
+			alert.setContentText("Le champ Inventaire est vide");
+			alert.showAndWait();
+		return false;
+		}
+		else if(localisationField.getText().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Validate fields");
+			alert.setHeaderText(null);
+			alert.setContentText("Le champ Localisation est vide");
+			alert.showAndWait();
+		return false;
+		}
+		else if(listView.getItems().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Validate fields");
+			alert.setHeaderText(null);
+			alert.setContentText("La photo n'a pas été sélectionnée pour cet objet");
+			alert.showAndWait();
+		return false;
+		}
+		
+		return true;
+		
 	}
 
 }
