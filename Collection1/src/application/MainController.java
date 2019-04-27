@@ -22,6 +22,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -93,35 +95,41 @@ public class MainController {
 
 	@FXML
 	private TextField localisationField;
+	
+	@FXML
+	private TextField searchField;
 
 	// --------------------------------------
 
 	@FXML
-	private TableView<Contact> table = new TableView<>();
+	private TableView<Contact> table;
 
-	@FXML
-	TableColumn<Contact, Integer> objetIdCol;
-
-	@FXML
-	TableColumn<Contact, CheckBox> selectCol;
-
-	@FXML
-	TableColumn<Contact, String> identificationCol;
-
-	@FXML
-	TableColumn<Contact, String> prefixeMuseeCol;
-
-	@FXML
-	TableColumn<Contact, String> inventaireCol;
-
-	@FXML
-	TableColumn<Contact, String> localisationCol;
-
-	@FXML
-	TableColumn<Contact, byte[]> imageCol;
+//	@FXML
+//	TableColumn<Contact, Integer> objetIdCol;
+//
+//	@FXML
+//	TableColumn<Contact, CheckBox> selectCol;
+//
+//	@FXML
+//	TableColumn<Contact, String> identificationCol;
+//
+//	@FXML
+//	TableColumn<Contact, String> prefixeMuseeCol;
+//
+//	@FXML
+//	TableColumn<Contact, String> inventaireCol;
+//
+//	@FXML
+//	TableColumn<Contact, String> localisationCol;
+//
+//	@FXML
+//	TableColumn<Contact, byte[]> imageCol;
 
 	// --------------------------------------
 
+//	final ObservableList<Contact> data = FXCollections.observableArrayList();
+	
+	// -----------------------------------------
 	private ContactController controller = new ContactController();
 
 	@FXML
@@ -337,11 +345,11 @@ public class MainController {
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
-		if (validateFields()) {
+//		if (validateFields()) {
 		controller.updateContact(c);
 		System.out.println("update button clicked");
 		populate();
-		}
+//		}
 	}
 
 	@FXML
@@ -532,6 +540,44 @@ public class MainController {
 		}
 		return this.exportButton;
 	}
+	
+
+	
+	@FXML
+	private void handleSearch() {
+		
+		populate();
+		
+		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
+		FilteredList<Contact> filteredData = new FilteredList<>(controller.getContactList(), e -> true);
+	
+		searchField.textProperty().addListener((observableValue, oldValue, newValue) ->{
+			filteredData.setPredicate(contact -> {
+				// If filter text is empty, display all contacts.
+				if (newValue == null || newValue.isEmpty()){
+					return true;
+				}
+				// Compare first name and last name of every person with filter text.
+				String lowerCaseFilter = newValue.toLowerCase();
+				
+				if(contact.getIdentification().toLowerCase().contains(lowerCaseFilter)){
+					return true;// Filter matches identification.
+				}
+				else if(contact.getInventaire().toLowerCase().contains(lowerCaseFilter)) {
+					return true;// Filter matches inventaire.
+				}
+				return false;// Does not match.
+			});
+		});
+		// 3. Wrap the FilteredList in a SortedList.
+		SortedList<Contact> sortedData = new SortedList<> (filteredData);
+		
+		// 4. Bind the SortedList comparator to the TableView comparator.
+		sortedData.comparatorProperty().bind(table.comparatorProperty());
+		
+		table.setItems(sortedData);
+		
+}
 	
 	private boolean validateFields() {
 		
