@@ -31,6 +31,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
@@ -41,6 +42,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
@@ -188,57 +190,73 @@ public class MainController {
 	@SuppressWarnings("resource")
 	@FXML
 	private void handleExport(ActionEvent event) {
+		
+		Alert alert1 = new Alert(AlertType.INFORMATION);
+		alert1.setTitle("Information Dialog");
+		alert1.setHeaderText(null);
+		alert1.setContentText("Veuiller choisir un dossier de destination");
+		alert1.showAndWait();
 
-		try {
-//			System.out.print("employees Selected : [");
-//			for (Contact contact : table.getItems()) {
-//				if (contact.getSelected()) {
-//					System.out.print(contact.getImage() + ", ");
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		File selectedDirectory = directoryChooser.showDialog(null);
+
+		if(selectedDirectory == null){
+		     //No Directory selected
+		}else{
+			
+			try {
+//				System.out.print("employees Selected : [");
+//				for (Contact contact : table.getItems()) {
+//					if (contact.getSelected()) {
+//						System.out.print(contact.getImage() + ", ");
+//					}
 //				}
-//			}
-//			System.out.print(" ]\n");
+//				System.out.print(" ]\n");
 
-			XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
-			XSSFSheet sheet = wb.createSheet("Objets selection");
-			XSSFRow header = sheet.createRow(0);
-			header.createCell(0).setCellValue("Objet ID");
-			header.createCell(1).setCellValue("Identification");
-			header.createCell(2).setCellValue("Préfixe Muséee");
-			header.createCell(3).setCellValue("Inventaire");
-			header.createCell(4).setCellValue("Localisation");
+				XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
+				XSSFSheet sheet = wb.createSheet("Objets selection");
+				XSSFRow header = sheet.createRow(0);
+				header.createCell(0).setCellValue("Objet ID");
+				header.createCell(1).setCellValue("Identification");
+				header.createCell(2).setCellValue("Préfixe Muséee");
+				header.createCell(3).setCellValue("Inventaire");
+				header.createCell(4).setCellValue("Localisation");
 
-			sheet.autoSizeColumn(1);
-			sheet.autoSizeColumn(2);
-			sheet.autoSizeColumn(3);
-			sheet.autoSizeColumn(4);
+				sheet.autoSizeColumn(1);
+				sheet.autoSizeColumn(2);
+				sheet.autoSizeColumn(3);
+				sheet.autoSizeColumn(4);
 
-			int index = 1;
-			for (Contact contact : table.getItems())
-				if (contact.getSelected()) {
-					XSSFRow row = sheet.createRow(index);
-					row.createCell(0).setCellValue(contact.getObjetId().toString());
-					row.createCell(1).setCellValue(contact.getIdentification());
-					row.createCell(2).setCellValue(contact.getPrefixeMusee());
-					row.createCell(3).setCellValue(contact.getInventaire());
-					row.createCell(4).setCellValue(contact.getLocalisation());
-					index++;
-				}
+				int index = 1;
+				for (Contact contact : table.getItems())
+					if (contact.getSelected()) {
+						XSSFRow row = sheet.createRow(index);
+						row.createCell(0).setCellValue(contact.getObjetId().toString());
+						row.createCell(1).setCellValue(contact.getIdentification());
+						row.createCell(2).setCellValue(contact.getPrefixeMusee());
+						row.createCell(3).setCellValue(contact.getInventaire());
+						row.createCell(4).setCellValue(contact.getLocalisation());
+						index++;
+					}
 
-			FileOutputStream fileOut = new FileOutputStream("ObjetSelection1.xlsx"); // before 2007 version xls
-			wb.write(fileOut);
-			fileOut.close();
+				FileOutputStream fileOut = new FileOutputStream(selectedDirectory.getAbsolutePath() + "/ObjetSelection1.xlsx"); // before 2007 version xls
+				wb.write(fileOut);
+				fileOut.close();
 
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Objets Selection has been exported as an Excel sheet");
-			alert.showAndWait();
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Fichier Excel exporté");
+				alert.showAndWait();
 
-		} catch (FileNotFoundException e) {
-			Logger.getLogger(MainController.class.getName(), null).log(Level.SEVERE, null, e);
-		} catch (IOException e) {
-			e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				Logger.getLogger(MainController.class.getName(), null).log(Level.SEVERE, null, e);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		
+
 	}
 
 	@SuppressWarnings("resource")
@@ -345,20 +363,34 @@ public class MainController {
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 
-//		if (validateFields()) {
+		if (validateFields()) {
 		controller.updateContact(c);
 		System.out.println("update button clicked");
 		populate();
-//		}
+		}
 	}
 
 	@FXML
 	public void handleDelete(ActionEvent event) {
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText("Suprimer objet?");
 
-		Contact c = (Contact) controller.getContactList().get(index);
-		controller.removeContact(c.getObjetId());
 
-		populate();
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			Contact c = (Contact) controller.getContactList().get(index);
+			controller.removeContact(c.getObjetId()); 
+			populate();// ... user chose OK
+		} else {
+//			populate(); // ... user chose CANCEL or closed the dialog
+		}
+
+//		Contact c = (Contact) controller.getContactList().get(index);
+//		controller.removeContact(c.getObjetId());
+//
+//		populate();
 	}
 
 	@FXML
@@ -404,9 +436,10 @@ public class MainController {
 	private void populateForm(int i) {
 		if (controller.getContactList().isEmpty())
 			return;
+		
 		Contact c = (Contact) controller.getContactList().get(i);
+		
 		objetIdField.setText(c.getObjetId().toString());
-
 		identificationField.setText(c.getIdentification());
 		prefixeBox.setValue(c.getPrefixeMusee());
 		inventaireField.setText(c.getInventaire());
@@ -448,7 +481,28 @@ public class MainController {
 		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
+		
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
+		
+//	       //Set up the ImageView
+//        final ImageView imageview = new ImageView();
+//        imageview.setFitHeight(50);
+//        imageview.setFitWidth(50);
+//
+//        
+//        
+//        //Set up the Table
+//        TableCell<Contact,Image> cell = new TableCell<Contact,Image>(){
+//                public void updateItem(Contact item, boolean empty) {                        
+//                if(item!=null){
+//                    imageview.setImage(contact.getImage());  //Change suggested earlier
+//                }
+//            }
+//        };
+//
+//        // Attach the imageview to the cell
+//        cell.setGraphic(imageview) 
+//        return cell;
 
 		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("");
 		selectCol.setMinWidth(50);
@@ -544,13 +598,13 @@ public class MainController {
 
 	
 	@FXML
-	private void handleSearch() {
+	private void handleSearch() {	
 		
 		populate();
-		
+	
 		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
 		FilteredList<Contact> filteredData = new FilteredList<>(controller.getContactList(), e -> true);
-	
+		
 		searchField.textProperty().addListener((observableValue, oldValue, newValue) ->{
 			filteredData.setPredicate(contact -> {
 				// If filter text is empty, display all contacts.
@@ -575,7 +629,11 @@ public class MainController {
 		// 4. Bind the SortedList comparator to the TableView comparator.
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 		
+	
+		
 		table.setItems(sortedData);
+	
+	
 		
 }
 	
