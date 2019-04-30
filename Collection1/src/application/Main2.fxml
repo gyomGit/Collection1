@@ -87,7 +87,7 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="exportButton" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export" />
+            <Button fx:id="exportButton" disable="true" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export" />
             <Button fx:id="importButton" mnemonicParsing="false" onAction="#handleImport" prefHeight="150.0" prefWidth="116.0" text="Import" />
             <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
             <Button fx:id="update" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="150.0" prefWidth="116.0" text="Update" textAlignment="CENTER" />
