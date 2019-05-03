@@ -1,5 +1,9 @@
 package application;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
+
+import javax.imageio.ImageIO;
 
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -222,14 +228,10 @@ public class MainController {
 
 				XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
 
-
-
 				CreationHelper helper = wb.getCreationHelper();
 
 				// create sheet
 				XSSFSheet sheet = wb.createSheet("Objets selection");
-
-
 
 				// auto-size picture relative to its top-left corner
 
@@ -254,34 +256,43 @@ public class MainController {
 					if (contact.getSelected()) {
 						XSSFRow row = sheet.createRow(index);
 						row.setHeightInPoints(40);
-						
+
 						row.createCell(0).setCellValue(contact.getObjetId().toString());
 						row.createCell(1).setCellValue(contact.getIdentification());
 						row.createCell(2).setCellValue(contact.getPrefixeMusee());
 						row.createCell(3).setCellValue(contact.getInventaire());
 						row.createCell(4).setCellValue(contact.getLocalisation());
 
-
-
+						// get image from the database to a file named "photo2.jpg"
 						byte[] getImageInBytes2 = contact.getImage(); // image convert in byte form
 
 						try {
 							FileOutputStream outputstream = new FileOutputStream(new File("photo2.jpg"));
+
 							outputstream.write(getImageInBytes2);
 
-							Image image = new Image("file:photo2.jpg");
+//							Image image = new Image("file:photo2.jpg");
 
 							outputstream.close();
+
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+
+						// resize this image before adding it to this workbook:
 						
+						BufferedImage originalImage = ImageIO.read(new File("photo2.jpg"));
+						int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+							
+						BufferedImage resizeImageJpg = resizeImage(originalImage, type, 50, 50);
+						ImageIO.write(resizeImageJpg, "jpg", new File("photo3.jpg")); 
+
 						// add picture data to this workbook.
-						InputStream is = new FileInputStream("photo2.jpg");
+						InputStream is = new FileInputStream("photo3.jpg");
 						byte[] bytes = IOUtils.toByteArray(is);
 						int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
 						is.close();
-						
+
 						// Create the drawing patriarch. This is the top level container for all shapes.
 						@SuppressWarnings("rawtypes")
 						Drawing drawing = sheet.createDrawingPatriarch();
@@ -299,16 +310,13 @@ public class MainController {
 //					    anchor.setRow2(3); //Row 4
 
 						anchor.setCol1(5); // Column F
-						
-		
-						anchor.setRow1(index); // Row 2	
-		
-						
+
+						anchor.setRow1(index); // Row 2
+
 //					    anchor.setCol2(6); //Column C
 //					    anchor.setRow2(2); //Row 3
 						Picture pict = drawing.createPicture(anchor, pictureIdx);
-						
-						
+
 						pict.resize();
 						index++;
 					}
@@ -611,10 +619,10 @@ public class MainController {
 		selectCol.setCellValueFactory(new PropertyValueFactory<Contact, Boolean>("selected"));
 
 		selectCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
-			
+
 			public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
 				final TableCell<Contact, Boolean> cell = new TableCell<Contact, Boolean>() {
-					
+
 					@Override
 					public void updateItem(final Boolean item, boolean empty) {
 						if (item == null)
@@ -777,6 +785,38 @@ public class MainController {
 
 		return true;
 
+	}
+
+	private static BufferedImage resizeImage(BufferedImage originalImage, int type,
+	        int newWidth, int newHeight) {
+	        // Make sure the aspect ratio is maintained, so the image is not distorted
+	        double thumbRatio = (double) newWidth / (double) newHeight;
+	        int imageWidth = originalImage.getWidth(null);
+	        int imageHeight = originalImage.getHeight(null);
+	        double aspectRatio = (double) imageWidth / (double) imageHeight;
+
+	        if (thumbRatio < aspectRatio) {
+	            newHeight = (int) (newWidth / aspectRatio);
+	        } else {
+	            newWidth = (int) (newHeight * aspectRatio);
+	        }
+	        
+	        // Draw the scaled image
+		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+		g.dispose();
+		
+		g.setComposite(AlphaComposite.Src);
+
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+		RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING,
+		RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		RenderingHints.VALUE_ANTIALIAS_ON);
+
+		return resizedImage;
 	}
 
 }
