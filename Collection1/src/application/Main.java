@@ -1,6 +1,5 @@
 package application;
 	
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +22,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -38,9 +35,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 //View Layer of MVC
 /* Our front-end object is implemented in JavaFX. Main.java acts as a View layer for our 
@@ -58,31 +54,25 @@ public class Main extends Application {
 	private TableView<Contact> table = new TableView<>();
 	private String buttonCaption[] = { "Add New", "Update", "Delete", "|<", "<<", ">>", ">|" };
 	private String label[] = { "Contact ID", "First Name", "Lat Name", "Email", "Phone" };
-	private String fields[] = { "contactId", "firstName", "lastName", "email", "phone" };
 	private Button button[] = new Button[7];
 	private TextField textField[] = new TextField[5];
-	private ListView<String> listView;
-	private File file;
-	private Window stage;
-	private Desktop desktop = Desktop.getDesktop();
 	@FXML
 	private Button btnLoad;
 	@FXML
 	private ImageView imv;
-	private Image image;
-	private TextArea textArea;
+	
 	
 
 	private ContactController controller = new ContactController();
 
-	private static int index;
+
 	
 	
 	public static void main(String[] args) throws Exception {
 		Application.launch(args);
 
 	}
-//
+
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -103,7 +93,6 @@ public class Main extends Application {
 		border.setTop(createButtonBox());
 		border.setLeft(createForm());
 		rootBox.getChildren().addAll(btnLoad, imv);
-//		border.setRight(createChooser());
 		border.setBottom(table);
 		border.setStyle(bgcolor);
 		
@@ -114,16 +103,7 @@ public class Main extends Application {
 		populateTable();	
 	    primaryStage.setScene(scene);
 		primaryStage.show();	
-	}
-	
-
-//	@FXML
-//	private ListView<String> listView;
-//
-//	@FXML
-//	private ImageView imageView;
-
-//	private Window stage;
+	}	
 
     EventHandler<ActionEvent> btnLoadEventListener
     = new EventHandler<ActionEvent>(){
@@ -140,7 +120,6 @@ public class Main extends Application {
  
             //Show open file dialog
             File file = fileChooser.showOpenDialog(null);
-//            listView.getItems().add(file.getName());
             try {
                 BufferedImage bufferedImage = ImageIO.read(file);
                 Image image = SwingFXUtils.toFXImage(bufferedImage, null);
@@ -153,23 +132,7 @@ public class Main extends Application {
             }
         }
     };
-
-//		{	
-//			
-//			 // Loading the image in memory
-//			String imageURL = (selectedFile.toURI().toString());
-//			Image imgLoad = new Image(imageURL);
-//			
-//			imageView = new ImageView(imgLoad);
-//			imv.setImage(imgLoad);
-//			
-//			listView.getItems().add(selectedFile.getAbsolutePath());
-//		} else {
-//			System.out.println("file is not valid");
-//		}
-		
 	
-
 	private Pane createForm() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -186,47 +149,6 @@ public class Main extends Application {
 		textField[0].setTooltip(new Tooltip("This field is automatically generated hence not editable"));
 		return grid;
 	}
-//	private Pane createChooser() {
-//		VBox box1 = new VBox();
-//		box1.setAlignment(Pos.TOP_LEFT);
-//		fileChooser = new FileChooser();
-//		fileChooser.getExtensionFilters().addAll(
-//				new ExtensionFilter("Image files","*.png", "*.jpg", "*.gif"),
-//				new ExtensionFilter("All files","*.*"));
-//		browse = new Button("Browse");
-//		browse.setStyle(style);
-//		browse.setOnAction(e -> {
-//			// single file selection
-//			file = fileChooser.showOpenDialog(stage);
-//			if (file != null) {				
-//				//desktop.open(file);
-//				textArea.setText(file.getAbsolutePath());
-//				image = new Image(file.toURI().toString(), 100, 150, true, true);// path, PrefWidth, PrefHeight, PreserveRatio, Smooth
-//
-//			}
-//		});
-		
-//		imageView = new ImageView(image);
-//		imageView.setFitWidth(100);
-//		imageView.setFitHeight(150);
-//		imageView.setPreserveRatio(true);
-		
-//		textArea = new TextArea();
-//		textArea.setStyle(style);
-//		textArea.setPromptText("Path of selected file");
-//		textArea.setPrefSize(300, 50);
-//		textArea.setEditable(false);
-//		
-//
-//		box1.getChildren().addAll(browse, imageView, textArea);
-//		
-//		return box1;
-//	}
-//	
-
-		
-
-
 	
 	private Pane createButtonBox() {
 		int width = 100;
@@ -238,49 +160,12 @@ public class Main extends Application {
 			button[i] = new Button(buttonCaption[i]);
 			button[i].setStyle(style);
 			button[i].setMinWidth(width);
-//			button[i].setOnAction(new ButtonHandler());
 			box.getChildren().add(button[i]);
 		}
 		button[0].setTooltip(new Tooltip("Add this Contact to the list as new one"));
 		button[1].setTooltip(new Tooltip("Update this existing Contact from the list"));
 		return box;
 	}
-
-//	private class ButtonHandler implements EventHandler<ActionEvent> {
-//		@Override
-//		public void handle(ActionEvent event) {
-//			if (event.getSource().equals(button[0])) {
-//				Contact c = new Contact(111, textField[1].getText(), textField[2].getText(), textField[3].getText(),
-//						textField[4].getText());
-//				controller.addContact(c);
-//			} else if (event.getSource().equals(button[1])) {
-//				Contact c = new Contact(Integer.parseInt(textField[0].getText()), textField[1].getText(),
-//						textField[2].getText(), textField[3].getText(), textField[4].getText());
-//				controller.updateContact(c);
-//				System.out.println("update button clicked");
-//			} else if (event.getSource().equals(button[2])) {
-//				Contact c = (Contact) controller.getContactList().get(index);
-//				controller.removeContact(c.getContactId());
-//			} else if (event.getSource().equals(button[4])) {
-//				if (index > 0) {
-//					index--;
-//				} else
-//					event.consume();
-//			} else if (event.getSource().equals(button[3])) {
-//				index = 0;
-//			} else if (event.getSource().equals(button[5])) {
-//				if (index < controller.getContactList().size() - 1) {
-//					index++;
-//				} else
-//					event.consume();
-//			} else if (event.getSource().equals(button[6])) {
-//				index = controller.getContactList().size() - 1;
-//			}
-//			populateForm(index);
-//			populateTable();
-//		}
-//
-//	}
 
 	private void populateForm(int i) {
 		if (controller.getContactList().isEmpty())
@@ -293,6 +178,7 @@ public class Main extends Application {
 		textField[4].setText(c.getLocalisation());
 	}
 
+	@SuppressWarnings("unchecked")
 	private void populateTable() {
 		table.getItems().clear();
 		table.setItems(controller.getContactList());

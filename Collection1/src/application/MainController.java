@@ -41,6 +41,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -55,9 +56,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MainController {
@@ -149,7 +153,7 @@ public class MainController {
 
 	@FXML
 	private ImageView imv;
-
+	
 	@FXML
 	private static int index;
 
@@ -167,6 +171,7 @@ public class MainController {
 	private void initialize() {
 		prefixeBox.setValue(null);
 		prefixeBox.setItems(prefixeList);
+		
 	}
 
 	@FXML
@@ -561,6 +566,16 @@ public class MainController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
+			outputstream.write(getImageInBytes);
+
+			outputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -818,5 +833,38 @@ public class MainController {
 
 		return resizedImage;
 	}
+	
+	
+	@FXML
+	private void display(){
+		
+		
+	Stage popupwindow = new Stage();
+	      
+	popupwindow.initModality(Modality.APPLICATION_MODAL);
+	popupwindow.setTitle("This is a pop up window");
+	      
 
+	VBox layout= new VBox(10);
+	     
+
+	Image image2 = new Image("file:photo4.jpg");
+	ImageView imv2 = new ImageView();
+	imv2.setImage(image2);
+	imv2.setFitWidth(900);
+	imv2.setFitHeight(900);
+	imv2.setPreserveRatio(true);
+
+	      
+	layout.setAlignment(Pos.CENTER);
+	layout.getChildren().addAll(imv2);
+	      
+	Scene scene1= new Scene(layout, 900, 900);
+	      
+	popupwindow.setScene(scene1);
+	      
+	popupwindow.showAndWait();
+	       
+	}
+	
 }
