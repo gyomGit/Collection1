@@ -104,7 +104,7 @@
          <children>
             <ImageView fitHeight="5.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true" />
             <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
-            <TableView fx:id="table" editable="true" prefHeight="544.0" prefWidth="489.0">
+            <TableView fx:id="table" editable="true" onMouseClicked="#handleRowSelect" prefHeight="544.0" prefWidth="489.0">
                <columns>
                   <TableColumn fx:id="objetIdCol" prefWidth="75.0" text="Objet ID" />
                   <TableColumn fx:id="selectCol" prefWidth="75.0" text="Select" />

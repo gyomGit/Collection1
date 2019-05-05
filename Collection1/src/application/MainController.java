@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
@@ -122,7 +123,10 @@ public class MainController {
 
 	@FXML
 	private TableView<Contact> table;
+	
+	private Contact temp;
 
+	private Date lastClickTime;
 //	@FXML
 //	TableColumn<Contact, Integer> objetIdCol;
 //
@@ -754,6 +758,56 @@ public class MainController {
 		table.setItems(sortedData);
 
 	}
+	
+	@FXML
+	private void handleRowSelect() {
+	    Contact row = table.getSelectionModel().getSelectedItem();
+	    if (row == null) return;
+	    if(row != temp){
+	        temp = row;
+	        lastClickTime = new Date();
+	    } else if(row == temp) {
+	        Date now = new Date();
+	        long diff = now.getTime() - lastClickTime.getTime();
+	        if (diff < 300){ //another click registered in 300 millis
+	        	objetIdField.setText(row.getObjetId().toString());
+	    		identificationField.setText(row.getIdentification());
+	    		prefixeBox.setValue(row.getPrefixeMusee());
+	    		inventaireField.setText(row.getInventaire());
+	    		localisationField.setText(row.getLocalisation());
+//	    	    imv.setImage()(c.getImage());
+
+	    		byte[] getImageInBytes = row.getImage(); // image convert in byte form
+
+	    		try {
+	    			FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
+	    			outputstream.write(getImageInBytes);
+
+	    			Image image = new Image("file:photo.jpg");
+	    			imv.setImage(image);
+	    			imv.setFitWidth(130);
+	    			imv.setFitHeight(130);
+	    			imv.setPreserveRatio(true);
+
+	    			outputstream.close();
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    		
+	    		try {
+	    			FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
+	    			outputstream.write(getImageInBytes);
+
+	    			outputstream.close();
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	        } else {
+	            lastClickTime = new Date();
+	        }
+	    }
+	}
+	
 
 	private boolean validateFields() {
 
