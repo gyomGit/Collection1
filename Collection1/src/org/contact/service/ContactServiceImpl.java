@@ -36,4 +36,14 @@ public class ContactServiceImpl implements ContactService {
 		contactDAO.updateContact(contact);
 	}
 
+	@Override
+	public List<String> listIdentification() {
+		return contactDAO.listIdentification();
+	}
+
+	@Override
+	public List<String> listInventaire() {
+		return contactDAO.listInventaire();
+	}
+
 }

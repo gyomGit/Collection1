@@ -26,7 +26,8 @@ public class ContactDAOImpl implements ContactDAO{
           s.close();
      }
 
-     @Override
+     @SuppressWarnings("unchecked")
+	@Override
      public List<Contact> listContact() {
           List<Contact> list = new ArrayList<>();
           Session s = HibernateUtil.openSession();
@@ -56,4 +57,27 @@ public class ContactDAOImpl implements ContactDAO{
           s.close();
      }
 
+     @SuppressWarnings("unchecked")
+	@Override
+     public List<String> listIdentification() {
+          List<String> listI = new ArrayList<>();
+          Session s = HibernateUtil.openSession();
+          s.beginTransaction();
+          listI = s.createQuery("select identification from Contact").list();
+          s.getTransaction().commit();
+          s.close();
+          return listI;
+     }
+     
+     @SuppressWarnings("unchecked")
+	@Override
+     public List<String> listInventaire() {
+          List<String> listInv = new ArrayList<>();
+          Session s = HibernateUtil.openSession();
+          s.beginTransaction();
+          listInv = s.createQuery("select inventaire from Contact").list();
+          s.getTransaction().commit();
+          s.close();
+          return listInv;
+     }
 }

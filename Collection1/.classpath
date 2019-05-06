@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/commons-compress-1.18-test-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.18-tests.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="lib/controlsfx-8.0.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

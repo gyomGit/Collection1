@@ -27,6 +27,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.contact.entity.Contact;
 import org.contact.entity.HibernateUtil;
+import org.contact.service.ContactService;
+import org.contact.service.ContactServiceImpl;
+import org.controlsfx.control.textfield.TextFields;
 import org.hibernate.Session;
 
 import com.sun.istack.logging.Logger;
@@ -174,8 +177,16 @@ public class MainController {
 	@FXML
 	private void initialize() {
 		prefixeBox.setValue(null);
-		prefixeBox.setItems(prefixeList);
-		
+		prefixeBox.setItems(prefixeList);		
+	}
+	
+	@FXML
+	private void handleAutoComplete() {
+			
+		ContactService contactService = new ContactServiceImpl();
+           
+        TextFields.bindAutoCompletion(searchField, contactService.listIdentification());
+        TextFields.bindAutoCompletion(searchField, contactService.listInventaire());
 	}
 
 	@FXML
@@ -920,5 +931,5 @@ public class MainController {
 	popupwindow.showAndWait();
 	       
 	}
-	
+	 
 }

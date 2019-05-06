@@ -20,5 +20,9 @@ public interface ContactDAO {
 	public void removeContact(Integer id);
 
 	public void updateContact(Contact contact);
+
+	public List<String> listIdentification();
+
+	public List<String> listInventaire();
 	
 }

@@ -23,4 +23,8 @@ public interface ContactService {
 
 	public void updateContact(Contact contact);
 	
+	public List<String> listIdentification();
+	
+	public List<String> listInventaire();
+	
 }
