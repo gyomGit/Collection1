@@ -35,6 +35,7 @@ public class Contact {
     private final StringProperty inventaire = new SimpleStringProperty() ;
     private final StringProperty localisation = new SimpleStringProperty() ;
     private byte[] image;
+    private final StringProperty imageName = new SimpleStringProperty() ;
 
 
 	
@@ -44,7 +45,7 @@ public class Contact {
 	}
 
 	public Contact(Integer objetId,Boolean selected, String identification, String prefixeMusee, String inventaire,
-			String localisation, byte[] image) {
+			String localisation, byte[] image, String imageName) {
 		super();
 		setObjetId(objetId);
 		setSelected(selected);
@@ -53,6 +54,8 @@ public class Contact {
 		setInventaire(inventaire);
 		setLocalisation(localisation);
 		setImage(image);
+		setImageName(imageName);
+		
 	}
 
 	@Id
@@ -115,7 +118,6 @@ public class Contact {
 		this.localisation.set(localisation);
 	}
 	
-
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
@@ -124,6 +126,15 @@ public class Contact {
 	@Column(name = "IMAGE")
 	public byte[] getImage() {
 		return image;
+	}
+	
+	@Column(name = "IMAGENAME")
+	public String getImageName() {
+		return imageName.get();
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName.set(imageName);
 	}
 
 }

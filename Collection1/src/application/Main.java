@@ -76,7 +76,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Contact Manager");
+		primaryStage.setTitle("Collection");
 		Parent root = FXMLLoader.load(getClass().getResource("/application/Main2.fxml"));
 		BorderPane border = new BorderPane();
 		
@@ -87,7 +87,7 @@ public class Main extends Application {
 		 VBox rootBox = new VBox();
 		 border.setCenter(rootBox);
 		
-		Scene scene = new Scene(root, 800, 650);
+		Scene scene = new Scene(root, 1200, 700);
 		imv = new ImageView();
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		border.setTop(createButtonBox());

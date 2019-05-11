@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -77,13 +78,22 @@ public class MainController {
 	private ListView<String> listView;
 
 	@FXML
+	private Button loadDatabase;
+	
+	@FXML
 	private Button addNew;
 
 	@FXML
-	private Button update;
+	private Button updateFields;
+	
+	@FXML
+	private Button updateImage;
 
 	@FXML
-	private Button delete;
+	private Button deleteIndex;
+	
+	@FXML
+	private Button deleteRow;
 
 	@FXML
 	private Button back;
@@ -122,6 +132,9 @@ public class MainController {
 	@FXML
 	private TextField searchField;
 
+	@FXML
+	private TextField imageNameField;
+	
 	// --------------------------------------
 
 	@FXML
@@ -165,6 +178,8 @@ public class MainController {
 	private static int index;
 
 	private byte[] imageBytes;
+	
+	private byte[] imageByteUpdate;
 
 	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
 			"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
@@ -174,6 +189,31 @@ public class MainController {
 
 //	private TableColumn<Contact, Integer> active;
 
+	private void enableButtons(){
+		
+//		update.setDisable(false);
+		back.setDisable(false);
+		backward.setDisable(false);
+		forward.setDisable(false);
+		upfront.setDisable(false);
+	}
+	
+	private void disableButtons(){
+		
+//		update.setDisable(true);
+    	back.setDisable(true);
+		backward.setDisable(true);
+		forward.setDisable(true);
+		upfront.setDisable(true);
+	}
+	
+	@FXML
+	private void loadDatabase() {
+		
+		populate();
+		
+	}
+	
 	@FXML
 	private void initialize() {
 		prefixeBox.setValue(null);
@@ -199,7 +239,9 @@ public class MainController {
 
 		File file = fileChooser.showOpenDialog(null);
 
-		listView.getItems().add(file.getName());
+//		listView.getItems().add(file.getName());
+		
+		imageNameField.setText(file.getName());
 		String imageURL = (file.toURI().toString());
 		Image image = new Image(imageURL);
 //	            	Alternative of the 2 lines just above:
@@ -290,8 +332,6 @@ public class MainController {
 							FileOutputStream outputstream = new FileOutputStream(new File("photo2.jpg"));
 
 							outputstream.write(getImageInBytes2);
-
-//							Image image = new Image("file:photo2.jpg");
 
 							outputstream.close();
 
@@ -464,15 +504,24 @@ public class MainController {
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
+		c.setImageName(imageNameField.getText());
 
 		if (validateFields()) {
 			controller.addContact(c);
+						
 			populate();
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Objet '" + c.getIdentification() + "' ajouté");
+			alert.showAndWait();
+			
 		}
 	}
 
 	@FXML
-	public void handleUpdate(ActionEvent event) {
+	public void handleUpdateFields(ActionEvent event) {
 
 		Contact c = new Contact();
 
@@ -481,26 +530,103 @@ public class MainController {
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
-		c.setImage(imageBytes);
+		
+		try {
+		      BufferedImage bImage = ImageIO.read(new File("photo.jpg"));
+		      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		      ImageIO.write(bImage, "jpg", bos );
+		      byte [] data = bos.toByteArray();
+		      imageByteUpdate = data;
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+		c.setImage(imageByteUpdate);
+//		c.setImage(imageBytes);
+		c.setImageName(imageNameField.getText());
 
 		if (validateFields()) {
 			controller.updateContact(c);
-			System.out.println("update button clicked");
+			
 			populate();
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Objet '"+ c.getObjetId() + " '"+ c.getIdentification() +"' mis à jour");
+			alert.showAndWait();
 		}
+		
 	}
+	
+	@FXML
+	public void handleUpdateImage(ActionEvent event) {
+
+		Contact c = new Contact();
+
+		c.setObjetId(Integer.parseInt(objetIdField.getText()));
+		c.setIdentification(identificationField.getText());
+		c.setPrefixeMusee(prefixeBox.getValue());
+		c.setInventaire(inventaireField.getText());
+		c.setLocalisation(localisationField.getText());	
+		c.setImage(imageBytes);
+		c.setImageName(imageNameField.getText());
+
+		if (validateFields()) {
+			controller.updateContact(c);
+			
+			populate();
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Objet '"+ c.getObjetId() + " '"+ c.getIdentification() +"' mis à jour");
+			alert.showAndWait();
+		}
+		
+	}
+	
+	
 
 	@FXML
-	public void handleDelete(ActionEvent event) {
+	public void handleDeleteIndex(ActionEvent event) {
 
+		Contact c = (Contact) controller.getContactList().get(index);
+		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Suprimer objet?");
-
+		alert.setHeaderText("Suprimer objet n°"+ c.getObjetId() + " '" + c.getIdentification() + "' ?");
+		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			Contact c = (Contact) controller.getContactList().get(index);
+			
 			controller.removeContact(c.getObjetId());
+			populate();// ... user chose OK
+		} else {
+//			populate(); // ... user chose CANCEL or closed the dialog
+		}
+
+//		Contact c = (Contact) controller.getContactList().get(index);
+//		controller.removeContact(c.getObjetId());
+//
+//		populate();
+	}
+	
+	@FXML
+	public void handleDeleteRow(ActionEvent event) {
+
+		Contact row = table.getSelectionModel().getSelectedItem();
+//		Contact c = (Contact) controller.getContactList().get(index);
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText("Suprimer objet n°"+ row.getObjetId() + " '" + row.getIdentification() + "' ?");
+		populate();
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			
+			controller.removeContact(row.getObjetId());
 			populate();// ... user chose OK
 		} else {
 //			populate(); // ... user chose CANCEL or closed the dialog
@@ -549,6 +675,9 @@ public class MainController {
 
 		populateForm(index);
 		populateTable();
+		enableButtons();
+		deleteRow.setDisable(true);
+		deleteIndex.setDisable(false);
 
 	}
 
@@ -563,6 +692,8 @@ public class MainController {
 		prefixeBox.setValue(c.getPrefixeMusee());
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
+		imageNameField.setText(c.getImageName());
+//		listView.
 //	    imv.setImage()(c.getImage());
 
 		byte[] getImageInBytes = c.getImage(); // image convert in byte form
@@ -597,52 +728,33 @@ public class MainController {
 	private void populateTable() {
 		table.getItems().clear();
 		listView.getItems().clear();
+//		imageNameField.clear();
+//		imv.setImage(null);
 		table.setItems(controller.getContactList());
+		
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
+		
 		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
 		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
+		
 		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
 		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("prefixeMusee"));
+		
 		TableColumn<Contact, String> inventaireCol = new TableColumn<Contact, String>("Inventaire");
 		inventaireCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("inventaire"));
+		
 		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
 		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
+		TableColumn<Contact, String> imageNameCol = new TableColumn<Contact, String>("Image Name");
+		imageNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("imageName"));
+		
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
-
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
 
-//		imageCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
-//			public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
-//	       //Set up the ImageView
-// 
-//
-//        
-//        
-//        //Set up the Table
-//        TableCell<Contact,byte[]> cell = new TableCell<Contact,byte[]>(){
-//               
-//        	@Override
-//        	public void updateItem(byte[] item, boolean empty) {                        
-//                if(item == null)
-//                return;
-//                
-//					super.updateItem(item, empty);
-//					if (!isEmpty()) {
-//						final Contact c = getTableView().getItems().get(getIndex());
-//						ImageView imv2 = new ImageView();
-//						
-//						setGraphic(imv2);
-//						
-//                }
-//            }
-//        };
-//
-//        // Attach the imageview to the cell
-//        cell.setAlignment(Pos.CENTER);
-//        	return cell;
-//		}});
+		
+		
 		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("");
 		selectCol.setMinWidth(50);
 		selectCol.setGraphic(getSelectAllCheckBox());
@@ -673,7 +785,7 @@ public class MainController {
 		});
 
 		table.getColumns().setAll(objetIdCol, selectCol, identificationCol, prefixeMuseeCol, inventaireCol,
-				localisationCol, imageCol);
+				localisationCol, imageCol, imageNameCol);
 
 // -------------------------------------------------------------------------------------------------------------		
 
@@ -767,6 +879,9 @@ public class MainController {
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 
 		table.setItems(sortedData);
+		deleteIndex.setDisable(true);
+		deleteRow.setDisable(false);
+    	disableButtons();
 
 	}
 	
@@ -781,12 +896,18 @@ public class MainController {
 	        Date now = new Date();
 	        long diff = now.getTime() - lastClickTime.getTime();
 	        if (diff < 300){ //another click registered in 300 millis
+
+	    		deleteIndex.setDisable(true);
+	    		deleteRow.setDisable(false);
+	        	disableButtons();
+	        	
 	        	objetIdField.setText(row.getObjetId().toString());
 	    		identificationField.setText(row.getIdentification());
 	    		prefixeBox.setValue(row.getPrefixeMusee());
 	    		inventaireField.setText(row.getInventaire());
 	    		localisationField.setText(row.getLocalisation());
-//	    	    imv.setImage()(c.getImage());
+	    		imageNameField.setText(row.getImageName());
+
 
 	    		byte[] getImageInBytes = row.getImage(); // image convert in byte form
 
@@ -821,6 +942,7 @@ public class MainController {
 	
 
 	private boolean validateFields() {
+		
 
 		if (identificationField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -854,11 +976,11 @@ public class MainController {
 			alert.setContentText("Le champ Localisation est vide");
 			alert.showAndWait();
 			return false;
-		} else if (listView.getItems().isEmpty()) {
+		} else if (imageNameField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Validate fields");
 			alert.setHeaderText(null);
-			alert.setContentText("La photo n'a pas été sélectionnée pour cet objet");
+			alert.setContentText("Le titre de la photo n'a pas été sélectionnée pour cet objet");
 			alert.showAndWait();
 			return false;
 		}
