@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -24,12 +23,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
+                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleExport" text="Export" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleAdd" text="Add New" />
+                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleUpdateImage" text="Update Image" />
+                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleUpdateFields" text="Update Fields" />
+              <MenuItem disable="true" mnemonicParsing="false" onAction="#handleDeleteRow" text="Delete Row" />
+                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleDeleteIndex" text="Delete Index" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -51,35 +56,53 @@
                   <Font name="Avenir Book" size="29.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="-2.0" layoutY="88.0" prefHeight="529.0" prefWidth="167.0">
+            <AnchorPane layoutX="-2.0" layoutY="88.0" prefHeight="568.0" prefWidth="167.0">
                <children>
-                  <Label layoutX="21.0" layoutY="-10.0" prefHeight="49.0" prefWidth="121.0" text="Application Musée" textFill="WHITE">
+                  <Label layoutX="5.0" layoutY="-10.0" prefHeight="49.0" prefWidth="121.0" text="Application Musée" textFill="WHITE">
                      <font>
-                        <Font name="Avenir Book" size="13.0" />
+                        <Font name="Avenir Book" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="16.0" layoutY="31.0" text="Recherche:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="searchField" layoutX="15.0" layoutY="50.0" onKeyReleased="#handleAutoComplete" onKeyTyped="#handleSearch" prefHeight="27.0" prefWidth="137.0" promptText="Search" />
-                  <TextField fx:id="objetIdField" editable="false" layoutX="14.0" layoutY="97.0" prefHeight="27.0" prefWidth="137.0" promptText="Objet ID">
+                  <TextField fx:id="objetIdField" editable="false" layoutX="14.0" layoutY="64.0" prefHeight="27.0" prefWidth="137.0" promptText="Objet ID">
                      <tooltip>
                         <Tooltip text="This field is automatically generated hence not editable" wrapText="true" />
                      </tooltip></TextField>
-                  <TextField fx:id="identificationField" layoutX="13.0" layoutY="132.0" prefHeight="27.0" prefWidth="137.0" promptText="Identification" />
-                  <Label layoutX="14.0" layoutY="168.0" prefWidth="138.0" text="Préfixe Musée:" textFill="WHITE">
+                  <TextField fx:id="identificationField" layoutX="13.0" layoutY="118.0" onKeyPressed="#enableDeleteAdd" prefHeight="27.0" prefWidth="137.0" promptText="Identification" />
+                  <Label layoutX="13.0" layoutY="156.0" prefWidth="138.0" text="Préfixe Musée:" textFill="WHITE">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="prefixeBox" layoutX="13.0" layoutY="185.0" prefHeight="27.0" prefWidth="138.0" />
-                  <TextField fx:id="inventaireField" layoutX="15.0" layoutY="220.0" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire" />
-                  <TextField fx:id="localisationField" layoutX="15.0" layoutY="254.0" prefHeight="27.0" prefWidth="137.0" promptText="Localisation" />
-                  <Button fx:id="browseImage" layoutX="12.0" layoutY="325.0" mnemonicParsing="false" onAction="#handle" text="Upload Image" />
-                  <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="14.0" layoutY="357.0" onDragDetected="#handle" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
-                  <TextField fx:id="imageNameField" editable="false" layoutX="12.0" layoutY="490.0" prefHeight="27.0" prefWidth="138.0" promptText="Titre de la photo" />
+                  <ChoiceBox fx:id="prefixeBox" layoutX="13.0" layoutY="173.0" onKeyPressed="#enableDeleteAdd" prefHeight="27.0" prefWidth="138.0" />
+                  <TextField fx:id="inventaireField" layoutX="15.0" layoutY="227.0" onKeyPressed="#enableDeleteAdd" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire" />
+                  <TextField fx:id="localisationField" layoutX="15.0" layoutY="278.0" onKeyPressed="#enableDeleteAdd" prefHeight="27.0" prefWidth="137.0" promptText="Localisation" />
+                  <Label layoutX="14.0" layoutY="211.0" prefWidth="138.0" text="N° Inventaire:" textFill="WHITE">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="102.0" prefWidth="138.0" text="Identification" textFill="WHITE">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="262.0" prefWidth="138.0" text="Localisation:" textFill="WHITE">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="48.0" prefWidth="138.0" text="Objet ID:" textFill="WHITE">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="16.0" layoutY="330.0" onDragDetected="#handle" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="browseImage" layoutX="19.0" layoutY="466.0" mnemonicParsing="false" onAction="#handle" onMouseReleased="#enableUploagImage" text="Upload Image" />
+                  <Label layoutX="14.0" layoutY="316.0" prefWidth="138.0" text="Image:" textFill="WHITE">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>
@@ -90,9 +113,16 @@
          <children>
             <Button fx:id="exportButton" disable="true" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export" />
             <Button fx:id="importButton" mnemonicParsing="false" onAction="#handleImport" prefHeight="150.0" prefWidth="116.0" text="Import" />
-            <Button fx:id="addNew" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
-            <Button fx:id="updateFields" mnemonicParsing="false" onAction="#handleUpdateFields" prefHeight="150.0" prefWidth="116.0" text="Update Fields" textAlignment="CENTER" />
-            <Button fx:id="updateImage" mnemonicParsing="false" onAction="#handleUpdateImage" prefHeight="150.0" prefWidth="116.0" text="Update Image" textAlignment="CENTER" />
+            <Button fx:id="addNew" disable="true" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER" />
+            <Button fx:id="updateImage" disable="true" mnemonicParsing="false" onAction="#handleUpdateImage" prefHeight="150.0" prefWidth="116.0" text="Update Image" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="updateFields" disable="true" mnemonicParsing="false" onAction="#handleUpdateFields" prefHeight="150.0" prefWidth="116.0" text="Update Fields" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
             <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#handleDeleteRow" prefHeight="150.0" prefWidth="116.0" text="Delete Row" textAlignment="JUSTIFY" />
             <Button fx:id="deleteIndex" mnemonicParsing="false" onAction="#handleDeleteIndex" prefHeight="150.0" prefWidth="116.0" text="Delete Index" textAlignment="JUSTIFY" />
             <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="116.0" rotate="90.0" text="l&lt;" textAlignment="CENTER" />
@@ -103,12 +133,27 @@
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFC719#FFC719;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="5.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true" />
-            <ListView fx:id="listView" prefHeight="204.0" prefWidth="163.0" />
-            <Button fx:id="loadDatabase" mnemonicParsing="false" onAction="#loadDatabase" prefHeight="27.0" prefWidth="2000.0" text="Load Database" />
-            <TableView fx:id="table" editable="true" onMouseClicked="#handleRowSelect" prefHeight="544.0" prefWidth="489.0">
+            <Label prefHeight="14.0" prefWidth="76.0" text="  Recherche:">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <TextField fx:id="searchField" maxWidth="300.0" onKeyReleased="#handleAutoComplete" onKeyTyped="#handleSearch" prefWidth="300.0" promptText="Search" />
+            <AnchorPane prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
+            <Label text="  Titre de l'image:">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <TextField fx:id="imageNameField" editable="false" maxWidth="500.0" prefWidth="400.0" promptText="Titre de l'image" />
+            <AnchorPane prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
+            <Button fx:id="loadDatabase" blendMode="MULTIPLY" mnemonicParsing="false" onAction="#loadDatabase" opacity="0.63" prefWidth="2000.0" text="Load Database">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Button>
+            <TableView fx:id="table" editable="true" onMouseClicked="#handleRowSelect" prefHeight="484.0" prefWidth="637.0">
                <columns>
                   <TableColumn fx:id="objetIdCol" prefWidth="75.0" text="Objet ID" />
                   <TableColumn fx:id="selectCol" prefWidth="75.0" text="Select" />

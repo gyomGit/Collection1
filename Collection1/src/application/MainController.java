@@ -53,7 +53,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -74,8 +73,8 @@ public class MainController {
 	@FXML
 	private Button browseImage;
 
-	@FXML
-	private ListView<String> listView;
+//	@FXML
+//	private ListView<String> listView;
 
 	@FXML
 	private Button loadDatabase;
@@ -208,6 +207,21 @@ public class MainController {
 	}
 	
 	@FXML
+	private void enableDeleteAdd(){
+		
+		addNew.setDisable(false);
+		updateFields.setDisable(false);
+	}
+	
+	@FXML
+	private void enableUploagImage(){
+		
+		updateImage.setDisable(false);
+
+	}
+	
+	
+	@FXML
 	private void loadDatabase() {
 		
 		populate();
@@ -234,11 +248,13 @@ public class MainController {
 
 		FileChooser fileChooser = new FileChooser();
 
-		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image files", "*.png", "*.jpg", "*.gif"),
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image files", "*.jpg"),
 				new ExtensionFilter("All files", "*.*"));
 
 		File file = fileChooser.showOpenDialog(null);
 
+		if (file != null) {
+		
 //		listView.getItems().add(file.getName());
 		
 		imageNameField.setText(file.getName());
@@ -260,6 +276,10 @@ public class MainController {
 
 		imageBytes = imageInBytes;
 
+		}
+		else {
+			return;
+		}
 	}
 
 	@SuppressWarnings("resource")
@@ -514,7 +534,7 @@ public class MainController {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
-			alert.setContentText("Objet '" + c.getIdentification() + "' ajouté");
+			alert.setContentText("L'objet '" + c.getIdentification() + "' a été ajouté à la base de données il porte actuellement le n° "+ c.getObjetId()+ " au sein de cette base." );
 			alert.showAndWait();
 			
 		}
@@ -596,7 +616,7 @@ public class MainController {
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Suprimer objet n°"+ c.getObjetId() + " '" + c.getIdentification() + "' ?");
+		alert.setHeaderText("Voulez-vous vraiment suprimer l'objet n°"+ c.getObjetId() + " '" + c.getIdentification() + "' ?");
 		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
@@ -621,21 +641,24 @@ public class MainController {
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Suprimer objet n°"+ row.getObjetId() + " '" + row.getIdentification() + "' ?");
-		populate();
+		alert.setHeaderText("Voulez-vous vraiment suprimer \n l'objet n°"+ row.getObjetId() + " '" + row.getIdentification() + "' ?");
+//		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			
 			controller.removeContact(row.getObjetId());
 			populate();// ... user chose OK
+			
+			Alert alertDeleted = new Alert(AlertType.INFORMATION);
+			alertDeleted.setTitle("Information Dialog");
+			alertDeleted.setHeaderText(null);
+			alertDeleted.setContentText("L'objet '"+ row.getObjetId() + " '"+ row.getIdentification() +"' \n a été suprimé de la base de données");
+			alertDeleted.showAndWait();
+			
 		} else {
 //			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
-//		Contact c = (Contact) controller.getContactList().get(index);
-//		controller.removeContact(c.getObjetId());
-//
-//		populate();
 	}
 
 	@FXML
@@ -678,6 +701,9 @@ public class MainController {
 		enableButtons();
 		deleteRow.setDisable(true);
 		deleteIndex.setDisable(false);
+		addNew.setDisable(true);
+		updateFields.setDisable(true);
+		updateImage.setDisable(true);
 
 	}
 
@@ -727,7 +753,7 @@ public class MainController {
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
 		table.getItems().clear();
-		listView.getItems().clear();
+//		listView.getItems().clear();
 //		imageNameField.clear();
 //		imv.setImage(null);
 		table.setItems(controller.getContactList());
@@ -747,7 +773,7 @@ public class MainController {
 		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
 		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
-		TableColumn<Contact, String> imageNameCol = new TableColumn<Contact, String>("Image Name");
+		TableColumn<Contact, String> imageNameCol = new TableColumn<Contact, String>("Titre de l'image");
 		imageNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("imageName"));
 		
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
@@ -900,6 +926,8 @@ public class MainController {
 	    		deleteIndex.setDisable(true);
 	    		deleteRow.setDisable(false);
 	        	disableButtons();
+	        	updateImage.setDisable(true);
+	        	updateFields.setDisable(true);
 	        	
 	        	objetIdField.setText(row.getObjetId().toString());
 	    		identificationField.setText(row.getIdentification());
