@@ -73,24 +73,21 @@ public class MainController {
 	@FXML
 	private Button browseImage;
 
-//	@FXML
-//	private ListView<String> listView;
-
 	@FXML
 	private Button loadDatabase;
-	
+
 	@FXML
 	private Button addNew;
 
 	@FXML
 	private Button updateFields;
-	
+
 	@FXML
 	private Button updateImage;
 
 	@FXML
 	private Button deleteIndex;
-	
+
 	@FXML
 	private Button deleteRow;
 
@@ -133,51 +130,27 @@ public class MainController {
 
 	@FXML
 	private TextField imageNameField;
-	
+
 	// --------------------------------------
 
 	@FXML
 	private TableView<Contact> table;
-	
+
 	private Contact temp;
 
 	private Date lastClickTime;
-//	@FXML
-//	TableColumn<Contact, Integer> objetIdCol;
-//
-//	@FXML
-//	TableColumn<Contact, CheckBox> selectCol;
-//
-//	@FXML
-//	TableColumn<Contact, String> identificationCol;
-//
-//	@FXML
-//	TableColumn<Contact, String> prefixeMuseeCol;
-//
-//	@FXML
-//	TableColumn<Contact, String> inventaireCol;
-//
-//	@FXML
-//	TableColumn<Contact, String> localisationCol;
-//
-//	@FXML
-//	TableColumn<Contact, byte[]> imageCol;
-
-	// --------------------------------------
-
-//	final ObservableList<Contact> data = FXCollections.observableArrayList();
 
 	// -----------------------------------------
 	private ContactController controller = new ContactController();
 
 	@FXML
 	private ImageView imv;
-	
+
 	@FXML
 	private static int index;
 
 	private byte[] imageBytes;
-	
+
 	private byte[] imageByteUpdate;
 
 	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
@@ -188,59 +161,68 @@ public class MainController {
 
 //	private TableColumn<Contact, Integer> active;
 
-	private void enableButtons(){
-		
+	private void enableButtons() {
+
 //		update.setDisable(false);
 		back.setDisable(false);
 		backward.setDisable(false);
 		forward.setDisable(false);
 		upfront.setDisable(false);
 	}
-	
-	private void disableButtons(){
-		
+
+	private void disableButtons() {
+
 //		update.setDisable(true);
-    	back.setDisable(true);
+		back.setDisable(true);
 		backward.setDisable(true);
 		forward.setDisable(true);
 		upfront.setDisable(true);
 	}
-	
+
 	@FXML
-	private void enableDeleteAdd(){
-		
+	private void enableDisableFiels() {
+
 		addNew.setDisable(false);
 		updateFields.setDisable(false);
+		updateImage.setDisable(true);
 	}
-	
-	@FXML
-	private void enableUploagImage(){
-		
-		updateImage.setDisable(false);
 
+	@FXML
+	private void enableDisableImage() {
+
+		addNew.setDisable(false);
+		updateFields.setDisable(true);
+		updateImage.setDisable(false);
 	}
-	
-	
+
 	@FXML
 	private void loadDatabase() {
-		
+
 		populate();
-		
+
 	}
-	
+
 	@FXML
 	private void initialize() {
-		prefixeBox.setValue(null);
-		prefixeBox.setItems(prefixeList);		
+
+//		prefixeBox.setValue(null);
+		prefixeBox.setItems(prefixeList);
+//		populate();
+		imageNameField.clear();
+		imv.setImage(null);
+		identificationField.clear();
+		inventaireField.clear();
+		localisationField.clear();
+		prefixeBox.setValue("");
 	}
-	
+
 	@FXML
 	private void handleAutoComplete() {
-			
+
 		ContactService contactService = new ContactServiceImpl();
-           
-        TextFields.bindAutoCompletion(searchField, contactService.listIdentification());
-        TextFields.bindAutoCompletion(searchField, contactService.listInventaire());
+
+		TextFields.bindAutoCompletion(searchField, contactService.listIdentification());
+		TextFields.bindAutoCompletion(searchField, contactService.listInventaire());
 	}
 
 	@FXML
@@ -254,30 +236,29 @@ public class MainController {
 		File file = fileChooser.showOpenDialog(null);
 
 		if (file != null) {
-		
+
 //		listView.getItems().add(file.getName());
-		
-		imageNameField.setText(file.getName());
-		String imageURL = (file.toURI().toString());
-		Image image = new Image(imageURL);
+
+			imageNameField.setText(file.getName());
+			String imageURL = (file.toURI().toString());
+			Image image = new Image(imageURL);
 //	            	Alternative of the 2 lines just above:
 //	                BufferedImage bufferedImage = ImageIO.read(file);
 //	                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
 
-		imv.setImage(image);
-		imv.setFitWidth(130);
-		imv.setFitHeight(130);
-		imv.setPreserveRatio(true);
+			imv.setImage(image);
+			imv.setFitWidth(130);
+			imv.setFitHeight(130);
+			imv.setPreserveRatio(true);
 
-		byte[] imageInBytes = new byte[(int) file.length()]; // image convert in byte form
-		FileInputStream inputStream = new FileInputStream(file); // input stream object create to read the file
-		inputStream.read(imageInBytes); // here inputstream object read the file
-		inputStream.close();
+			byte[] imageInBytes = new byte[(int) file.length()]; // image convert in byte form
+			FileInputStream inputStream = new FileInputStream(file); // input stream object create to read the file
+			inputStream.read(imageInBytes); // here inputstream object read the file
+			inputStream.close();
 
-		imageBytes = imageInBytes;
+			imageBytes = imageInBytes;
 
-		}
-		else {
+		} else {
 			return;
 		}
 	}
@@ -360,12 +341,12 @@ public class MainController {
 						}
 
 						// resize this image before adding it to this workbook:
-						
+
 						BufferedImage originalImage = ImageIO.read(new File("photo2.jpg"));
-						int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-							
+						int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+
 						BufferedImage resizeImageJpg = resizeImage(originalImage, type, 50, 50);
-						ImageIO.write(resizeImageJpg, "jpg", new File("photo3.jpg")); 
+						ImageIO.write(resizeImageJpg, "jpg", new File("photo3.jpg"));
 
 						// add picture data to this workbook.
 						InputStream is = new FileInputStream("photo3.jpg");
@@ -526,18 +507,34 @@ public class MainController {
 		c.setImage(imageBytes);
 		c.setImageName(imageNameField.getText());
 
-		if (validateFields()) {
-			controller.addContact(c);
-						
-			populate();
-			
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("L'objet '" + c.getIdentification() + "' a été ajouté à la base de données il porte actuellement le n° "+ c.getObjetId()+ " au sein de cette base." );
-			alert.showAndWait();
-			
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText(
+				"Voulez-vous vraiment ajouter l'objet nommé '" + c.getIdentification() + "' à la base de données?");
+
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			if (validateFields()) {
+				controller.addContact(c);
+
+				populate();
+
+				Alert alert2 = new Alert(AlertType.INFORMATION);
+				alert2.setTitle("Information Dialog");
+				alert2.setHeaderText(null);
+				alert2.setContentText("L'objet '" + c.getIdentification()
+						+ "' a été ajouté à la base de données il porte actuellement le n° " + c.getObjetId()
+						+ " au sein de cette base.");
+				alert2.showAndWait();
+
+			}
+			updateFields.setDisable(true);
+
+		} else {
+//			populate(); // ... user chose CANCEL or closed the dialog
 		}
+
 	}
 
 	@FXML
@@ -550,36 +547,37 @@ public class MainController {
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
-		
+
 		try {
-		      BufferedImage bImage = ImageIO.read(new File("photo.jpg"));
-		      ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		      ImageIO.write(bImage, "jpg", bos );
-		      byte [] data = bos.toByteArray();
-		      imageByteUpdate = data;
-		
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-		
+
+			BufferedImage bImage = ImageIO.read(new File("photo.jpg"));
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ImageIO.write(bImage, "jpg", bos);
+			byte[] data = bos.toByteArray();
+			imageByteUpdate = data;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		c.setImage(imageByteUpdate);
-//		c.setImage(imageBytes);
+
 		c.setImageName(imageNameField.getText());
 
 		if (validateFields()) {
 			controller.updateContact(c);
-			
+
 			populate();
-			
+
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
-			alert.setContentText("Objet '"+ c.getObjetId() + " '"+ c.getIdentification() +"' mis à jour");
+			alert.setContentText("Objet '" + c.getObjetId() + " '" + c.getIdentification() + "' mis à jour");
 			alert.showAndWait();
 		}
-		
+
 	}
-	
+
 	@FXML
 	public void handleUpdateImage(ActionEvent event) {
 
@@ -589,38 +587,54 @@ public class MainController {
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
-		c.setLocalisation(localisationField.getText());	
-		c.setImage(imageBytes);
+		c.setLocalisation(localisationField.getText());
+		if (imageBytes != null) {
+			c.setImage(imageBytes);
+		} else {
+			try {
+
+				BufferedImage bImage = ImageIO.read(new File("photo.jpg"));
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write(bImage, "jpg", bos);
+				byte[] data = bos.toByteArray();
+				imageByteUpdate = data;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			c.setImage(imageByteUpdate);
+		}
+
 		c.setImageName(imageNameField.getText());
 
 		if (validateFields()) {
 			controller.updateContact(c);
-			
+
 			populate();
-			
+
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
-			alert.setContentText("Objet '"+ c.getObjetId() + " '"+ c.getIdentification() +"' mis à jour");
+			alert.setContentText("Objet '" + c.getObjetId() + " '" + c.getIdentification() + "' mis à jour");
 			alert.showAndWait();
 		}
-		
+
 	}
-	
-	
 
 	@FXML
 	public void handleDeleteIndex(ActionEvent event) {
 
 		Contact c = (Contact) controller.getContactList().get(index);
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Voulez-vous vraiment suprimer l'objet n°"+ c.getObjetId() + " '" + c.getIdentification() + "' ?");
+		alert.setHeaderText(
+				"Voulez-vous vraiment suprimer l'objet n°" + c.getObjetId() + " '" + c.getIdentification() + "' ?");
 		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			
+
 			controller.removeContact(c.getObjetId());
 			populate();// ... user chose OK
 		} else {
@@ -632,33 +646,36 @@ public class MainController {
 //
 //		populate();
 	}
-	
+
 	@FXML
 	public void handleDeleteRow(ActionEvent event) {
 
 		Contact row = table.getSelectionModel().getSelectedItem();
-//		Contact c = (Contact) controller.getContactList().get(index);
-		
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Voulez-vous vraiment suprimer \n l'objet n°"+ row.getObjetId() + " '" + row.getIdentification() + "' ?");
-//		populate();
-		java.util.Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
-			
-			controller.removeContact(row.getObjetId());
-			populate();// ... user chose OK
-			
-			Alert alertDeleted = new Alert(AlertType.INFORMATION);
-			alertDeleted.setTitle("Information Dialog");
-			alertDeleted.setHeaderText(null);
-			alertDeleted.setContentText("L'objet '"+ row.getObjetId() + " '"+ row.getIdentification() +"' \n a été suprimé de la base de données");
-			alertDeleted.showAndWait();
-			
-		} else {
-//			populate(); // ... user chose CANCEL or closed the dialog
-		}
 
+		if (row != null) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmation Dialog");
+			alert.setHeaderText("Voulez-vous vraiment suprimer \n l'objet n°" + row.getObjetId() + " '"
+					+ row.getIdentification() + "' ?");
+
+			java.util.Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+
+				controller.removeContact(row.getObjetId());
+				populate();// ... user chose OK
+
+				Alert alertDeleted = new Alert(AlertType.INFORMATION);
+				alertDeleted.setTitle("Information Dialog");
+				alertDeleted.setHeaderText(null);
+				alertDeleted.setContentText("L'objet '" + row.getObjetId() + " '" + row.getIdentification()
+						+ "' \n a été suprimé de la base de données");
+				alertDeleted.showAndWait();
+
+			} else {
+				// ... user chose CANCEL or closed the dialog
+			}
+		} else
+			return;
 	}
 
 	@FXML
@@ -702,8 +719,10 @@ public class MainController {
 		deleteRow.setDisable(true);
 		deleteIndex.setDisable(false);
 		addNew.setDisable(true);
-		updateFields.setDisable(true);
-		updateImage.setDisable(true);
+		browseImage.setDisable(false);
+		importButton.setDisable(false);
+		deleteRow.setDisable(false);
+		deleteIndex.setDisable(false);
 
 	}
 
@@ -738,7 +757,7 @@ public class MainController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
 			outputstream.write(getImageInBytes);
@@ -747,7 +766,7 @@ public class MainController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -757,30 +776,28 @@ public class MainController {
 //		imageNameField.clear();
 //		imv.setImage(null);
 		table.setItems(controller.getContactList());
-		
+
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
-		
+
 		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
 		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
-		
+
 		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
 		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("prefixeMusee"));
-		
+
 		TableColumn<Contact, String> inventaireCol = new TableColumn<Contact, String>("Inventaire");
 		inventaireCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("inventaire"));
-		
+
 		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
 		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
 
 		TableColumn<Contact, String> imageNameCol = new TableColumn<Contact, String>("Titre de l'image");
 		imageNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("imageName"));
-		
+
 		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
 		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
 
-		
-		
 		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("");
 		selectCol.setMinWidth(50);
 		selectCol.setGraphic(getSelectAllCheckBox());
@@ -907,70 +924,66 @@ public class MainController {
 		table.setItems(sortedData);
 		deleteIndex.setDisable(true);
 		deleteRow.setDisable(false);
-    	disableButtons();
+		disableButtons();
 
 	}
-	
+
 	@FXML
 	private void handleRowSelect() {
-	    Contact row = table.getSelectionModel().getSelectedItem();
-	    if (row == null) return;
-	    if(row != temp){
-	        temp = row;
-	        lastClickTime = new Date();
-	    } else if(row == temp) {
-	        Date now = new Date();
-	        long diff = now.getTime() - lastClickTime.getTime();
-	        if (diff < 300){ //another click registered in 300 millis
+		Contact row = table.getSelectionModel().getSelectedItem();
+		if (row == null)
+			return;
+		if (row != temp) {
+			temp = row;
+			lastClickTime = new Date();
+		} else if (row == temp) {
+			Date now = new Date();
+			long diff = now.getTime() - lastClickTime.getTime();
+			if (diff < 300) { // another click registered in 300 millis
 
-	    		deleteIndex.setDisable(true);
-	    		deleteRow.setDisable(false);
-	        	disableButtons();
-	        	updateImage.setDisable(true);
-	        	updateFields.setDisable(true);
-	        	
-	        	objetIdField.setText(row.getObjetId().toString());
-	    		identificationField.setText(row.getIdentification());
-	    		prefixeBox.setValue(row.getPrefixeMusee());
-	    		inventaireField.setText(row.getInventaire());
-	    		localisationField.setText(row.getLocalisation());
-	    		imageNameField.setText(row.getImageName());
+				deleteIndex.setDisable(true);
+				deleteRow.setDisable(false);
+				disableButtons();
 
+				objetIdField.setText(row.getObjetId().toString());
+				identificationField.setText(row.getIdentification());
+				prefixeBox.setValue(row.getPrefixeMusee());
+				inventaireField.setText(row.getInventaire());
+				localisationField.setText(row.getLocalisation());
+				imageNameField.setText(row.getImageName());
 
-	    		byte[] getImageInBytes = row.getImage(); // image convert in byte form
+				byte[] getImageInBytes = row.getImage(); // image convert in byte form
 
-	    		try {
-	    			FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
-	    			outputstream.write(getImageInBytes);
+				try {
+					FileOutputStream outputstream = new FileOutputStream(new File("photo.jpg"));
+					outputstream.write(getImageInBytes);
 
-	    			Image image = new Image("file:photo.jpg");
-	    			imv.setImage(image);
-	    			imv.setFitWidth(130);
-	    			imv.setFitHeight(130);
-	    			imv.setPreserveRatio(true);
+					Image image = new Image("file:photo.jpg");
+					imv.setImage(image);
+					imv.setFitWidth(130);
+					imv.setFitHeight(130);
+					imv.setPreserveRatio(true);
 
-	    			outputstream.close();
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    		}
-	    		
-	    		try {
-	    			FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
-	    			outputstream.write(getImageInBytes);
+					outputstream.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
-	    			outputstream.close();
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    		}
-	        } else {
-	            lastClickTime = new Date();
-	        }
-	    }
+				try {
+					FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
+					outputstream.write(getImageInBytes);
+
+					outputstream.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				lastClickTime = new Date();
+			}
+		}
 	}
-	
 
 	private boolean validateFields() {
-		
 
 		if (identificationField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -1008,7 +1021,8 @@ public class MainController {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Validate fields");
 			alert.setHeaderText(null);
-			alert.setContentText("Le titre de la photo n'a pas été sélectionnée pour cet objet");
+			alert.setContentText(
+					"La photo n'a pas été sélectionnée pour cet objet. \nVeuillez sélectionner une photo.");
 			alert.showAndWait();
 			return false;
 		}
@@ -1017,69 +1031,60 @@ public class MainController {
 
 	}
 
-	private static BufferedImage resizeImage(BufferedImage originalImage, int type,
-	        int newWidth, int newHeight) {
-	        // Make sure the aspect ratio is maintained, so the image is not distorted
-	        double thumbRatio = (double) newWidth / (double) newHeight;
-	        int imageWidth = originalImage.getWidth(null);
-	        int imageHeight = originalImage.getHeight(null);
-	        double aspectRatio = (double) imageWidth / (double) imageHeight;
+	private static BufferedImage resizeImage(BufferedImage originalImage, int type, int newWidth, int newHeight) {
+		// Make sure the aspect ratio is maintained, so the image is not distorted
+		double thumbRatio = (double) newWidth / (double) newHeight;
+		int imageWidth = originalImage.getWidth(null);
+		int imageHeight = originalImage.getHeight(null);
+		double aspectRatio = (double) imageWidth / (double) imageHeight;
 
-	        if (thumbRatio < aspectRatio) {
-	            newHeight = (int) (newWidth / aspectRatio);
-	        } else {
-	            newWidth = (int) (newHeight * aspectRatio);
-	        }
-	        
-	        // Draw the scaled image
+		if (thumbRatio < aspectRatio) {
+			newHeight = (int) (newWidth / aspectRatio);
+		} else {
+			newWidth = (int) (newHeight * aspectRatio);
+		}
+
+		// Draw the scaled image
 		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, type);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
 		g.dispose();
-		
+
 		g.setComposite(AlphaComposite.Src);
 
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-		RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-		RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		return resizedImage;
 	}
-	
-	
+
 	@FXML
-	private void display(){
-		
-		
-	Stage popupwindow = new Stage();
-	      
-	popupwindow.initModality(Modality.APPLICATION_MODAL);
-	popupwindow.setTitle("This is a pop up window");
-	      
+	private void display() {
 
-	VBox layout= new VBox(10);
-	     
+		Stage popupwindow = new Stage();
 
-	Image image2 = new Image("file:photo4.jpg");
-	ImageView imv2 = new ImageView();
-	imv2.setImage(image2);
-	imv2.setFitWidth(900);
-	imv2.setFitHeight(900);
-	imv2.setPreserveRatio(true);
+		popupwindow.initModality(Modality.APPLICATION_MODAL);
+		popupwindow.setTitle(imageNameField.getText());
 
-	      
-	layout.setAlignment(Pos.CENTER);
-	layout.getChildren().addAll(imv2);
-	      
-	Scene scene1= new Scene(layout, 900, 900);
-	      
-	popupwindow.setScene(scene1);
-	      
-	popupwindow.showAndWait();
-	       
+		VBox layout = new VBox(10);
+
+		Image image2 = new Image("file:photo4.jpg");
+		ImageView imv2 = new ImageView();
+		imv2.setImage(image2);
+		imv2.setFitWidth(900);
+		imv2.setFitHeight(900);
+		imv2.setPreserveRatio(true);
+
+		layout.setAlignment(Pos.CENTER);
+		layout.getChildren().addAll(imv2);
+
+		Scene scene1 = new Scene(layout, 900, 900);
+
+		popupwindow.setScene(scene1);
+
+		popupwindow.showAndWait();
+
 	}
-	 
+
 }
