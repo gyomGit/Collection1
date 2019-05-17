@@ -3,9 +3,19 @@
 
 #loadDatabase{
   -fx-background-radius: 22.0;
-
 }
-
+#back{
+  -fx-background-radius: 18.0;
+}
+#backward{
+  -fx-background-radius: 18.0;
+}
+#forward{
+  -fx-background-radius: 18.0;
+}
+#upfront{
+  -fx-background-radius: 18.0;
+}
 
 
 .table-view{

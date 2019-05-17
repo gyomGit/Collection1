@@ -190,9 +190,9 @@ public class MainController {
 	@FXML
 	private void enableDisableImage() {
 
-		addNew.setDisable(false);
+//		addNew.setDisable(false);
 		updateFields.setDisable(true);
-		updateImage.setDisable(false);
+//		updateImage.setDisable(false);
 	}
 
 	@FXML
@@ -237,8 +237,10 @@ public class MainController {
 
 		if (file != null) {
 
-//		listView.getItems().add(file.getName());
 
+			updateImage.setDisable(false);
+			addNew.setDisable(false);
+			
 			imageNameField.setText(file.getName());
 			String imageURL = (file.toURI().toString());
 			Image image = new Image(imageURL);
@@ -259,6 +261,7 @@ public class MainController {
 			imageBytes = imageInBytes;
 
 		} else {
+//			updateImage.setDisable(true);
 			return;
 		}
 	}
@@ -564,27 +567,27 @@ public class MainController {
 		c.setImage(imageByteUpdate);
 
 		c.setImageName(imageNameField.getText());
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Mise à Jour Champ");
-		alert.setHeaderText(
-				"Voulez-vous vraiment mettre à jour le ou les champs de l'objet N° " + c.getObjetId() + " dans la base de données?");
+		alert.setHeaderText("Voulez-vous vraiment mettre à jour le ou les champs de l'objet N° " + c.getObjetId()
+				+ " dans la base de données?");
 
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
-		if (validateFields()) {
-			controller.updateContact(c);
+			if (validateFields()) {
+				controller.updateContact(c);
 
-			populate();
+				populate();
 
-			Alert alert2 = new Alert(AlertType.INFORMATION);
-			alert2.setTitle("Information Mise à Jour Champ");
-			alert2.setHeaderText(null);
-			alert2.setContentText("Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
-			alert2.showAndWait();
-		}
-		
+				Alert alert2 = new Alert(AlertType.INFORMATION);
+				alert2.setTitle("Information Mise à Jour Champ");
+				alert2.setHeaderText(null);
+				alert2.setContentText("Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
+				alert2.showAndWait();
+			}
+
 		} else {
 			return;
 //			populate(); // ... user chose CANCEL or closed the dialog
@@ -621,27 +624,28 @@ public class MainController {
 		}
 
 		c.setImageName(imageNameField.getText());
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Mise à Jour Image");
-		alert.setHeaderText(
-				"Voulez-vous vraiment mettre à jour l'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification() + "'  dans la base de données?");
+		alert.setHeaderText("Voulez-vous vraiment mettre à jour l'image de l'objet N° " + c.getObjetId() + " nommé '"
+				+ c.getIdentification() + "'  dans la base de données?");
 
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
-		if (validateFields()) {
-			controller.updateContact(c);
+			if (validateFields()) {
+				controller.updateContact(c);
 
-			populate();
+				populate();
 
-			Alert alert2 = new Alert(AlertType.INFORMATION);
-			alert2.setTitle("Information Mise à Jour Image");
-			alert2.setHeaderText(null);
-			alert2.setContentText("L'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification() +"' mis à jour avec succès.");
-			alert2.showAndWait();
-		}
-		
+				Alert alert2 = new Alert(AlertType.INFORMATION);
+				alert2.setTitle("Information Mise à Jour Image");
+				alert2.setHeaderText(null);
+				alert2.setContentText("L'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification()
+						+ "' mis à jour avec succès.");
+				alert2.showAndWait();
+			}
+
 		} else {
 			return;
 //			populate(); // ... user chose CANCEL or closed the dialog
@@ -656,23 +660,22 @@ public class MainController {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Supression Index");
-		alert.setHeaderText(
-				"Voulez-vous vraiment suprimer l'objet n°" + c.getObjetId() + " '" 
-						+ c.getIdentification() + "' de la base de données?");
+		alert.setHeaderText("Voulez-vous vraiment suprimer l'objet n°" + c.getObjetId() + " '" + c.getIdentification()
+				+ "' de la base de données?");
 		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
 			controller.removeContact(c.getObjetId());
 			populate();// ... user chose OK
-			
+
 			Alert alertDeleted = new Alert(AlertType.INFORMATION);
-			alertDeleted.setTitle("Information Supression Row");
+			alertDeleted.setTitle("Information Supression Index");
 			alertDeleted.setHeaderText(null);
 			alertDeleted.setContentText("L'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification()
 					+ "' \n a bien été suprimé de la base de données.");
 			alertDeleted.showAndWait();
-			
+
 		} else {
 			return;
 //			populate(); // ... user chose CANCEL or closed the dialog
@@ -963,6 +966,12 @@ public class MainController {
 
 	@FXML
 	private void handleRowSelect() {
+		
+		updateImage.setDisable(true);
+		updateFields.setDisable(true);
+		deleteIndex.setDisable(true);
+		disableButtons();
+		
 		Contact row = table.getSelectionModel().getSelectedItem();
 		if (row == null)
 			return;

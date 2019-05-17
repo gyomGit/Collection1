@@ -208,7 +208,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="l&lt;" textAlignment="CENTER">
+            <Button fx:id="back" disable="true" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="l&lt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité haute tel qu'il figure dans la base de données index 0.">
                      <font>
@@ -216,7 +216,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&lt;&lt;" textAlignment="CENTER">
+            <Button fx:id="backward" disable="true" mnemonicParsing="false" onAction="#handleBackward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&lt;&lt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Remonte un par un les indexes tel qu'ils figurent dans la base de données">
                      <font>
@@ -224,7 +224,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="forward" mnemonicParsing="false" onAction="#handleForward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;&gt;" textAlignment="CENTER">
+            <Button fx:id="forward" disable="true" mnemonicParsing="false" onAction="#handleForward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;&gt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Descent un par un les indexes tel qu'ils figurent dans la base de données.">
                      <font>
@@ -232,7 +232,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="upfront" mnemonicParsing="false" onAction="#handleUpfront" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;l" textAlignment="CENTER">
+            <Button fx:id="upfront" disable="true" mnemonicParsing="false" onAction="#handleUpfront" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;l" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité basse tel qu'il figure dans la base de données à l'index maximum.">
                      <font>
