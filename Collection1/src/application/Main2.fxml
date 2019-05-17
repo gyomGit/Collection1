@@ -146,7 +146,7 @@
       </Pane>
    </left>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFC719#FFC719 #FFC719#FFC719;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="exportButton" disable="true" mnemonicParsing="false" onAction="#handleExport" prefHeight="150.0" prefWidth="116.0" text="Export">
                <tooltip>
@@ -208,7 +208,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="116.0" rotate="90.0" text="l&lt;" textAlignment="CENTER">
+            <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="l&lt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité haute tel qu'il figure dans la base de données index 0.">
                      <font>
@@ -216,7 +216,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="150.0" prefWidth="116.0" rotate="90.0" text="&lt;&lt;" textAlignment="CENTER">
+            <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&lt;&lt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Remonte un par un les indexes tel qu'ils figurent dans la base de données">
                      <font>
@@ -224,7 +224,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="forward" mnemonicParsing="false" onAction="#handleForward" prefHeight="150.0" prefWidth="116.0" rotate="90.0" text="&gt;&gt;" textAlignment="CENTER">
+            <Button fx:id="forward" mnemonicParsing="false" onAction="#handleForward" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;&gt;" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Descent un par un les indexes tel qu'ils figurent dans la base de données.">
                      <font>
@@ -232,7 +232,7 @@
                      </font>
                   </Tooltip>
                </tooltip></Button>
-            <Button fx:id="upfront" mnemonicParsing="false" onAction="#handleUpfront" prefHeight="150.0" prefWidth="116.0" rotate="90.0" text="&gt;l" textAlignment="CENTER">
+            <Button fx:id="upfront" mnemonicParsing="false" onAction="#handleUpfront" prefHeight="150.0" prefWidth="60.0" rotate="90.0" text="&gt;l" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité basse tel qu'il figure dans la base de données à l'index maximum.">
                      <font>
@@ -265,7 +265,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="imageNameField" blendMode="GREEN" editable="false" maxWidth="500.0" prefWidth="400.0" promptText="Titre de l'image">
+            <TextField fx:id="imageNameField" editable="false" maxWidth="500.0" prefWidth="400.0" promptText="Titre de l'image">
                <tooltip>
                   <Tooltip text="Champ non modifiable renseignant le titre du fichier image.">
                      <font>
@@ -274,13 +274,13 @@
                   </Tooltip>
                </tooltip></TextField>
             <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
-            <Button fx:id="loadDatabase" mnemonicParsing="false" onAction="#loadDatabase" opacity="0.81" prefWidth="2000.0" style="-fx-background-color: #FF572F#FF572F;" text="Charger la base de données">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
+            <Button fx:id="loadDatabase" cache="true" mnemonicParsing="false" onAction="#loadDatabase" prefWidth="2000.0" text="Charger la base de données">
                <tooltip>
                   <Tooltip text="Boutton qui rempli le tableau tel qu'il figure dans la base de données." />
-               </tooltip></Button>
+               </tooltip>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
             <TableView fx:id="table" editable="true" onMouseClicked="#handleRowSelect" prefHeight="484.0" prefWidth="637.0" />
          </children>
       </VBox>

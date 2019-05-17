@@ -508,7 +508,7 @@ public class MainController {
 		c.setImageName(imageNameField.getText());
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Dialog");
+		alert.setTitle("Confirmation Ajout Base de Données");
 		alert.setHeaderText(
 				"Voulez-vous vraiment ajouter l'objet nommé '" + c.getIdentification() + "' à la base de données?");
 
@@ -521,7 +521,7 @@ public class MainController {
 				populate();
 
 				Alert alert2 = new Alert(AlertType.INFORMATION);
-				alert2.setTitle("Information Dialog");
+				alert2.setTitle("Information Ajout Base de Données");
 				alert2.setHeaderText(null);
 				alert2.setContentText("L'objet '" + c.getIdentification()
 						+ "' a été ajouté à la base de données il porte actuellement le n° " + c.getObjetId()
@@ -532,6 +532,7 @@ public class MainController {
 			updateFields.setDisable(true);
 
 		} else {
+			return;
 //			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
@@ -563,17 +564,30 @@ public class MainController {
 		c.setImage(imageByteUpdate);
 
 		c.setImageName(imageNameField.getText());
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Mise à Jour Champ");
+		alert.setHeaderText(
+				"Voulez-vous vraiment mettre à jour le ou les champs de l'objet N° " + c.getObjetId() + " dans la base de données?");
+
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
 
 		if (validateFields()) {
 			controller.updateContact(c);
 
 			populate();
 
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Objet '" + c.getObjetId() + " '" + c.getIdentification() + "' mis à jour");
-			alert.showAndWait();
+			Alert alert2 = new Alert(AlertType.INFORMATION);
+			alert2.setTitle("Information Mise à Jour Champ");
+			alert2.setHeaderText(null);
+			alert2.setContentText("Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
+			alert2.showAndWait();
+		}
+		
+		} else {
+			return;
+//			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
 	}
@@ -607,17 +621,30 @@ public class MainController {
 		}
 
 		c.setImageName(imageNameField.getText());
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Mise à Jour Image");
+		alert.setHeaderText(
+				"Voulez-vous vraiment mettre à jour l'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification() + "'  dans la base de données?");
+
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
 
 		if (validateFields()) {
 			controller.updateContact(c);
 
 			populate();
 
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Objet '" + c.getObjetId() + " '" + c.getIdentification() + "' mis à jour");
-			alert.showAndWait();
+			Alert alert2 = new Alert(AlertType.INFORMATION);
+			alert2.setTitle("Information Mise à Jour Image");
+			alert2.setHeaderText(null);
+			alert2.setContentText("L'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification() +"' mis à jour avec succès.");
+			alert2.showAndWait();
+		}
+		
+		} else {
+			return;
+//			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
 	}
@@ -628,23 +655,29 @@ public class MainController {
 		Contact c = (Contact) controller.getContactList().get(index);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Dialog");
+		alert.setTitle("Confirmation Supression Index");
 		alert.setHeaderText(
-				"Voulez-vous vraiment suprimer l'objet n°" + c.getObjetId() + " '" + c.getIdentification() + "' ?");
+				"Voulez-vous vraiment suprimer l'objet n°" + c.getObjetId() + " '" 
+						+ c.getIdentification() + "' de la base de données?");
 		populate();
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
 			controller.removeContact(c.getObjetId());
 			populate();// ... user chose OK
+			
+			Alert alertDeleted = new Alert(AlertType.INFORMATION);
+			alertDeleted.setTitle("Information Supression Row");
+			alertDeleted.setHeaderText(null);
+			alertDeleted.setContentText("L'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification()
+					+ "' \n a bien été suprimé de la base de données.");
+			alertDeleted.showAndWait();
+			
 		} else {
+			return;
 //			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
-//		Contact c = (Contact) controller.getContactList().get(index);
-//		controller.removeContact(c.getObjetId());
-//
-//		populate();
 	}
 
 	@FXML
@@ -654,9 +687,9 @@ public class MainController {
 
 		if (row != null) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Confirmation Dialog");
+			alert.setTitle("Confirmation Supression Row");
 			alert.setHeaderText("Voulez-vous vraiment suprimer \n l'objet n°" + row.getObjetId() + " '"
-					+ row.getIdentification() + "' ?");
+					+ row.getIdentification() + "' de la base de données?");
 
 			java.util.Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
@@ -665,10 +698,10 @@ public class MainController {
 				populate();// ... user chose OK
 
 				Alert alertDeleted = new Alert(AlertType.INFORMATION);
-				alertDeleted.setTitle("Information Dialog");
+				alertDeleted.setTitle("Information Supression Row");
 				alertDeleted.setHeaderText(null);
-				alertDeleted.setContentText("L'objet '" + row.getObjetId() + " '" + row.getIdentification()
-						+ "' \n a été suprimé de la base de données");
+				alertDeleted.setContentText("L'objet N° " + row.getObjetId() + " nommé '" + row.getIdentification()
+						+ "' \n a bien été suprimé de la base de données.");
 				alertDeleted.showAndWait();
 
 			} else {
@@ -721,7 +754,7 @@ public class MainController {
 		addNew.setDisable(true);
 		browseImage.setDisable(false);
 		importButton.setDisable(false);
-		deleteRow.setDisable(false);
+		deleteRow.setDisable(true);
 		deleteIndex.setDisable(false);
 
 	}
