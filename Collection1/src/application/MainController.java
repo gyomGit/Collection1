@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
@@ -33,6 +36,9 @@ import org.contact.service.ContactServiceImpl;
 import org.controlsfx.control.textfield.TextFields;
 import org.hibernate.Session;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.sun.istack.logging.Logger;
 
 import javafx.beans.binding.ListBinding;
@@ -45,6 +51,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -60,6 +67,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -68,7 +76,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainController {
+public class MainController implements Initializable {
+
+	@FXML
+	private JFXHamburger hamburger;
+
+	@FXML
+	private JFXDrawer drawer;
 
 	@FXML
 	private Button browseImage;
@@ -202,8 +216,8 @@ public class MainController {
 
 	}
 
-	@FXML
-	private void initialize() {
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 
 //		prefixeBox.setValue(null);
 		prefixeBox.setItems(prefixeList);
@@ -214,6 +228,31 @@ public class MainController {
 		inventaireField.clear();
 		localisationField.clear();
 		prefixeBox.setValue("");
+
+		
+
+
+		HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+		transition.setRate(-1);
+		hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+			transition.setRate(transition.getRate() * -1);
+			transition.play();
+
+			if (drawer.isShown()) {
+				drawer.close();
+			} else {
+				drawer.open();
+				Image image2 = new Image("file:photo5.jpg");
+				ImageView imv2 = new ImageView();
+				imv2.setImage(image2);
+				imv2.setFitWidth(140);
+				imv2.setFitHeight(140);
+				imv2.setPreserveRatio(true);
+
+				drawer.setSidePane(imv2);
+			}
+		});
+
 	}
 
 	@FXML
@@ -237,10 +276,9 @@ public class MainController {
 
 		if (file != null) {
 
-
 			updateImage.setDisable(false);
 			addNew.setDisable(false);
-			
+
 			imageNameField.setText(file.getName());
 			String imageURL = (file.toURI().toString());
 			Image image = new Image(imageURL);
@@ -759,6 +797,11 @@ public class MainController {
 		importButton.setDisable(false);
 		deleteRow.setDisable(true);
 		deleteIndex.setDisable(false);
+		searchField.setEditable(true);
+		identificationField.setEditable(true);
+		prefixeBox.setDisable(false);
+		inventaireField.setEditable(true);
+		localisationField.setEditable(true);
 
 	}
 
@@ -796,6 +839,14 @@ public class MainController {
 
 		try {
 			FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
+			outputstream.write(getImageInBytes);
+
+			outputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			FileOutputStream outputstream = new FileOutputStream(new File("photo5.jpg"));
 			outputstream.write(getImageInBytes);
 
 			outputstream.close();
@@ -966,12 +1017,12 @@ public class MainController {
 
 	@FXML
 	private void handleRowSelect() {
-		
+
 		updateImage.setDisable(true);
 		updateFields.setDisable(true);
 		deleteIndex.setDisable(true);
 		disableButtons();
-		
+
 		Contact row = table.getSelectionModel().getSelectedItem();
 		if (row == null)
 			return;
@@ -1013,6 +1064,14 @@ public class MainController {
 
 				try {
 					FileOutputStream outputstream = new FileOutputStream(new File("photo4.jpg"));
+					outputstream.write(getImageInBytes);
+
+					outputstream.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream outputstream = new FileOutputStream(new File("photo5.jpg"));
 					outputstream.write(getImageInBytes);
 
 					outputstream.close();

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -69,7 +71,7 @@
                               <Font size="15.0" />
                            </font></Tooltip>
                      </tooltip></TextField>
-                  <TextField fx:id="identificationField" layoutX="13.0" layoutY="128.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Identification">
+                  <TextField fx:id="identificationField" editable="false" layoutX="13.0" layoutY="128.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Identification">
                      <tooltip>
                         <Tooltip text="Champ renseignant le nom de l'objet.">
                            <font>
@@ -82,7 +84,7 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="prefixeBox" layoutX="13.0" layoutY="183.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="138.0">
+                  <ChoiceBox fx:id="prefixeBox" disable="true" layoutX="13.0" layoutY="183.0" onMouseClicked="#enableDisableFiels" prefHeight="27.0" prefWidth="138.0">
                      <tooltip>
                         <Tooltip text="Ensemble de lettres identifiant un Musée.">
                            <font>
@@ -90,7 +92,7 @@
                            </font>
                         </Tooltip>
                      </tooltip></ChoiceBox>
-                  <TextField fx:id="inventaireField" layoutX="15.0" layoutY="237.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire">
+                  <TextField fx:id="inventaireField" editable="false" layoutX="15.0" layoutY="237.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire">
                      <tooltip>
                         <Tooltip text="Champ composé de l'année d'acquisition de l'objet.">
                            <font>
@@ -142,6 +144,7 @@
                   </Label>
                </children>
             </AnchorPane>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="168.0" prefHeight="140.0" prefWidth="164.0" />
          </children>
       </Pane>
    </left>
@@ -251,28 +254,33 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="searchField" maxWidth="300.0" onKeyReleased="#handleAutoComplete" onKeyTyped="#handleSearch" prefWidth="300.0" promptText="Search">
+            <TextField fx:id="searchField" editable="false" maxWidth="300.0" onAction="#handleSearch" onKeyPressed="#handleAutoComplete" prefWidth="300.0" promptText="Search">
                <tooltip>
                   <Tooltip text="Champ recherche par Identification ou par  N° Inventaire.">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Tooltip>
-               </tooltip></TextField>
-            <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
+               </tooltip>
+            </TextField>
+            <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;">
+               <children>
+                  <JFXHamburger fx:id="hamburger" layoutX="587.0" layoutY="4.0" AnchorPane.rightAnchor="20.0" />
+               </children></AnchorPane>
             <Label text="  Titre de l'image:">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="imageNameField" editable="false" maxWidth="500.0" prefWidth="400.0" promptText="Titre de l'image">
+            <TextField fx:id="imageNameField" editable="false" maxWidth="500.0" opacity="0.81" prefWidth="400.0" promptText="Titre de l'image">
                <tooltip>
                   <Tooltip text="Champ non modifiable renseignant le titre du fichier image.">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Tooltip>
-               </tooltip></TextField>
+               </tooltip>
+            </TextField>
             <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
             <Button fx:id="loadDatabase" cache="true" mnemonicParsing="false" onAction="#loadDatabase" prefWidth="2000.0" text="Charger la base de données">
                <tooltip>
@@ -280,7 +288,8 @@
                </tooltip>
                <font>
                   <Font size="15.0" />
-               </font></Button>
+               </font>
+            </Button>
             <TableView fx:id="table" editable="true" onMouseClicked="#handleRowSelect" prefHeight="484.0" prefWidth="637.0" />
          </children>
       </VBox>
