@@ -254,7 +254,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="searchField" editable="false" maxWidth="300.0" onAction="#handleSearch" onKeyPressed="#handleAutoComplete" prefWidth="300.0" promptText="Search">
+            <TextField fx:id="searchField" editable="false" maxWidth="300.0" onAction="#handleSearch" onKeyPressed="#handleAutoComplete" onKeyReleased="#handleSearch" prefWidth="300.0" promptText="Search">
                <tooltip>
                   <Tooltip text="Champ recherche par Identification ou par  N° Inventaire.">
                      <font>
