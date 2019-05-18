@@ -980,7 +980,6 @@ public class MainController implements Initializable {
 	@FXML
 	private void handleSearch() {
 
-		populate();
 
 		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
 		FilteredList<Contact> filteredData = new FilteredList<>(controller.getContactList(), e -> true);
