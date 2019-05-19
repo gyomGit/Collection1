@@ -4,7 +4,6 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -802,6 +801,7 @@ public class MainController implements Initializable {
 		prefixeBox.setDisable(false);
 		inventaireField.setEditable(true);
 		localisationField.setEditable(true);
+		hamburger.setVisible(true);
 
 	}
 

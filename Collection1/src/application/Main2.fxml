@@ -254,7 +254,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <TextField fx:id="searchField" editable="false" maxWidth="300.0" onAction="#handleSearch" onKeyPressed="#handleAutoComplete" onKeyReleased="#handleSearch" prefWidth="300.0" promptText="Search">
+            <TextField fx:id="searchField" editable="false" maxWidth="137.0" onKeyPressed="#handleAutoComplete" onKeyReleased="#handleSearch" prefHeight="27.0" prefWidth="137.0" promptText="Search">
                <tooltip>
                   <Tooltip text="Champ recherche par Identification ou par  N° Inventaire.">
                      <font>
@@ -265,7 +265,7 @@
             </TextField>
             <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;">
                <children>
-                  <JFXHamburger fx:id="hamburger" layoutX="587.0" layoutY="4.0" AnchorPane.rightAnchor="20.0" />
+                  <JFXHamburger fx:id="hamburger" layoutX="587.0" layoutY="4.0" visible="false" AnchorPane.rightAnchor="20.0" />
                </children></AnchorPane>
             <Label text="  Titre de l'image:">
                <font>
