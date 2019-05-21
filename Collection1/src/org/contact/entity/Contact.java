@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import javafx.beans.property.BooleanProperty;
@@ -36,6 +38,7 @@ public class Contact {
     private final StringProperty localisation = new SimpleStringProperty() ;
     private byte[] image;
     private final StringProperty imageName = new SimpleStringProperty() ;
+    private Musee musee;
 
 
 	
@@ -45,7 +48,7 @@ public class Contact {
 	}
 
 	public Contact(Integer objetId,Boolean selected, String identification, String prefixeMusee, String inventaire,
-			String localisation, byte[] image, String imageName) {
+			String localisation, byte[] image, String imageName, Musee musee) {
 		super();
 		setObjetId(objetId);
 		setSelected(selected);
@@ -55,12 +58,13 @@ public class Contact {
 		setLocalisation(localisation);
 		setImage(image);
 		setImageName(imageName);
+		setMusee(musee);
 		
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "OBJETID")
+	@Column(name = "OBJETID", updatable = false, nullable =false)
 	public Integer getObjetId() {
 		return objetId.get();
 	}
@@ -69,11 +73,22 @@ public class Contact {
 		this.objetId.set(objetId);
 	}
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_musee")
+	public Musee getMusee() {
+		return musee;
+	}
+	
+	public void setMusee(Musee musee) {
+		this.musee = musee;
+	}
+	
+	
 	public BooleanProperty selectedProperty() {
 		return selected;
 	}
 
-	@Column(name = "SELECTED", columnDefinition = "tinyint", nullable = false)	
+	@Column(name = "SELECTED", nullable = false)	
 	public Boolean getSelected() {
 		return selected.get();
 	}

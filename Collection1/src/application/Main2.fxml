@@ -263,7 +263,19 @@
                   </Tooltip>
                </tooltip>
             </TextField>
-            <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;">
+            <TextField fx:id="identificationView" editable="false" onKeyPressed="#enableDisableFiels" prefWidth="900.0" promptText="Identification" style="-fx-background-color: #FFC719;">
+               <tooltip>
+                  <Tooltip text="Champ renseignant le nom de l'objet.">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Tooltip>
+               </tooltip>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;">
                <children>
                   <JFXHamburger fx:id="hamburger" layoutX="587.0" layoutY="4.0" visible="false" AnchorPane.rightAnchor="20.0" />
                </children></AnchorPane>
@@ -281,7 +293,7 @@
                   </Tooltip>
                </tooltip>
             </TextField>
-            <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719#FFC719;" />
+            <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;" />
             <Button fx:id="loadDatabase" cache="true" mnemonicParsing="false" onAction="#loadDatabase" prefWidth="2000.0" text="Charger la base de données">
                <tooltip>
                   <Tooltip text="Boutton qui rempli le tableau tel qu'il figure dans la base de données." />

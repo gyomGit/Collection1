@@ -30,6 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.contact.entity.Contact;
 import org.contact.entity.HibernateUtil;
+import org.contact.entity.Musee;
 import org.contact.service.ContactService;
 import org.contact.service.ContactServiceImpl;
 import org.controlsfx.control.textfield.TextFields;
@@ -128,6 +129,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField identificationField;
+	
+	@FXML
+	private TextField identificationView;
 
 	@FXML
 	private TextField prefixeMuseeField;
@@ -155,6 +159,7 @@ public class MainController implements Initializable {
 
 	// -----------------------------------------
 	private ContactController controller = new ContactController();
+	private MuseeController controllerMus = new MuseeController();
 
 	@FXML
 	private ImageView imv;
@@ -195,7 +200,7 @@ public class MainController implements Initializable {
 	@FXML
 	private void enableDisableFiels() {
 
-		addNew.setDisable(false);
+//		addNew.setDisable(false);
 		updateFields.setDisable(false);
 		updateImage.setDisable(true);
 	}
@@ -227,8 +232,6 @@ public class MainController implements Initializable {
 		inventaireField.clear();
 		localisationField.clear();
 		prefixeBox.setValue("");
-
-		
 
 
 		HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
@@ -536,16 +539,33 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void handleAdd(ActionEvent event) {
-
+		
 		Contact c = new Contact();
 
-		c.setObjetId(111);
+		Musee m = new Musee();
+
+
+		m.setPrefixeMusee(prefixeBox.getValue());
+//		m.setMuseeId(800);
+		m.setAdressMusee("Le Prieuré 04300 Mane");
+		m.setEmailMusee("salagon@yahoo.com");
+		m.setNomMusee("Salagon");
+		m.setTelMusee("04 92 75 70 50");
+		m.addContactMusee(c);
+		
+		
+		
+//		c.setObjetId(111);
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 		c.setImageName(imageNameField.getText());
+		
+
+	
+		
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Ajout Base de Données");
@@ -556,7 +576,10 @@ public class MainController implements Initializable {
 		if (result.get() == ButtonType.OK) {
 
 			if (validateFields()) {
+				controllerMus.addMusee(m);
 				controller.addContact(c);
+			
+				
 
 				populate();
 
@@ -810,15 +833,18 @@ public class MainController implements Initializable {
 			return;
 
 		Contact c = (Contact) controller.getContactList().get(i);
+//		Musee m =(Musee) controllerMus.getMuseeList().get(i);
 
 		objetIdField.setText(c.getObjetId().toString());
 		identificationField.setText(c.getIdentification());
+		identificationView.setText(c.getIdentification());
 		prefixeBox.setValue(c.getPrefixeMusee());
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
 		imageNameField.setText(c.getImageName());
-//		listView.
-//	    imv.setImage()(c.getImage());
+		
+//		prefixeBox.setValue(m.getPrefixeMusee());
+
 
 		byte[] getImageInBytes = c.getImage(); // image convert in byte form
 
@@ -1039,6 +1065,7 @@ public class MainController implements Initializable {
 
 				objetIdField.setText(row.getObjetId().toString());
 				identificationField.setText(row.getIdentification());
+				identificationView.setText(row.getIdentification());
 				prefixeBox.setValue(row.getPrefixeMusee());
 				inventaireField.setText(row.getInventaire());
 				localisationField.setText(row.getLocalisation());
