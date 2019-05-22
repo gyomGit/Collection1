@@ -63,6 +63,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -134,9 +135,6 @@ public class MainController implements Initializable {
 	private TextField identificationView;
 
 	@FXML
-	private TextField prefixeMuseeField;
-
-	@FXML
 	private TextField inventaireField;
 
 	@FXML
@@ -147,6 +145,21 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField imageNameField;
+	
+	@FXML
+	private TextField museeIdField;
+	
+	@FXML
+	private TextField nomMuseeField;
+
+	@FXML
+	private TextField emailMuseeField;
+
+	@FXML
+	private TextField telMuseeField;
+	
+	@FXML
+	private TextArea adresseMuseeField;
 
 	// --------------------------------------
 
@@ -186,6 +199,12 @@ public class MainController implements Initializable {
 		backward.setDisable(false);
 		forward.setDisable(false);
 		upfront.setDisable(false);
+		
+		museeIdField.setDisable(false);
+		nomMuseeField.setDisable(false);
+		emailMuseeField.setDisable(false);
+		telMuseeField.setDisable(false);
+		adresseMuseeField.setDisable(false);
 	}
 
 	private void disableButtons() {
@@ -195,6 +214,12 @@ public class MainController implements Initializable {
 		backward.setDisable(true);
 		forward.setDisable(true);
 		upfront.setDisable(true);
+		
+		museeIdField.setDisable(true);
+		nomMuseeField.setDisable(true);
+		emailMuseeField.setDisable(true);
+		telMuseeField.setDisable(true);
+		adresseMuseeField.setDisable(true);
 	}
 
 	@FXML
@@ -544,14 +569,16 @@ public class MainController implements Initializable {
 
 		Musee m = new Musee();
 
+//		m.setContactMusee(c);
 
 		m.setPrefixeMusee(prefixeBox.getValue());
 //		m.setMuseeId(800);
-		m.setAdressMusee("Le Prieuré 04300 Mane");
-		m.setEmailMusee("salagon@yahoo.com");
-		m.setNomMusee("Salagon");
-		m.setTelMusee("04 92 75 70 50");
-		m.addContactMusee(c);
+//		m.setAdressMusee(adresseMuseeField.getText());
+//		m.setEmailMusee(emailMuseeField.getText());
+//		m.setNomMusee(nomMuseeField.getText());
+//		m.setTelMusee(telMuseeField.getText());
+		
+		
 		
 		
 		
@@ -563,9 +590,10 @@ public class MainController implements Initializable {
 		c.setImage(imageBytes);
 		c.setImageName(imageNameField.getText());
 		
-
-	
+//		"ADN", "CEC", "CG04", "EXPO", "FOR",
+//		"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY"
 		
+
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Ajout Base de Données");
@@ -576,9 +604,59 @@ public class MainController implements Initializable {
 		if (result.get() == ButtonType.OK) {
 
 			if (validateFields()) {
-				controllerMus.addMusee(m);
-				controller.addContact(c);
-			
+				
+				if (prefixeBox.getValue() == "SLG") {
+					
+					Musee m1 = new Musee();
+					m1.setNomMusee("Musée de Salagon");
+					m1.setEmailMusee("musse.salagon@le04.fr");
+					m1.setTelMusee("04 92 75 70 50");
+					m1.setAdressMusee("Le Prieuré 04300 Mane");
+					m1.setPrefixeMusee("SLG");
+					
+					c.setMusee(m1);
+					
+					controllerMus.addMusee(m1);
+					controller.addContact(c);
+				}
+				
+				
+				else if(prefixeBox.getValue() == "FOR") {
+					
+					Musee m2 = new Musee();
+					m2.setNomMusee("Musée de Forcalquier");
+					m2.setEmailMusee("musse.forcalquier@le04.fr");
+					m2.setTelMusee("04 92 75 00 13");
+					m2.setAdressMusee("5 Place du Bourguet 04300 Forcalquier");
+					m2.setPrefixeMusee("FOR");
+					
+					c.setMusee(m2);
+					
+					controllerMus.addMusee(m2);
+					controller.addContact(c);
+				}
+				
+				else if(prefixeBox.getValue() == "SIST") {
+					
+					Musee m3 = new Musee();
+					m3.setNomMusee("Musée de Sisteron");
+					m3.setEmailMusee("musee.archeo@sisteron.fr");
+					m3.setTelMusee("04 92 61 58 40");
+					m3.setAdressMusee("8 Rue Saunerie 04200 Sisteron");
+					m3.setPrefixeMusee("SIST");
+					
+					c.setMusee(m3);
+					controllerMus.addMusee(m3);
+					controller.addContact(c);
+					
+				}else 
+					
+					{		Alert alert3 = new Alert(AlertType.WARNING);
+					alert3.setTitle("Oops");
+					alert3.setHeaderText(null);
+					alert3.setContentText("Veuillez entrer SLG FOR ou SIST (les autres ne sont pas encore entés)");
+					alert3.showAndWait();
+					return;}
 				
 
 				populate();
@@ -829,9 +907,10 @@ public class MainController implements Initializable {
 	}
 
 	private void populateForm(int i) {
-		if (controller.getContactList().isEmpty())
+		if (controller.getContactList().isEmpty() | controllerMus.getMuseeList().isEmpty())
 			return;
 
+		Musee m = (Musee) controllerMus.getMuseeList().get(i);
 		Contact c = (Contact) controller.getContactList().get(i);
 //		Musee m =(Musee) controllerMus.getMuseeList().get(i);
 
@@ -842,6 +921,12 @@ public class MainController implements Initializable {
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
 		imageNameField.setText(c.getImageName());
+		
+		museeIdField.setText(m.getMuseeId().toString());
+		nomMuseeField.setText(m.getNomMusee());
+		emailMuseeField.setText(m.getEmailMusee());
+		telMuseeField.setText(m.getTelMusee());
+		adresseMuseeField.setText(m.getAdressMusee());
 		
 //		prefixeBox.setValue(m.getPrefixeMusee());
 
@@ -881,6 +966,7 @@ public class MainController implements Initializable {
 		}
 
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
@@ -892,7 +978,7 @@ public class MainController implements Initializable {
 
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
-
+		
 		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
 		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
 
@@ -1046,6 +1132,7 @@ public class MainController implements Initializable {
 		updateImage.setDisable(true);
 		updateFields.setDisable(true);
 		deleteIndex.setDisable(true);
+		
 		disableButtons();
 
 		Contact row = table.getSelectionModel().getSelectedItem();
@@ -1199,14 +1286,14 @@ public class MainController implements Initializable {
 		Image image2 = new Image("file:photo4.jpg");
 		ImageView imv2 = new ImageView();
 		imv2.setImage(image2);
-		imv2.setFitWidth(900);
-		imv2.setFitHeight(900);
+		imv2.setFitWidth(800);
+		imv2.setFitHeight(800);
 		imv2.setPreserveRatio(true);
 
 		layout.setAlignment(Pos.CENTER);
 		layout.getChildren().addAll(imv2);
 
-		Scene scene1 = new Scene(layout, 900, 900);
+		Scene scene1 = new Scene(layout, 1000, 1000);
 
 		popupwindow.setScene(scene1);
 

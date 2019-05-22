@@ -75,10 +75,10 @@ public class Musee {
 		return this.contacts;
 	}
 	
-	public void addContactMusee(Contact contact) {
-        if(contacts == null) contacts = new ArrayList<Contact>();
-        contact.setMusee(this);
-    }
+//	public void setContactMusee(Contact contact) {
+//        if(contacts == null) contacts = new ArrayList<Contact>();
+//        contact.setMusee(this);
+//    }
 	
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts; 

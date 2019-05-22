@@ -1,5 +1,9 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
+.jfx-hamburger StackPane {
+	-fx-background-color: white;
+}
+
 
 #loadDatabase{
   -fx-background-radius: 8.0;

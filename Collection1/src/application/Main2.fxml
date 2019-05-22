@@ -2,13 +2,16 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
@@ -18,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<BorderPane prefHeight="1100.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <top>
       <MenuBar prefHeight="30.0" prefWidth="740.0" BorderPane.alignment="CENTER">
         <menus>
@@ -50,103 +53,203 @@
       <AnchorPane prefHeight="38.0" prefWidth="752.0" style="-fx-background-color: #4dc3ff#4dc3ff;" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <Pane prefHeight="656.0" prefWidth="163.0" style="-fx-background-color: #1f1f7a;" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="25.0" layoutY="27.0" prefHeight="43.0" prefWidth="137.0" text="collection" textFill="WHITE">
-               <font>
-                  <Font name="Avenir Book" size="31.0" />
-               </font>
-            </Label>
-            <AnchorPane layoutX="-2.0" layoutY="88.0" prefHeight="568.0" prefWidth="167.0">
+      <ScrollPane prefHeight="936.0" prefWidth="180.0" BorderPane.alignment="CENTER">
+         <content>
+            <Pane prefHeight="1030.0" prefWidth="163.0" style="-fx-background-color: #1f1f7a;">
                <children>
-                  <Label layoutX="5.0" layoutY="-10.0" prefHeight="49.0" prefWidth="129.0" text="Application Musée" textFill="WHITE">
+                  <JFXHamburger fx:id="hamburger" visible="false">
+                     <padding>
+                        <Insets left="20.0" top="10.0" />
+                     </padding>
+                  </JFXHamburger>
+                  <Label layoutX="25.0" layoutY="27.0" prefHeight="43.0" prefWidth="137.0" text="collection" textFill="WHITE">
                      <font>
-                        <Font name="Avenir Book" size="12.0" />
+                        <Font name="Avenir Book" size="31.0" />
                      </font>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
                   </Label>
-                  <TextField fx:id="objetIdField" blendMode="GREEN" cache="true" editable="false" layoutX="14.0" layoutY="74.0" prefHeight="27.0" prefWidth="137.0" promptText="Objet ID">
-                     <tooltip>
-                        <Tooltip text="Champ non modifiable, généré automatiquement par la base de données." wrapText="true">
+                  <AnchorPane layoutX="-2.0" layoutY="88.0" prefHeight="900.0" prefWidth="167.0">
+                     <children>
+                        <Label layoutX="5.0" layoutY="-10.0" prefHeight="49.0" prefWidth="106.0" text="Application Musée" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
-                           </font></Tooltip>
-                     </tooltip></TextField>
-                  <TextField fx:id="identificationField" editable="false" layoutX="13.0" layoutY="128.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Identification">
-                     <tooltip>
-                        <Tooltip text="Champ renseignant le nom de l'objet.">
-                           <font>
-                              <Font size="14.0" />
+                              <Font name="Avenir Book" size="12.0" />
                            </font>
-                        </Tooltip>
-                     </tooltip></TextField>
-                  <Label layoutX="13.0" layoutY="166.0" prefWidth="138.0" text="Préfixe Musée:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <ChoiceBox fx:id="prefixeBox" disable="true" layoutX="13.0" layoutY="183.0" onMouseClicked="#enableDisableFiels" prefHeight="27.0" prefWidth="138.0">
-                     <tooltip>
-                        <Tooltip text="Ensemble de lettres identifiant un Musée.">
+                        </Label>
+                        <TextField fx:id="objetIdField" blendMode="GREEN" cache="true" editable="false" layoutX="14.0" layoutY="97.0" prefHeight="27.0" prefWidth="137.0" promptText="Objet ID">
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable, généré automatiquement par la base de données." wrapText="true">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </TextField>
+                        <TextField fx:id="identificationField" editable="false" layoutX="13.0" layoutY="151.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Identification">
+                           <tooltip>
+                              <Tooltip text="Champ renseignant le nom de l'objet.">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </TextField>
+                        <Label layoutX="13.0" layoutY="189.0" prefWidth="138.0" text="Préfixe Musée:" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="11.0" />
                            </font>
-                        </Tooltip>
-                     </tooltip></ChoiceBox>
-                  <TextField fx:id="inventaireField" editable="false" layoutX="15.0" layoutY="237.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire">
-                     <tooltip>
-                        <Tooltip text="Champ composé de l'année d'acquisition de l'objet.">
+                        </Label>
+                        <ChoiceBox fx:id="prefixeBox" disable="true" layoutX="13.0" layoutY="206.0" onMouseClicked="#enableDisableFiels" prefHeight="27.0" prefWidth="138.0">
+                           <tooltip>
+                              <Tooltip text="Ensemble de lettres identifiant un Musée.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </ChoiceBox>
+                        <TextField fx:id="inventaireField" editable="false" layoutX="15.0" layoutY="260.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="N° Inventaire">
+                           <tooltip>
+                              <Tooltip text="Champ indiquant le N° d'inventaire de l'objet, composé de l'année d'acquisition de l'objet.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </TextField>
+                        <TextField fx:id="localisationField" layoutX="15.0" layoutY="311.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Localisation">
+                           <tooltip>
+                              <Tooltip text="Champ de localisation de l'objet au sein du Musée.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </TextField>
+                        <Label layoutX="14.0" layoutY="244.0" prefWidth="138.0" text="N° Inventaire:" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="11.0" />
                            </font>
-                        </Tooltip>
-                     </tooltip></TextField>
-                  <TextField fx:id="localisationField" layoutX="15.0" layoutY="288.0" onKeyPressed="#enableDisableFiels" prefHeight="27.0" prefWidth="137.0" promptText="Localisation">
-                     <tooltip>
-                        <Tooltip text="Champ de localisation de l'objet au sein du Musée.">
+                        </Label>
+                        <Label layoutX="13.0" layoutY="135.0" prefWidth="138.0" text="Identification" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="11.0" />
                            </font>
-                        </Tooltip>
-                     </tooltip></TextField>
-                  <Label layoutX="14.0" layoutY="221.0" prefWidth="138.0" text="N° Inventaire:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="13.0" layoutY="112.0" prefWidth="138.0" text="Identification" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="15.0" layoutY="272.0" prefWidth="138.0" text="Localisation:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="13.0" layoutY="58.0" prefWidth="138.0" text="Objet ID:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="16.0" layoutY="340.0" onDragDetected="#handle" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="browseImage" disable="true" layoutX="19.0" layoutY="476.0" mnemonicParsing="false" onAction="#handle" onMouseReleased="#enableDisableImage" text="Upload Image">
-                     <tooltip>
-                        <Tooltip text="Charge une Image depuis l'ordinateur.">
+                        </Label>
+                        <Label layoutX="15.0" layoutY="295.0" prefWidth="138.0" text="Localisation:" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="11.0" />
                            </font>
-                        </Tooltip>
-                     </tooltip></Button>
-                  <Label layoutX="14.0" layoutY="326.0" prefWidth="138.0" text="Image:" textFill="WHITE">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
+                        </Label>
+                        <Label layoutX="13.0" layoutY="81.0" prefWidth="138.0" text="Objet ID:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="16.0" layoutY="363.0" onDragDetected="#handle" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="browseImage" disable="true" layoutX="19.0" layoutY="499.0" mnemonicParsing="false" onAction="#handle" onMouseReleased="#enableDisableImage" text="Upload Image">
+                           <tooltip>
+                              <Tooltip text="Charge une Image depuis l'ordinateur.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Button>
+                        <Label layoutX="14.0" layoutY="349.0" prefWidth="138.0" text="Image:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="museeIdField" blendMode="GREEN" cache="true" editable="false" layoutX="14.0" layoutY="572.0" prefHeight="27.0" prefWidth="137.0" promptText="Musée ID">
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable, généré automatiquement par la base de données." wrapText="true">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </TextField>
+                        <Label layoutX="15.0" layoutY="558.0" prefWidth="138.0" text="Musée ID:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="emailMuseeField" editable="false" layoutX="14.0" layoutY="673.0" prefHeight="27.0" prefWidth="137.0" promptText="Email">
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable indiquant l'adresse Email du Musée.">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="15.0" layoutY="659.0" prefWidth="138.0" text="Email:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="telMuseeField" editable="false" layoutX="15.0" layoutY="724.0" prefHeight="27.0" prefWidth="135.0" promptText="Téléphone">
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable indiquant le N° de téléphone du Musée.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="14.0" layoutY="709.0" prefWidth="138.0" text="Téléphone:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nomMuseeField" editable="false" layoutX="15.0" layoutY="625.0" prefHeight="27.0" prefWidth="137.0" promptText="Nom du Musée:">
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable indiquant le nom du Musée.">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="15.0" layoutY="611.0" prefWidth="138.0" text="Nom du Musée:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="16.0" layoutY="760.0" prefWidth="138.0" text="Adresse du Musée:" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="adresseMuseeField" editable="false" layoutX="14.0" layoutY="774.0" prefHeight="47.0" prefWidth="136.0" promptText="Adresse du Musée">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Champ non modifiable indiquant l'adresse du Musée.">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip></TextArea>
+                        <JFXDrawer fx:id="drawer" defaultDrawerSize="168.0" layoutX="4.0" layoutY="-56.0" prefHeight="120.0" prefWidth="162.0" />
+                     </children>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
-            <JFXDrawer fx:id="drawer" defaultDrawerSize="168.0" prefHeight="140.0" prefWidth="164.0" />
-         </children>
-      </Pane>
+            </Pane>
+         </content>
+      </ScrollPane>
    </left>
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFC719#FFC719 #FFC719#FFC719;" BorderPane.alignment="CENTER">
@@ -275,10 +378,7 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;">
-               <children>
-                  <JFXHamburger fx:id="hamburger" layoutX="587.0" layoutY="4.0" visible="false" AnchorPane.rightAnchor="20.0" />
-               </children></AnchorPane>
+            <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;" />
             <Label text="  Titre de l'image:">
                <font>
                   <Font size="11.0" />
