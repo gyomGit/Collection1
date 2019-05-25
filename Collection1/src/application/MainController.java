@@ -33,6 +33,8 @@ import org.contact.entity.HibernateUtil;
 import org.contact.entity.Musee;
 import org.contact.service.ContactService;
 import org.contact.service.ContactServiceImpl;
+import org.contact.service.MuseeService;
+import org.contact.service.MuseeServiceImpl;
 import org.controlsfx.control.textfield.TextFields;
 import org.hibernate.Session;
 
@@ -130,7 +132,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField identificationField;
-	
+
 	@FXML
 	private TextField identificationView;
 
@@ -145,10 +147,10 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField imageNameField;
-	
+
 	@FXML
 	private TextField museeIdField;
-	
+
 	@FXML
 	private TextField nomMuseeField;
 
@@ -157,7 +159,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField telMuseeField;
-	
+
 	@FXML
 	private TextArea adresseMuseeField;
 
@@ -184,6 +186,14 @@ public class MainController implements Initializable {
 
 	private byte[] imageByteUpdate;
 
+	// ---------------------------------------
+
+//	private Musee museeInContact;
+//
+//	private Contact contactsInMusee;
+
+	// ---------------------------------------
+
 	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
 			"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
 
@@ -199,7 +209,7 @@ public class MainController implements Initializable {
 		backward.setDisable(false);
 		forward.setDisable(false);
 		upfront.setDisable(false);
-		
+
 		museeIdField.setDisable(false);
 		nomMuseeField.setDisable(false);
 		emailMuseeField.setDisable(false);
@@ -214,7 +224,7 @@ public class MainController implements Initializable {
 		backward.setDisable(true);
 		forward.setDisable(true);
 		upfront.setDisable(true);
-		
+
 		museeIdField.setDisable(true);
 		nomMuseeField.setDisable(true);
 		emailMuseeField.setDisable(true);
@@ -248,6 +258,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		addMusees();
 //		prefixeBox.setValue(null);
 		prefixeBox.setItems(prefixeList);
 //		populate();
@@ -257,7 +268,6 @@ public class MainController implements Initializable {
 		inventaireField.clear();
 		localisationField.clear();
 		prefixeBox.setValue("");
-
 
 		HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
 		transition.setRate(-1);
@@ -562,119 +572,102 @@ public class MainController implements Initializable {
 		}
 	}
 
+	// Ajoute les musées à la base de données si il n'y sont pas encore.
+
+	private void addMusees() {
+
+		MuseeService museeService = new MuseeServiceImpl();
+
+		while (!museeService.listNomMusee().contains("Musée de Salagon")) {
+
+			Musee salagonM = new Musee();
+			salagonM.setNomMusee("Musée de Salagon");
+			salagonM.setEmailMusee("musse.salagon@le04.fr");
+			salagonM.setTelMusee("04 92 75 70 50");
+			salagonM.setAdressMusee("Le Prieuré 04300 Mane");
+			salagonM.setPrefixeMusee("SLG");
+
+			controllerMus.addMusee(salagonM);
+
+		}
+		while (!museeService.listNomMusee().contains("Musée de Forcalquier")) {
+
+			Musee forcalquierM = new Musee();
+			forcalquierM.setNomMusee("Musée de Forcalquier");
+			forcalquierM.setEmailMusee("musse.forcalquier@le04.fr");
+			forcalquierM.setTelMusee("04 92 75 00 13");
+			forcalquierM.setAdressMusee("5 Place du Bourguet 04300 Forcalquier");
+			forcalquierM.setPrefixeMusee("FOR");
+
+			controllerMus.addMusee(forcalquierM);
+
+		}
+		while (!museeService.listNomMusee().contains("Musée de Sisteron")) {
+
+			Musee sisteronM = new Musee();
+			sisteronM.setNomMusee("Musée de Sisteron");
+			sisteronM.setEmailMusee("musee.archeo@sisteron.fr");
+			sisteronM.setTelMusee("04 92 61 58 40");
+			sisteronM.setAdressMusee("8 Rue Saunerie 04200 Sisteron");
+			sisteronM.setPrefixeMusee("SIST");
+
+			controllerMus.addMusee(sisteronM);
+
+		}
+	}
+
 	@FXML
 	private void handleAdd(ActionEvent event) {
-		
+
 		Contact c = new Contact();
 
-		Musee m = new Musee();
-
-//		m.setContactMusee(c);
-
-		m.setPrefixeMusee(prefixeBox.getValue());
-//		m.setMuseeId(800);
-//		m.setAdressMusee(adresseMuseeField.getText());
-//		m.setEmailMusee(emailMuseeField.getText());
-//		m.setNomMusee(nomMuseeField.getText());
-//		m.setTelMusee(telMuseeField.getText());
-		
-		
-		
-		
-		
-//		c.setObjetId(111);
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
 		c.setImageName(imageNameField.getText());
-		
-//		"ADN", "CEC", "CG04", "EXPO", "FOR",
-//		"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY"
-		
 
+		for (int i = 0; i < controllerMus.getMuseeList().size(); i++) {
 
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Ajout Base de Données");
-		alert.setHeaderText(
-				"Voulez-vous vraiment ajouter l'objet nommé '" + c.getIdentification() + "' à la base de données?");
+			if ((controllerMus.getMuseeList().get(i).getPrefixeMusee()).equals(prefixeBox.getValue()))
 
-		java.util.Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+			{
 
-			if (validateFields()) {
-				
-				if (prefixeBox.getValue() == "SLG") {
-					
-					Musee m1 = new Musee();
-					m1.setNomMusee("Musée de Salagon");
-					m1.setEmailMusee("musse.salagon@le04.fr");
-					m1.setTelMusee("04 92 75 70 50");
-					m1.setAdressMusee("Le Prieuré 04300 Mane");
-					m1.setPrefixeMusee("SLG");
-					
-					c.setMusee(m1);
-					
-					controllerMus.addMusee(m1);
-					controller.addContact(c);
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirmation Ajout Base de Données");
+				alert.setHeaderText("Voulez-vous vraiment ajouter l'objet nommé '" + c.getIdentification()
+						+ "' à la base de données?");
+				java.util.Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+
+					if (validateFields()) {
+						c.setMusee(controllerMus.getMuseeList().get(i));
+						controller.addContact(c);
+						System.out.println("OUAII!!!");
+
+						populate();
+
+						Alert alert2 = new Alert(AlertType.INFORMATION);
+						alert2.setTitle("Information Ajout Base de Données");
+						alert2.setHeaderText(null);
+						alert2.setContentText("L'objet '" + c.getIdentification()
+								+ "' a été ajouté à la base de données il porte actuellement le n° " + c.getObjetId()
+								+ " au sein de cette base.");
+						alert2.showAndWait();
+
+					}
+					updateFields.setDisable(true);
+
+				} else {
+					return;
+
 				}
-				
-				
-				else if(prefixeBox.getValue() == "FOR") {
-					
-					Musee m2 = new Musee();
-					m2.setNomMusee("Musée de Forcalquier");
-					m2.setEmailMusee("musse.forcalquier@le04.fr");
-					m2.setTelMusee("04 92 75 00 13");
-					m2.setAdressMusee("5 Place du Bourguet 04300 Forcalquier");
-					m2.setPrefixeMusee("FOR");
-					
-					c.setMusee(m2);
-					
-					controllerMus.addMusee(m2);
-					controller.addContact(c);
-				}
-				
-				else if(prefixeBox.getValue() == "SIST") {
-					
-					Musee m3 = new Musee();
-					m3.setNomMusee("Musée de Sisteron");
-					m3.setEmailMusee("musee.archeo@sisteron.fr");
-					m3.setTelMusee("04 92 61 58 40");
-					m3.setAdressMusee("8 Rue Saunerie 04200 Sisteron");
-					m3.setPrefixeMusee("SIST");
-					
-					c.setMusee(m3);
-					controllerMus.addMusee(m3);
-					controller.addContact(c);
-					
-				}else 
-					
-					{		Alert alert3 = new Alert(AlertType.WARNING);
-					alert3.setTitle("Oops");
-					alert3.setHeaderText(null);
-					alert3.setContentText("Veuillez entrer SLG FOR ou SIST (les autres ne sont pas encore entés)");
-					alert3.showAndWait();
-					return;}
-				
 
-				populate();
-
-				Alert alert2 = new Alert(AlertType.INFORMATION);
-				alert2.setTitle("Information Ajout Base de Données");
-				alert2.setHeaderText(null);
-				alert2.setContentText("L'objet '" + c.getIdentification()
-						+ "' a été ajouté à la base de données il porte actuellement le n° " + c.getObjetId()
-						+ " au sein de cette base.");
-				alert2.showAndWait();
+				return;
 
 			}
-			updateFields.setDisable(true);
 
-		} else {
-			return;
-//			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
 	}
@@ -683,12 +676,14 @@ public class MainController implements Initializable {
 	public void handleUpdateFields(ActionEvent event) {
 
 		Contact c = new Contact();
+//		Musee m = c.getMusee();
 
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
+//		c.setMusee(museeInContact);
 
 		try {
 
@@ -706,29 +701,45 @@ public class MainController implements Initializable {
 
 		c.setImageName(imageNameField.getText());
 
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Mise à Jour Champ");
-		alert.setHeaderText("Voulez-vous vraiment mettre à jour le ou les champs de l'objet N° " + c.getObjetId()
-				+ " dans la base de données?");
+		for (int i = 0; i < controllerMus.getMuseeList().size(); i++) {
 
-		java.util.Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+			if ((controllerMus.getMuseeList().get(i).getPrefixeMusee()).equals(prefixeBox.getValue()))
 
-			if (validateFields()) {
-				controller.updateContact(c);
+			{
 
-				populate();
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirmation Mise à Jour Champ");
+				alert.setHeaderText("Voulez-vous vraiment mettre à jour le ou les champs de l'objet N° "
+						+ c.getObjetId() + " dans la base de données?");
 
-				Alert alert2 = new Alert(AlertType.INFORMATION);
-				alert2.setTitle("Information Mise à Jour Champ");
-				alert2.setHeaderText(null);
-				alert2.setContentText("Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
-				alert2.showAndWait();
+				java.util.Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+
+					if (validateFields()) {
+
+						c.setMusee(controllerMus.getMuseeList().get(i));
+						controller.updateContact(c);
+						System.out.println("OUAII!!!");
+
+						populate();
+
+						Alert alert2 = new Alert(AlertType.INFORMATION);
+						alert2.setTitle("Information Mise à Jour Champ");
+						alert2.setHeaderText(null);
+						alert2.setContentText(
+								"Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
+						alert2.showAndWait();
+					}
+
+				} else {
+					return;
+//			populate(); // ... user chose CANCEL or closed the dialog
+				}
+
+				return;
+
 			}
 
-		} else {
-			return;
-//			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
 	}
@@ -743,6 +754,7 @@ public class MainController implements Initializable {
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
+//		c.setMusee(museeInContact);
 		if (imageBytes != null) {
 			c.setImage(imageBytes);
 		} else {
@@ -763,30 +775,45 @@ public class MainController implements Initializable {
 
 		c.setImageName(imageNameField.getText());
 
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Mise à Jour Image");
-		alert.setHeaderText("Voulez-vous vraiment mettre à jour l'image de l'objet N° " + c.getObjetId() + " nommé '"
-				+ c.getIdentification() + "'  dans la base de données?");
+		for (int i = 0; i < controllerMus.getMuseeList().size(); i++) {
 
-		java.util.Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+			if ((controllerMus.getMuseeList().get(i).getPrefixeMusee()).equals(prefixeBox.getValue()))
 
-			if (validateFields()) {
-				controller.updateContact(c);
+			{
 
-				populate();
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirmation Mise à Jour Image");
+				alert.setHeaderText("Voulez-vous vraiment mettre à jour l'image de l'objet N° " + c.getObjetId()
+						+ " nommé '" + c.getIdentification() + "'  dans la base de données?");
 
-				Alert alert2 = new Alert(AlertType.INFORMATION);
-				alert2.setTitle("Information Mise à Jour Image");
-				alert2.setHeaderText(null);
-				alert2.setContentText("L'image de l'objet N° " + c.getObjetId() + " nommé '" + c.getIdentification()
-						+ "' mis à jour avec succès.");
-				alert2.showAndWait();
+				java.util.Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+
+					if (validateFields()) {
+
+						c.setMusee(controllerMus.getMuseeList().get(i));
+						controller.updateContact(c);
+						System.out.println("OUAII!!!");
+
+						populate();
+
+						Alert alert2 = new Alert(AlertType.INFORMATION);
+						alert2.setTitle("Information Mise à Jour Image");
+						alert2.setHeaderText(null);
+						alert2.setContentText("L'image de l'objet N° " + c.getObjetId() + " nommé '"
+								+ c.getIdentification() + "' mis à jour avec succès.");
+						alert2.showAndWait();
+					}
+
+				} else {
+					return;
+//			populate(); // ... user chose CANCEL or closed the dialog
+				}
+
+				return;
+
 			}
 
-		} else {
-			return;
-//			populate(); // ... user chose CANCEL or closed the dialog
 		}
 
 	}
@@ -904,15 +931,15 @@ public class MainController implements Initializable {
 		localisationField.setEditable(true);
 		hamburger.setVisible(true);
 
+//		retrieveMusee();
+
 	}
 
 	private void populateForm(int i) {
-		if (controller.getContactList().isEmpty() | controllerMus.getMuseeList().isEmpty())
+		if (controller.getContactList().isEmpty())
 			return;
 
-		Musee m = (Musee) controllerMus.getMuseeList().get(i);
 		Contact c = (Contact) controller.getContactList().get(i);
-//		Musee m =(Musee) controllerMus.getMuseeList().get(i);
 
 		objetIdField.setText(c.getObjetId().toString());
 		identificationField.setText(c.getIdentification());
@@ -921,15 +948,12 @@ public class MainController implements Initializable {
 		inventaireField.setText(c.getInventaire());
 		localisationField.setText(c.getLocalisation());
 		imageNameField.setText(c.getImageName());
-		
-		museeIdField.setText(m.getMuseeId().toString());
-		nomMuseeField.setText(m.getNomMusee());
-		emailMuseeField.setText(m.getEmailMusee());
-		telMuseeField.setText(m.getTelMusee());
-		adresseMuseeField.setText(m.getAdressMusee());
-		
-//		prefixeBox.setValue(m.getPrefixeMusee());
 
+		museeIdField.setText(c.getMusee().getMuseeId().toString());
+		nomMuseeField.setText(c.getMusee().getNomMusee());
+		emailMuseeField.setText(c.getMusee().getEmailMusee());
+		telMuseeField.setText(c.getMusee().getTelMusee());
+		adresseMuseeField.setText(c.getMusee().getAdressMusee());
 
 		byte[] getImageInBytes = c.getImage(); // image convert in byte form
 
@@ -966,7 +990,6 @@ public class MainController implements Initializable {
 		}
 
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
@@ -978,7 +1001,7 @@ public class MainController implements Initializable {
 
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
 		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
-		
+
 		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
 		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
 
@@ -1092,7 +1115,6 @@ public class MainController implements Initializable {
 	@FXML
 	private void handleSearch() {
 
-
 		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
 		FilteredList<Contact> filteredData = new FilteredList<>(controller.getContactList(), e -> true);
 
@@ -1132,7 +1154,7 @@ public class MainController implements Initializable {
 		updateImage.setDisable(true);
 		updateFields.setDisable(true);
 		deleteIndex.setDisable(true);
-		
+
 		disableButtons();
 
 		Contact row = table.getSelectionModel().getSelectedItem();

@@ -74,7 +74,7 @@ public class Contact {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_musee")
+	@JoinColumn(name = "fk_musee", nullable =false)
 	public Musee getMusee() {
 		return musee;
 	}
