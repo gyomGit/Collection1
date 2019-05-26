@@ -832,7 +832,8 @@ public class MainController implements Initializable {
 		if (result.get() == ButtonType.OK) {
 
 			controller.removeContact(c.getObjetId());
-			populate();// ... user chose OK
+			index = controller.getContactList().size() - 1;
+			populate();
 
 			Alert alertDeleted = new Alert(AlertType.INFORMATION);
 			alertDeleted.setTitle("Information Supression Index");
@@ -863,6 +864,7 @@ public class MainController implements Initializable {
 			if (result.get() == ButtonType.OK) {
 
 				controller.removeContact(row.getObjetId());
+				index = controller.getContactList().size() - 1;
 				populate();// ... user chose OK
 
 				Alert alertDeleted = new Alert(AlertType.INFORMATION);
