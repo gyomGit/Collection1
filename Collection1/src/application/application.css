@@ -6,7 +6,10 @@
 
 
 #loadDatabase{
-  -fx-background-radius: 8.0;
+  -fx-background-radius: 10.0;
+}
+#browseImage{
+  -fx-background-radius: 10.0;
 }
 #back{
   -fx-background-radius: 18.0;

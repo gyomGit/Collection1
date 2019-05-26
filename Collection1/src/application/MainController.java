@@ -225,11 +225,6 @@ public class MainController implements Initializable {
 		forward.setDisable(true);
 		upfront.setDisable(true);
 
-		museeIdField.setDisable(true);
-		nomMuseeField.setDisable(true);
-		emailMuseeField.setDisable(true);
-		telMuseeField.setDisable(true);
-		adresseMuseeField.setDisable(true);
 	}
 
 	@FXML
@@ -832,7 +827,7 @@ public class MainController implements Initializable {
 		if (result.get() == ButtonType.OK) {
 
 			controller.removeContact(c.getObjetId());
-			index = controller.getContactList().size() - 1;
+			index = 0;
 			populate();
 
 			Alert alertDeleted = new Alert(AlertType.INFORMATION);
@@ -864,7 +859,7 @@ public class MainController implements Initializable {
 			if (result.get() == ButtonType.OK) {
 
 				controller.removeContact(row.getObjetId());
-				index = controller.getContactList().size() - 1;
+				index = 0;
 				populate();// ... user chose OK
 
 				Alert alertDeleted = new Alert(AlertType.INFORMATION);
@@ -1181,6 +1176,12 @@ public class MainController implements Initializable {
 				inventaireField.setText(row.getInventaire());
 				localisationField.setText(row.getLocalisation());
 				imageNameField.setText(row.getImageName());
+				
+				museeIdField.setText(row.getMusee().getMuseeId().toString());
+				nomMuseeField.setText(row.getMusee().getNomMusee());
+				emailMuseeField.setText(row.getMusee().getEmailMusee());
+				telMuseeField.setText(row.getMusee().getTelMusee());
+				adresseMuseeField.setText(row.getMusee().getAdressMusee());
 
 				byte[] getImageInBytes = row.getImage(); // image convert in byte form
 
