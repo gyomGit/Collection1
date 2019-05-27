@@ -27,18 +27,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
-                  <MenuItem disable="true" mnemonicParsing="false" onAction="#handleExport" text="Export" />
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="menuItemImport" mnemonicParsing="false" onAction="#handleImport" text="Import" />
+                  <MenuItem fx:id="menuItemExport" disable="true" mnemonicParsing="false" onAction="#handleExport" text="Export" />
+              <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#closeApp" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleAdd" text="Add New" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleUpdateImage" text="Update Image" />
-                  <MenuItem disable="true" mnemonicParsing="false" onAction="#enableDisableFiels" text="Update Fields" />
-              <MenuItem mnemonicParsing="false" onAction="#handleDeleteRow" text="Delete Row" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteIndex" text="Delete Index" />
+                  <MenuItem fx:id="menuItemAddNew" disable="true" mnemonicParsing="false" onAction="#handleAdd" text="Add New" />
+                  <MenuItem fx:id="menuItemUpdateImage" disable="true" mnemonicParsing="false" onAction="#handleUpdateImage" text="Update Image" />
+                  <MenuItem fx:id="menuItemUpdateFields" disable="true" mnemonicParsing="false" onAction="#handleUpdateFields" text="Update Fields" />
+              <MenuItem fx:id="menuItemDeleteRow" disable="true" mnemonicParsing="false" onAction="#handleDeleteRow" text="Delete Row" />
+                  <MenuItem fx:id="menuItemDeleteIndex" disable="true" mnemonicParsing="false" onAction="#handleDeleteIndex" text="Delete Index" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

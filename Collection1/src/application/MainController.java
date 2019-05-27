@@ -43,6 +43,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.sun.istack.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.beans.binding.ListBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -62,6 +63,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -80,6 +82,30 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MainController implements Initializable {
+
+	@FXML
+	private MenuItem menuItemImport;
+
+	@FXML
+	private MenuItem menuItemExport;
+
+	@FXML
+	private MenuItem menuItemClose;
+	
+    @FXML
+    private MenuItem menuItemAddNew;
+
+    @FXML
+    private MenuItem menuItemUpdateImage;
+
+    @FXML
+    private MenuItem menuItemUpdateFields;
+
+    @FXML
+    private MenuItem menuItemDeleteRow;
+    
+    @FXML
+    private MenuItem menuItemDeleteIndex;
 
 	@FXML
 	private JFXHamburger hamburger;
@@ -232,7 +258,9 @@ public class MainController implements Initializable {
 
 //		addNew.setDisable(false);
 		updateFields.setDisable(false);
+		menuItemUpdateFields.setDisable(false);
 		updateImage.setDisable(true);
+		menuItemUpdateImage.setDisable(true);
 	}
 
 	@FXML
@@ -240,6 +268,7 @@ public class MainController implements Initializable {
 
 //		addNew.setDisable(false);
 		updateFields.setDisable(true);
+		menuItemUpdateFields.setDisable(true);
 //		updateImage.setDisable(false);
 	}
 
@@ -309,7 +338,9 @@ public class MainController implements Initializable {
 		if (file != null) {
 
 			updateImage.setDisable(false);
+			menuItemUpdateImage.setDisable(false);
 			addNew.setDisable(false);
+			menuItemAddNew.setDisable(false);
 
 			imageNameField.setText(file.getName());
 			String imageURL = (file.toURI().toString());
@@ -653,6 +684,7 @@ public class MainController implements Initializable {
 
 					}
 					updateFields.setDisable(true);
+					menuItemUpdateFields.setDisable(true);
 
 				} else {
 					return;
@@ -914,13 +946,14 @@ public class MainController implements Initializable {
 		populateForm(index);
 		populateTable();
 		enableButtons();
-		deleteRow.setDisable(true);
-		deleteIndex.setDisable(false);
 		addNew.setDisable(true);
+		menuItemAddNew.setDisable(true);
 		browseImage.setDisable(false);
 		importButton.setDisable(false);
 		deleteRow.setDisable(true);
+		menuItemDeleteRow.setDisable(true);
 		deleteIndex.setDisable(false);
+		menuItemDeleteIndex.setDisable(false);
 		searchField.setEditable(true);
 		identificationField.setEditable(true);
 		prefixeBox.setDisable(false);
@@ -1092,6 +1125,7 @@ public class MainController implements Initializable {
 						item.setSelected(selectAllCheckBox.isSelected());
 					}
 					getExportButton().setDisable(!selectAllCheckBox.isSelected());
+					getMenuItemExport().setDisable(!selectAllCheckBox.isSelected());
 				}
 			});
 
@@ -1107,6 +1141,15 @@ public class MainController implements Initializable {
 			this.exportButton = exportButton;
 		}
 		return this.exportButton;
+	}
+
+	public MenuItem getMenuItemExport() {
+		if (this.menuItemExport == null) {
+			final MenuItem exportMenuItem = new MenuItem();
+			exportMenuItem.setDisable(true);
+			this.menuItemExport = exportMenuItem;
+		}
+		return this.menuItemExport;
 	}
 
 	@FXML
@@ -1139,8 +1182,11 @@ public class MainController implements Initializable {
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 
 		table.setItems(sortedData);
+		
 		deleteIndex.setDisable(true);
+		menuItemDeleteIndex.setDisable(true);
 		deleteRow.setDisable(false);
+		menuItemDeleteRow.setDisable(false);
 		disableButtons();
 
 	}
@@ -1149,9 +1195,11 @@ public class MainController implements Initializable {
 	private void handleRowSelect() {
 
 		updateImage.setDisable(true);
+		menuItemUpdateImage.setDisable(true);
 		updateFields.setDisable(true);
+		menuItemUpdateFields.setDisable(true);
 		deleteIndex.setDisable(true);
-
+		menuItemDeleteIndex.setDisable(true);
 		disableButtons();
 
 		Contact row = table.getSelectionModel().getSelectedItem();
@@ -1166,7 +1214,9 @@ public class MainController implements Initializable {
 			if (diff < 300) { // another click registered in 300 millis
 
 				deleteIndex.setDisable(true);
+				menuItemDeleteIndex.setDisable(true);
 				deleteRow.setDisable(false);
+				menuItemDeleteRow.setDisable(false);
 				disableButtons();
 
 				objetIdField.setText(row.getObjetId().toString());
@@ -1176,7 +1226,7 @@ public class MainController implements Initializable {
 				inventaireField.setText(row.getInventaire());
 				localisationField.setText(row.getLocalisation());
 				imageNameField.setText(row.getImageName());
-				
+
 				museeIdField.setText(row.getMusee().getMuseeId().toString());
 				nomMuseeField.setText(row.getMusee().getNomMusee());
 				emailMuseeField.setText(row.getMusee().getEmailMusee());
@@ -1324,6 +1374,24 @@ public class MainController implements Initializable {
 
 		popupwindow.showAndWait();
 
+	}
+
+	@FXML
+	private void closeApp(ActionEvent event) {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation de sortie de l'application");
+		alert.setHeaderText("Voulez-vous vraiment quitter l'application?");
+
+		java.util.Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			Platform.exit();
+			System.exit(0);
+
+		} else {
+			return;
+		}
 	}
 
 }
