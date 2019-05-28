@@ -91,21 +91,21 @@ public class MainController implements Initializable {
 
 	@FXML
 	private MenuItem menuItemClose;
-	
-    @FXML
-    private MenuItem menuItemAddNew;
 
-    @FXML
-    private MenuItem menuItemUpdateImage;
+	@FXML
+	private MenuItem menuItemAddNew;
 
-    @FXML
-    private MenuItem menuItemUpdateFields;
+	@FXML
+	private MenuItem menuItemUpdateImage;
 
-    @FXML
-    private MenuItem menuItemDeleteRow;
-    
-    @FXML
-    private MenuItem menuItemDeleteIndex;
+	@FXML
+	private MenuItem menuItemUpdateFields;
+
+	@FXML
+	private MenuItem menuItemDeleteRow;
+
+	@FXML
+	private MenuItem menuItemDeleteIndex;
 
 	@FXML
 	private JFXHamburger hamburger;
@@ -214,23 +214,14 @@ public class MainController implements Initializable {
 
 	// ---------------------------------------
 
-//	private Musee museeInContact;
-//
-//	private Contact contactsInMusee;
-
-	// ---------------------------------------
-
 	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
 			"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
 
 	@FXML
 	private ChoiceBox<String> prefixeBox;
 
-//	private TableColumn<Contact, Integer> active;
-
 	private void enableButtons() {
 
-//		update.setDisable(false);
 		back.setDisable(false);
 		backward.setDisable(false);
 		forward.setDisable(false);
@@ -245,7 +236,6 @@ public class MainController implements Initializable {
 
 	private void disableButtons() {
 
-//		update.setDisable(true);
 		back.setDisable(true);
 		backward.setDisable(true);
 		forward.setDisable(true);
@@ -256,7 +246,6 @@ public class MainController implements Initializable {
 	@FXML
 	private void enableDisableFiels() {
 
-//		addNew.setDisable(false);
 		updateFields.setDisable(false);
 		menuItemUpdateFields.setDisable(false);
 		updateImage.setDisable(true);
@@ -266,10 +255,8 @@ public class MainController implements Initializable {
 	@FXML
 	private void enableDisableImage() {
 
-//		addNew.setDisable(false);
 		updateFields.setDisable(true);
 		menuItemUpdateFields.setDisable(true);
-//		updateImage.setDisable(false);
 	}
 
 	@FXML
@@ -283,9 +270,7 @@ public class MainController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		addMusees();
-//		prefixeBox.setValue(null);
 		prefixeBox.setItems(prefixeList);
-//		populate();
 		imageNameField.clear();
 		imv.setImage(null);
 		identificationField.clear();
@@ -362,7 +347,6 @@ public class MainController implements Initializable {
 			imageBytes = imageInBytes;
 
 		} else {
-//			updateImage.setDisable(true);
 			return;
 		}
 	}
@@ -385,13 +369,6 @@ public class MainController implements Initializable {
 		} else {
 
 			try {
-//				System.out.print("employees Selected : [");
-//				for (Contact contact : table.getItems()) {
-//					if (contact.getSelected()) {
-//						System.out.print(contact.getImage() + ", ");
-//					}
-//				}
-//				System.out.print(" ]\n");
 
 				XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
 
@@ -466,20 +443,11 @@ public class MainController implements Initializable {
 						ClientAnchor anchor = helper.createClientAnchor();
 						// set top-left corner of the picture,
 						// subsequent call of Picture#resize() will operate relative to it
-//					    anchor.setCol1(3);
-//					    anchor.setRow1(2);
-
-//					    anchor.setCol1(1); //Column B
-//					    anchor.setRow1(2); //Row 3
-//					    anchor.setCol2(2); //Column C
-//					    anchor.setRow2(3); //Row 4
 
 						anchor.setCol1(5); // Column F
 
 						anchor.setRow1(index); // Row 2
 
-//					    anchor.setCol2(6); //Column C
-//					    anchor.setRow2(2); //Row 3
 						Picture pict = drawing.createPicture(anchor, pictureIdx);
 
 						pict.resize();
@@ -668,6 +636,7 @@ public class MainController implements Initializable {
 				if (result.get() == ButtonType.OK) {
 
 					if (validateFields()) {
+
 						c.setMusee(controllerMus.getMuseeList().get(i));
 						controller.addContact(c);
 						System.out.println("OUAII!!!");
@@ -681,36 +650,27 @@ public class MainController implements Initializable {
 								+ "' a été ajouté à la base de données il porte actuellement le n° " + c.getObjetId()
 								+ " au sein de cette base.");
 						alert2.showAndWait();
-
 					}
 					updateFields.setDisable(true);
 					menuItemUpdateFields.setDisable(true);
-
 				} else {
 					return;
-
 				}
-
 				return;
-
 			}
-
 		}
-
 	}
 
 	@FXML
 	public void handleUpdateFields(ActionEvent event) {
 
 		Contact c = new Contact();
-//		Musee m = c.getMusee();
 
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
-//		c.setMusee(museeInContact);
 
 		try {
 
@@ -757,18 +717,13 @@ public class MainController implements Initializable {
 								"Le ou les champs de l'objet N° " + c.getObjetId() + " mis à jour avec succès.");
 						alert2.showAndWait();
 					}
-
 				} else {
 					return;
-//			populate(); // ... user chose CANCEL or closed the dialog
+					// ... user chose CANCEL or closed the dialog
 				}
-
 				return;
-
 			}
-
 		}
-
 	}
 
 	@FXML
@@ -781,7 +736,7 @@ public class MainController implements Initializable {
 		c.setPrefixeMusee(prefixeBox.getValue());
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
-//		c.setMusee(museeInContact);
+
 		if (imageBytes != null) {
 			c.setImage(imageBytes);
 		} else {
@@ -871,9 +826,8 @@ public class MainController implements Initializable {
 
 		} else {
 			return;
-//			populate(); // ... user chose CANCEL or closed the dialog
+			// ... user chose CANCEL or closed the dialog
 		}
-
 	}
 
 	@FXML
@@ -960,9 +914,6 @@ public class MainController implements Initializable {
 		inventaireField.setEditable(true);
 		localisationField.setEditable(true);
 		hamburger.setVisible(true);
-
-//		retrieveMusee();
-
 	}
 
 	private void populateForm(int i) {
@@ -1023,10 +974,8 @@ public class MainController implements Initializable {
 
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
+
 		table.getItems().clear();
-//		listView.getItems().clear();
-//		imageNameField.clear();
-//		imv.setImage(null);
 		table.setItems(controller.getContactList());
 
 		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
@@ -1182,11 +1131,13 @@ public class MainController implements Initializable {
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 
 		table.setItems(sortedData);
-		
+
 		deleteIndex.setDisable(true);
 		menuItemDeleteIndex.setDisable(true);
 		deleteRow.setDisable(false);
 		menuItemDeleteRow.setDisable(false);
+		updateFields.setDisable(true);
+		menuItemUpdateFields.setDisable(true);
 		disableButtons();
 
 	}
@@ -1281,18 +1232,14 @@ public class MainController implements Initializable {
 			alert.setContentText("Le champ Identification est vide");
 			alert.showAndWait();
 			return false;
-		}
-
-		else if (prefixeBox.getValue().isEmpty()) {
+		} else if (prefixeBox.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Validate fields");
 			alert.setHeaderText(null);
 			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
 			alert.showAndWait();
 			return false;
-		}
-
-		else if (inventaireField.getText().isEmpty()) {
+		} else if (inventaireField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Validate fields");
 			alert.setHeaderText(null);
@@ -1315,9 +1262,7 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 			return false;
 		}
-
 		return true;
-
 	}
 
 	private static BufferedImage resizeImage(BufferedImage originalImage, int type, int newWidth, int newHeight) {
@@ -1373,14 +1318,13 @@ public class MainController implements Initializable {
 		popupwindow.setScene(scene1);
 
 		popupwindow.showAndWait();
-
 	}
 
 	@FXML
 	private void closeApp(ActionEvent event) {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation de sortie de l'application");
+		alert.setTitle("Confirmation de fermeture de l'application");
 		alert.setHeaderText("Voulez-vous vraiment quitter l'application?");
 
 		java.util.Optional<ButtonType> result = alert.showAndWait();
@@ -1393,5 +1337,4 @@ public class MainController implements Initializable {
 			return;
 		}
 	}
-
 }
