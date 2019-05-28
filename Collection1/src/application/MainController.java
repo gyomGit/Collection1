@@ -28,15 +28,15 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.contact.entity.Contact;
-import org.contact.entity.HibernateUtil;
-import org.contact.entity.Musee;
-import org.contact.service.ContactService;
-import org.contact.service.ContactServiceImpl;
-import org.contact.service.MuseeService;
-import org.contact.service.MuseeServiceImpl;
 import org.controlsfx.control.textfield.TextFields;
 import org.hibernate.Session;
+import org.objet.entity.HibernateUtil;
+import org.objet.entity.Musee;
+import org.objet.entity.Objet;
+import org.objet.service.ObjetService;
+import org.objet.service.ObjetServiceImpl;
+import org.objet.service.MuseeService;
+import org.objet.service.MuseeServiceImpl;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -192,14 +192,14 @@ public class MainController implements Initializable {
 	// --------------------------------------
 
 	@FXML
-	private TableView<Contact> table;
+	private TableView<Objet> table;
 
-	private Contact temp;
+	private Objet temp;
 
 	private Date lastClickTime;
 
 	// -----------------------------------------
-	private ContactController controller = new ContactController();
+	private ObjetController controller = new ObjetController();
 	private MuseeController controllerMus = new MuseeController();
 
 	@FXML
@@ -304,10 +304,10 @@ public class MainController implements Initializable {
 	@FXML
 	private void handleAutoComplete() {
 
-		ContactService contactService = new ContactServiceImpl();
+		ObjetService objetService = new ObjetServiceImpl();
 
-		TextFields.bindAutoCompletion(searchField, contactService.listIdentification());
-		TextFields.bindAutoCompletion(searchField, contactService.listInventaire());
+		TextFields.bindAutoCompletion(searchField, objetService.listIdentification());
+		TextFields.bindAutoCompletion(searchField, objetService.listInventaire());
 	}
 
 	@FXML
@@ -396,19 +396,19 @@ public class MainController implements Initializable {
 				sheet.setColumnWidth(5, widthUnits);
 
 				int index = 1;
-				for (Contact contact : table.getItems())
-					if (contact.getSelected()) {
+				for (Objet objet : table.getItems())
+					if (objet.getSelected()) {
 						XSSFRow row = sheet.createRow(index);
 						row.setHeightInPoints(40);
 
-						row.createCell(0).setCellValue(contact.getObjetId().toString());
-						row.createCell(1).setCellValue(contact.getIdentification());
-						row.createCell(2).setCellValue(contact.getPrefixeMusee());
-						row.createCell(3).setCellValue(contact.getInventaire());
-						row.createCell(4).setCellValue(contact.getLocalisation());
+						row.createCell(0).setCellValue(objet.getObjetId().toString());
+						row.createCell(1).setCellValue(objet.getIdentification());
+						row.createCell(2).setCellValue(objet.getPrefixeMusee());
+						row.createCell(3).setCellValue(objet.getInventaire());
+						row.createCell(4).setCellValue(objet.getLocalisation());
 
 						// get image from the database to a file named "photo2.jpg"
-						byte[] getImageInBytes2 = contact.getImage(); // image convert in byte form
+						byte[] getImageInBytes2 = objet.getImage(); // image convert in byte form
 
 						try {
 							FileOutputStream outputstream = new FileOutputStream(new File("photo2.jpg"));
@@ -539,7 +539,7 @@ public class MainController implements Initializable {
 						localisation = row.getCell(4).toString();
 
 					s.beginTransaction();
-					Contact c = new Contact();
+					Objet c = new Objet();
 //				c.setObjetId(Integer.parseInt(objetId));
 					c.setIdentification(identification);
 					c.setPrefixeMusee(prefixeMusee);
@@ -613,7 +613,7 @@ public class MainController implements Initializable {
 	@FXML
 	private void handleAdd(ActionEvent event) {
 
-		Contact c = new Contact();
+		Objet c = new Objet();
 
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
@@ -638,7 +638,7 @@ public class MainController implements Initializable {
 					if (validateFields()) {
 
 						c.setMusee(controllerMus.getMuseeList().get(i));
-						controller.addContact(c);
+						controller.addObjet(c);
 						System.out.println("OUAII!!!");
 
 						populate();
@@ -664,7 +664,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleUpdateFields(ActionEvent event) {
 
-		Contact c = new Contact();
+		Objet c = new Objet();
 
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
@@ -705,7 +705,7 @@ public class MainController implements Initializable {
 					if (validateFields()) {
 
 						c.setMusee(controllerMus.getMuseeList().get(i));
-						controller.updateContact(c);
+						controller.updateObjet(c);
 						System.out.println("OUAII!!!");
 
 						populate();
@@ -729,7 +729,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleUpdateImage(ActionEvent event) {
 
-		Contact c = new Contact();
+		Objet c = new Objet();
 
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
@@ -774,7 +774,7 @@ public class MainController implements Initializable {
 					if (validateFields()) {
 
 						c.setMusee(controllerMus.getMuseeList().get(i));
-						controller.updateContact(c);
+						controller.updateObjet(c);
 						System.out.println("OUAII!!!");
 
 						populate();
@@ -803,7 +803,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleDeleteIndex(ActionEvent event) {
 
-		Contact c = (Contact) controller.getContactList().get(index);
+		Objet c = (Objet) controller.getObjetList().get(index);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Supression Index");
@@ -813,7 +813,7 @@ public class MainController implements Initializable {
 		java.util.Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
-			controller.removeContact(c.getObjetId());
+			controller.removeObjet(c.getObjetId());
 			index = 0;
 			populate();
 
@@ -833,7 +833,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleDeleteRow(ActionEvent event) {
 
-		Contact row = table.getSelectionModel().getSelectedItem();
+		Objet row = table.getSelectionModel().getSelectedItem();
 
 		if (row != null) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -844,7 +844,7 @@ public class MainController implements Initializable {
 			java.util.Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
 
-				controller.removeContact(row.getObjetId());
+				controller.removeObjet(row.getObjetId());
 				index = 0;
 				populate();// ... user chose OK
 
@@ -881,7 +881,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleForward(ActionEvent event) {
 
-		if (index < controller.getContactList().size() - 1) {
+		if (index < controller.getObjetList().size() - 1) {
 			index++;
 		} else
 			event.consume();
@@ -891,7 +891,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleUpfront(ActionEvent event) {
 
-		index = controller.getContactList().size() - 1;
+		index = controller.getObjetList().size() - 1;
 		populate();
 	}
 
@@ -917,10 +917,10 @@ public class MainController implements Initializable {
 	}
 
 	private void populateForm(int i) {
-		if (controller.getContactList().isEmpty())
+		if (controller.getObjetList().isEmpty())
 			return;
 
-		Contact c = (Contact) controller.getContactList().get(i);
+		Objet c = (Objet) controller.getObjetList().get(i);
 
 		objetIdField.setText(c.getObjetId().toString());
 		identificationField.setText(c.getIdentification());
@@ -976,38 +976,38 @@ public class MainController implements Initializable {
 	private void populateTable() {
 
 		table.getItems().clear();
-		table.setItems(controller.getContactList());
+		table.setItems(controller.getObjetList());
 
-		TableColumn<Contact, Integer> objetIdCol = new TableColumn<Contact, Integer>("Objet ID");
-		objetIdCol.setCellValueFactory(new PropertyValueFactory<Contact, Integer>("objetId"));
+		TableColumn<Objet, Integer> objetIdCol = new TableColumn<Objet, Integer>("Objet ID");
+		objetIdCol.setCellValueFactory(new PropertyValueFactory<Objet, Integer>("objetId"));
 
-		TableColumn<Contact, String> identificationCol = new TableColumn<Contact, String>("Identification");
-		identificationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("identification"));
+		TableColumn<Objet, String> identificationCol = new TableColumn<Objet, String>("Identification");
+		identificationCol.setCellValueFactory(new PropertyValueFactory<Objet, String>("identification"));
 
-		TableColumn<Contact, String> prefixeMuseeCol = new TableColumn<Contact, String>("Prefixe Musée");
-		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("prefixeMusee"));
+		TableColumn<Objet, String> prefixeMuseeCol = new TableColumn<Objet, String>("Prefixe Musée");
+		prefixeMuseeCol.setCellValueFactory(new PropertyValueFactory<Objet, String>("prefixeMusee"));
 
-		TableColumn<Contact, String> inventaireCol = new TableColumn<Contact, String>("Inventaire");
-		inventaireCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("inventaire"));
+		TableColumn<Objet, String> inventaireCol = new TableColumn<Objet, String>("Inventaire");
+		inventaireCol.setCellValueFactory(new PropertyValueFactory<Objet, String>("inventaire"));
 
-		TableColumn<Contact, String> localisationCol = new TableColumn<Contact, String>("Localisation");
-		localisationCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("localisation"));
+		TableColumn<Objet, String> localisationCol = new TableColumn<Objet, String>("Localisation");
+		localisationCol.setCellValueFactory(new PropertyValueFactory<Objet, String>("localisation"));
 
-		TableColumn<Contact, String> imageNameCol = new TableColumn<Contact, String>("Titre de l'image");
-		imageNameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("imageName"));
+		TableColumn<Objet, String> imageNameCol = new TableColumn<Objet, String>("Titre de l'image");
+		imageNameCol.setCellValueFactory(new PropertyValueFactory<Objet, String>("imageName"));
 
-		TableColumn<Contact, byte[]> imageCol = new TableColumn<Contact, byte[]>("Image");
-		imageCol.setCellValueFactory(new PropertyValueFactory<Contact, byte[]>("image"));
+		TableColumn<Objet, byte[]> imageCol = new TableColumn<Objet, byte[]>("Image");
+		imageCol.setCellValueFactory(new PropertyValueFactory<Objet, byte[]>("image"));
 
-		TableColumn<Contact, Boolean> selectCol = new TableColumn<Contact, Boolean>("");
+		TableColumn<Objet, Boolean> selectCol = new TableColumn<Objet, Boolean>("");
 		selectCol.setMinWidth(50);
 		selectCol.setGraphic(getSelectAllCheckBox());
-		selectCol.setCellValueFactory(new PropertyValueFactory<Contact, Boolean>("selected"));
+		selectCol.setCellValueFactory(new PropertyValueFactory<Objet, Boolean>("selected"));
 
-		selectCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
+		selectCol.setCellFactory(new Callback<TableColumn<Objet, Boolean>, TableCell<Objet, Boolean>>() {
 
-			public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> p) {
-				final TableCell<Contact, Boolean> cell = new TableCell<Contact, Boolean>() {
+			public TableCell<Objet, Boolean> call(TableColumn<Objet, Boolean> p) {
+				final TableCell<Objet, Boolean> cell = new TableCell<Objet, Boolean>() {
 
 					@Override
 					public void updateItem(final Boolean item, boolean empty) {
@@ -1015,7 +1015,7 @@ public class MainController implements Initializable {
 							return;
 						super.updateItem(item, empty);
 						if (!isEmpty()) {
-							final Contact c = getTableView().getItems().get(getIndex());
+							final Objet c = getTableView().getItems().get(getIndex());
 							CheckBox checkBox = new CheckBox();
 							checkBox.selectedProperty().bindBidirectional(c.selectedProperty());
 							setGraphic(checkBox);
@@ -1041,7 +1041,7 @@ public class MainController implements Initializable {
 			@Override
 			protected ObservableList<Boolean> computeValue() {
 				ObservableList<Boolean> list = FXCollections.observableArrayList();
-				for (Contact c : table.getItems()) {
+				for (Objet c : table.getItems()) {
 					list.add(c.getSelected());
 				}
 				return list;
@@ -1070,7 +1070,7 @@ public class MainController implements Initializable {
 				@Override
 				public void handle(ActionEvent event) {
 					// Setting the value in all the employees.
-					for (Contact item : table.getItems()) {
+					for (Objet item : table.getItems()) {
 						item.setSelected(selectAllCheckBox.isSelected());
 					}
 					getExportButton().setDisable(!selectAllCheckBox.isSelected());
@@ -1105,27 +1105,27 @@ public class MainController implements Initializable {
 	private void handleSearch() {
 
 		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
-		FilteredList<Contact> filteredData = new FilteredList<>(controller.getContactList(), e -> true);
+		FilteredList<Objet> filteredData = new FilteredList<>(controller.getObjetList(), e -> true);
 
 		searchField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-			filteredData.setPredicate(contact -> {
-				// If filter text is empty, display all contacts.
+			filteredData.setPredicate(objet -> {
+				// If filter text is empty, display all objets.
 				if (newValue == null || newValue.isEmpty()) {
 					return true;
 				}
 				// Compare first name and last name of every person with filter text.
 				String lowerCaseFilter = newValue.toLowerCase();
 
-				if (contact.getIdentification().toLowerCase().contains(lowerCaseFilter)) {
+				if (objet.getIdentification().toLowerCase().contains(lowerCaseFilter)) {
 					return true;// Filter matches identification.
-				} else if (contact.getInventaire().toLowerCase().contains(lowerCaseFilter)) {
+				} else if (objet.getInventaire().toLowerCase().contains(lowerCaseFilter)) {
 					return true;// Filter matches inventaire.
 				}
 				return false;// Does not match.
 			});
 		});
 		// 3. Wrap the FilteredList in a SortedList.
-		SortedList<Contact> sortedData = new SortedList<>(filteredData);
+		SortedList<Objet> sortedData = new SortedList<>(filteredData);
 
 		// 4. Bind the SortedList comparator to the TableView comparator.
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
@@ -1153,7 +1153,7 @@ public class MainController implements Initializable {
 		menuItemDeleteIndex.setDisable(true);
 		disableButtons();
 
-		Contact row = table.getSelectionModel().getSelectedItem();
+		Objet row = table.getSelectionModel().getSelectedItem();
 		if (row == null)
 			return;
 		if (row != temp) {

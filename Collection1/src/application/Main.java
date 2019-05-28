@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 //View Layer of MVC
 /* Our front-end object is implemented in JavaFX. Main.java acts as a View layer for our 
 * application. The View layer translates data for visual rendering in response to the client. 
-* The data is supplied primarily by the Controller, ContactController.java in this case.
+* The data is supplied primarily by the Controller, ObjetController.java in this case.
 */
 
 public class Main extends Application {

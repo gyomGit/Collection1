@@ -1,19 +1,18 @@
-package org.contact.service;
+package org.objet.service;
 
 import java.util.List;
 
+import org.objet.dao.MuseeDAO;
+import org.objet.dao.MuseeDAOImpl;
+import org.objet.entity.Musee;
 
-import org.contact.dao.MuseeDAO;
-import org.contact.dao.MuseeDAOImpl;
-import org.contact.entity.Musee;
 
-
-/* ContactServiceImpl.java is the concrete implementation 
- * of the ContactService.java interface. It provides a 
+/* ObjetServiceImpl.java is the concrete implementation 
+ * of the ObjetService.java interface. It provides a 
  * public interface of underlying model objects.
  */
 
-// ContactServiceImpl.java
+// ObjetServiceImpl.java
 
 public class MuseeServiceImpl implements MuseeService {
 

@@ -2,9 +2,10 @@ package application;
 
 import java.util.List;
 
-import org.contact.entity.Musee;
-import org.contact.service.MuseeService;
-import org.contact.service.MuseeServiceImpl;
+import org.objet.entity.Musee;
+import org.objet.service.MuseeService;
+import org.objet.service.MuseeServiceImpl;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -36,7 +37,7 @@ public class MuseeController
           return museeList;
      }
 
-     public void removeContact(Integer id)     {
+     public void removeObjet(Integer id)     {
           museeService.removeMusee(id);
      }
 

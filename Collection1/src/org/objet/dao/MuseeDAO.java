@@ -1,16 +1,16 @@
-package org.contact.dao;
+package org.objet.dao;
 
 import java.util.List;
 
-import org.contact.entity.Musee;
+import org.objet.entity.Musee;
 
-/* ContactDAO.java is an abstract interface of our persistence
+/* ObjetDAO.java is an abstract interface of our persistence
  * mechanism. It supports operation without exposing any details 
  * of the database. This interface provides a mapping from 
  * application calls to the persistence layer.
  */
 
-// ContactDAO.java
+// ObjetDAO.java
 
 public interface MuseeDAO {
 	

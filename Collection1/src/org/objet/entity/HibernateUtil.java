@@ -1,4 +1,4 @@
-package org.contact.entity;
+package org.objet.entity;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -52,7 +52,7 @@ public class HibernateUtil {
 
      private static  Configuration getConfiguration() {
           Configuration cfg = new Configuration();
-          cfg.addAnnotatedClass(Contact.class );
+          cfg.addAnnotatedClass(Objet.class );
           cfg.addAnnotatedClass(Musee.class );
           cfg.setProperty("hibernate.connection.driver_class","org.postgresql.Driver");
           cfg.setProperty("hibernate.connection.url","jdbc:postgresql://127.0.0.1:5432/comptesdb");

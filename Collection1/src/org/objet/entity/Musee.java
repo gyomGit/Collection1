@@ -1,4 +1,4 @@
-package org.contact.entity;
+package org.objet.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import javafx.beans.property.StringProperty;
 /* The model layer implements the domain logic of 
  * the application with strong separation from the way 
  * that the user requests and sees results. 
- * Contact.java is our annotation-based entity class 
- * for creating the Contacts database table.
+ * Objet.java is our annotation-based entity class 
+ * for creating the Objets database table.
  */
 
 @Entity
@@ -36,7 +36,7 @@ public class Musee {
     private final StringProperty adressMusee = new SimpleStringProperty() ;
     private final StringProperty emailMusee = new SimpleStringProperty() ;
     private final StringProperty telMusee = new SimpleStringProperty() ;
-    private List<Contact> contacts = new ArrayList<Contact>();
+    private List<Objet> objets = new ArrayList<Objet>();
 
 	
 
@@ -45,7 +45,7 @@ public class Musee {
 	}
 
 	public Musee(Integer museeId, String nomMusee, String prefixeMusee,
-			String adressMusee, String emailMusee, String telMusee, List<Contact> contacts ) {
+			String adressMusee, String emailMusee, String telMusee, List<Objet> objets ) {
 		super();
 		setMuseeId(museeId);
 		setNomMusee(nomMusee);
@@ -53,7 +53,7 @@ public class Musee {
 		setAdressMusee (adressMusee);
 		setEmailMusee(emailMusee);
 		setTelMusee(telMusee);
-		setContacts(contacts);
+		setObjets(objets);
 		
 	}
 	
@@ -71,17 +71,12 @@ public class Musee {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "musee")
 	@Column(name="MUSEE_ID", nullable = false)
-	public List<Contact> getContacts(){
-		return this.contacts;
-	}
+	public List<Objet> getObjets(){
+		return this.objets;
+	}	
 	
-//	public void setContactMusee(Contact contact) {
-//        if(contacts == null) contacts = new ArrayList<Contact>();
-//        contact.setMusee(this);
-//    }
-	
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts; 
+	public void setObjets(List<Objet> objets) {
+		this.objets = objets; 
 	}
 	
 	@Column(name = "NOMMUSEE")

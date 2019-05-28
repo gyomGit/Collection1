@@ -1,11 +1,11 @@
-package org.contact.dao;
+package org.objet.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.contact.entity.HibernateUtil;
-import org.contact.entity.Musee;
 import org.hibernate.Session;
+import org.objet.entity.HibernateUtil;
+import org.objet.entity.Objet;
 
 /* A concrete implementation of this interface is 
  * provided by the ContactDAOImpl.java class. This 
@@ -16,58 +16,69 @@ import org.hibernate.Session;
 
 // ContactDAOImpl.java
 
-public class MuseeDAOImpl implements MuseeDAO{
+public class ObjetDAOImpl implements ObjetDAO{
 	
      @Override
-     public void addMusee(Musee musee) {
+     public void addObjet(Objet objet) {
           Session s = HibernateUtil.openSession();
           s.beginTransaction();
-          s.save(musee);
+          s.save(objet);
           s.getTransaction().commit();
           s.close();
      }
 
      @SuppressWarnings("unchecked")
 	@Override
-     public List<Musee> listMusee() {
-          List<Musee> list = new ArrayList<>();
+     public List<Objet> listObjet() {
+          List<Objet> list = new ArrayList<>();
           Session s = HibernateUtil.openSession();
           s.beginTransaction();
-          list = s.createQuery("from Musee").list();
+          list = s.createQuery("from Objet").list();
           s.getTransaction().commit();
           s.close();
           return list;
      }
 
      @Override
-     public void removeMusee(Integer id) {
+     public void removeObjet(Integer id) {
           Session s = HibernateUtil.openSession();
           s.beginTransaction();
-          Musee m = (Musee)s.load(Musee.class , id);
-          s.delete(m);
+          Objet c = (Objet)s.load(Objet.class , id);
+          s.delete(c);
           s.getTransaction().commit();
           s.close();
      }
 
      @Override
-     public void updateMusee(Musee musee) {
+     public void updateObjet(Objet objet) {
           Session s = HibernateUtil.openSession();
           s.beginTransaction();
-          s.update(musee);
+          s.update(objet);
           s.getTransaction().commit();
           s.close();
      }
 
      @SuppressWarnings("unchecked")
 	@Override
-     public List<String> listNomMusee() {
+     public List<String> listIdentification() {
           List<String> listI = new ArrayList<>();
           Session s = HibernateUtil.openSession();
           s.beginTransaction();
-          listI = s.createQuery("select nomMusee from Musee").list();
+          listI = s.createQuery("select identification from Objet").list();
           s.getTransaction().commit();
           s.close();
           return listI;
      }
      
+     @SuppressWarnings("unchecked")
+	@Override
+     public List<String> listInventaire() {
+          List<String> listInv = new ArrayList<>();
+          Session s = HibernateUtil.openSession();
+          s.beginTransaction();
+          listInv = s.createQuery("select inventaire from Objet").list();
+          s.getTransaction().commit();
+          s.close();
+          return listInv;
+     }
 }

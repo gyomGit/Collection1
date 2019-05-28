@@ -1,7 +1,8 @@
-package org.contact.dao;
+package org.objet.dao;
 
 import java.util.List;
-import org.contact.entity.Contact;
+
+import org.objet.entity.Objet;
 
 /* ContactDAO.java is an abstract interface of our persistence
  * mechanism. It supports operation without exposing any details 
@@ -11,15 +12,15 @@ import org.contact.entity.Contact;
 
 // ContactDAO.java
 
-public interface ContactDAO {
+public interface ObjetDAO {
 	
-	public void addContact(Contact contact);
+	public void addObjet(Objet objet);
 
-	public List<Contact> listContact();
+	public List<Objet> listObjet();
 
-	public void removeContact(Integer id);
+	public void removeObjet(Integer id);
 
-	public void updateContact(Contact contact);
+	public void updateObjet(Objet objet);
 
 	public List<String> listIdentification();
 

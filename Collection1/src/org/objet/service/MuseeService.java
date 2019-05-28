@@ -1,17 +1,17 @@
-package org.contact.service;
+package org.objet.service;
 
 import java.util.List;
 
-import org.contact.entity.Musee;
+import org.objet.entity.Musee;
 
 // Model Layer: Services
-/* The ContactService.java interface provides cohesive, 
+/* The ObjetService.java interface provides cohesive, 
  * high-level logic for related parts of the application. 
  * This layer is invoked directly by the Controller and 
  * View layers.
  */
 
-// ContactService.java
+// ObjetService.java
 
 public interface MuseeService {
 

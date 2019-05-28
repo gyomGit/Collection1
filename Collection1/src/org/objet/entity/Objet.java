@@ -1,4 +1,4 @@
-package org.contact.entity;
+package org.objet.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,13 +21,13 @@ import javafx.beans.property.StringProperty;
 /* The model layer implements the domain logic of 
  * the application with strong separation from the way 
  * that the user requests and sees results. 
- * Contact.java is our annotation-based entity class 
- * for creating the Contacts database table.
+ * Objet.java is our annotation-based entity class 
+ * for creating the Objets database table.
  */
 
 @Entity
 @Table(name = "OBJET")
-public class Contact {
+public class Objet {
 	
 	
     private final IntegerProperty objetId = new SimpleIntegerProperty() ; 
@@ -43,11 +43,11 @@ public class Contact {
 
 	
 
-	public Contact() {
+	public Objet() {
 		super();
 	}
 
-	public Contact(Integer objetId,Boolean selected, String identification, String prefixeMusee, String inventaire,
+	public Objet(Integer objetId,Boolean selected, String identification, String prefixeMusee, String inventaire,
 			String localisation, byte[] image, String imageName, Musee musee) {
 		super();
 		setObjetId(objetId);
