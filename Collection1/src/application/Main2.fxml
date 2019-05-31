@@ -147,8 +147,8 @@
                               <Font size="11.0" />
                            </font>
                         </Label>
-                        <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="16.0" layoutY="363.0" onDragDetected="#handle" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="browseImage" blendMode="EXCLUSION" disable="true" layoutX="19.0" layoutY="499.0" mnemonicParsing="false" onAction="#handle" onMouseReleased="#enableDisableImage" text="Upload Image">
+                        <ImageView fx:id="imv" fitHeight="83.0" fitWidth="135.0" layoutX="16.0" layoutY="363.0" onDragDetected="#handleImage" onMouseReleased="#display" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="browseImage" blendMode="EXCLUSION" disable="true" layoutX="19.0" layoutY="499.0" mnemonicParsing="false" onAction="#handleImage" onMouseReleased="#enableDisableImage" text="Upload Image">
                            <tooltip>
                               <Tooltip text="Charge une Image depuis l'ordinateur.">
                                  <font>

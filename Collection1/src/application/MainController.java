@@ -269,7 +269,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		addMusees();
+		handleAddMusees();
 		prefixeBox.setItems(prefixeList);
 		imageNameField.clear();
 		imv.setImage(null);
@@ -311,7 +311,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handle(ActionEvent t) throws IOException {
+	public void handleImage(ActionEvent t) throws IOException {
 
 		FileChooser fileChooser = new FileChooser();
 
@@ -568,7 +568,7 @@ public class MainController implements Initializable {
 
 	// Ajoute les musées à la base de données si il n'y sont pas encore.
 
-	private void addMusees() {
+	private void handleAddMusees() {
 
 		MuseeService museeService = new MuseeServiceImpl();
 
@@ -653,7 +653,7 @@ public class MainController implements Initializable {
 					}
 					updateFields.setDisable(true);
 					menuItemUpdateFields.setDisable(true);
-				} else {
+				} else {				
 					return;
 				}
 				return;
@@ -1145,6 +1145,7 @@ public class MainController implements Initializable {
 	@FXML
 	private void handleRowSelect() {
 
+		addNew.setDisable(true);
 		updateImage.setDisable(true);
 		menuItemUpdateImage.setDisable(true);
 		updateFields.setDisable(true);
