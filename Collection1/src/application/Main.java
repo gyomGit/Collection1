@@ -20,16 +20,16 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Collection");
-		Parent root = FXMLLoader.load(getClass().getResource("/application/Main2.fxml"));
+	public void start(Stage loginStage) throws Exception {
+		loginStage.setTitle("Collection");
+		Parent root = FXMLLoader.load(getClass().getResource("/application/Login.fxml"));
 
-		Scene scene = new Scene(root, 1200, 700);
+		Scene scene = new Scene(root, 300, 300);
 
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		loginStage.setScene(scene);
+		loginStage.show();
 	}
 
 }

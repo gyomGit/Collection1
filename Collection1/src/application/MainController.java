@@ -33,10 +33,10 @@ import org.hibernate.Session;
 import org.objet.entity.HibernateUtil;
 import org.objet.entity.Musee;
 import org.objet.entity.Objet;
-import org.objet.service.ObjetService;
-import org.objet.service.ObjetServiceImpl;
 import org.objet.service.MuseeService;
 import org.objet.service.MuseeServiceImpl;
+import org.objet.service.ObjetService;
+import org.objet.service.ObjetServiceImpl;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -63,7 +63,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -153,6 +155,17 @@ public class MainController implements Initializable {
 
 // --------------------------------------	
 
+    @FXML
+    private TextField userNameField;
+
+    @FXML
+    private PasswordField passWordField;
+
+    @FXML
+    private Label statusLabel;
+
+//  ---------------------------------------
+	
 	@FXML
 	private TextField objetIdField;
 
@@ -211,8 +224,6 @@ public class MainController implements Initializable {
 	private byte[] imageBytes;
 
 	private byte[] imageByteUpdate;
-
-	// ---------------------------------------
 
 	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
 			"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
@@ -358,7 +369,7 @@ public class MainController implements Initializable {
 		Alert alert1 = new Alert(AlertType.INFORMATION);
 		alert1.setTitle("Information Dialog");
 		alert1.setHeaderText(null);
-		alert1.setContentText("Veuiller choisir un dossier de destination");
+		alert1.setContentText("Veuillez choisir un dossier de destination");
 		alert1.showAndWait();
 
 		DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -1020,6 +1031,7 @@ public class MainController implements Initializable {
 							checkBox.selectedProperty().bindBidirectional(c.selectedProperty());
 							setGraphic(checkBox);
 							getExportButton().setDisable(!checkBox.isSelected());
+							getMenuItemExport().setDisable(!checkBox.isSelected());
 						}
 					}
 				};
@@ -1228,35 +1240,35 @@ public class MainController implements Initializable {
 
 		if (identificationField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Validate fields");
+			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText("Le champ Identification est vide");
 			alert.showAndWait();
 			return false;
 		} else if (prefixeBox.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Validate fields");
+			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
 			alert.showAndWait();
 			return false;
 		} else if (inventaireField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Validate fields");
+			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText("Le champ Inventaire est vide");
 			alert.showAndWait();
 			return false;
 		} else if (localisationField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Validate fields");
+			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText("Le champ Localisation est vide");
 			alert.showAndWait();
 			return false;
 		} else if (imageNameField.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Validate fields");
+			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText(
 					"La photo n'a pas été sélectionnée pour cet objet. \nVeuillez sélectionner une photo.");
