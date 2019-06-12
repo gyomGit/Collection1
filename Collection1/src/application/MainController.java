@@ -364,7 +364,7 @@ public class MainController implements Initializable {
 
 	@SuppressWarnings("resource")
 	@FXML
-	private void handleExport(ActionEvent event) {
+	public void handleExport(ActionEvent event) {
 
 		Alert alert1 = new Alert(AlertType.INFORMATION);
 		alert1.setTitle("Information Dialog");
@@ -487,7 +487,7 @@ public class MainController implements Initializable {
 
 	@SuppressWarnings("resource")
 	@FXML
-	private void handleImport(ActionEvent event) throws IOException {
+	public void handleImport(ActionEvent event) throws IOException {
 
 		Alert alert1 = new Alert(AlertType.INFORMATION);
 		alert1.setTitle("Information Dialog");
@@ -579,7 +579,7 @@ public class MainController implements Initializable {
 
 	// Ajoute les musées à la base de données si il n'y sont pas encore.
 
-	private void handleAddMusees() {
+	public void handleAddMusees() {
 
 		MuseeService museeService = new MuseeServiceImpl();
 
@@ -622,7 +622,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	private void handleAdd(ActionEvent event) {
+	public void handleAdd(ActionEvent event) {
 
 		Objet c = new Objet();
 

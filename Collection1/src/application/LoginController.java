@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +40,7 @@ public class LoginController {
 			
 			Parent root = FXMLLoader.load(getClass().getResource("/application/Main2.fxml"));
 
-			Scene scene = new Scene(root, 1024, 768);
+			Scene scene = new Scene(root, 900, 700);
 
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

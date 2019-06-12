@@ -28,36 +28,32 @@ import javafx.beans.property.StringProperty;
 @Entity
 @Table(name = "musee")
 public class Musee {
-	
-	
-    private final IntegerProperty museeId = new SimpleIntegerProperty() ; 
-    private final StringProperty nomMusee = new SimpleStringProperty() ;
-    private final StringProperty prefixeMusee = new SimpleStringProperty() ;
-    private final StringProperty adressMusee = new SimpleStringProperty() ;
-    private final StringProperty emailMusee = new SimpleStringProperty() ;
-    private final StringProperty telMusee = new SimpleStringProperty() ;
-    private List<Objet> objets = new ArrayList<Objet>();
 
-	
+	private final IntegerProperty museeId = new SimpleIntegerProperty();
+	private final StringProperty nomMusee = new SimpleStringProperty();
+	private final StringProperty prefixeMusee = new SimpleStringProperty();
+	private final StringProperty adressMusee = new SimpleStringProperty();
+	private final StringProperty emailMusee = new SimpleStringProperty();
+	private final StringProperty telMusee = new SimpleStringProperty();
+	private List<Objet> objets = new ArrayList<Objet>();
 
 	public Musee() {
 		super();
 	}
 
-	public Musee(Integer museeId, String nomMusee, String prefixeMusee,
-			String adressMusee, String emailMusee, String telMusee, List<Objet> objets ) {
+	public Musee(Integer museeId, String nomMusee, String prefixeMusee, String adressMusee, String emailMusee,
+			String telMusee, List<Objet> objets) {
 		super();
 		setMuseeId(museeId);
 		setNomMusee(nomMusee);
 		setPrefixeMusee(prefixeMusee);
-		setAdressMusee (adressMusee);
+		setAdressMusee(adressMusee);
 		setEmailMusee(emailMusee);
 		setTelMusee(telMusee);
 		setObjets(objets);
-		
+
 	}
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "MUSEEID", updatable = false, nullable = false)
@@ -68,17 +64,17 @@ public class Musee {
 	public void setMuseeId(Integer museeId) {
 		this.museeId.set(museeId);
 	}
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "musee")
-	@Column(name="MUSEE_ID", nullable = false)
-	public List<Objet> getObjets(){
+	@Column(name = "MUSEE_ID", nullable = false)
+	public List<Objet> getObjets() {
 		return this.objets;
-	}	
-	
-	public void setObjets(List<Objet> objets) {
-		this.objets = objets; 
 	}
-	
+
+	public void setObjets(List<Objet> objets) {
+		this.objets = objets;
+	}
+
 	@Column(name = "NOMMUSEE")
 	public String getNomMusee() {
 		return nomMusee.get();
@@ -114,7 +110,7 @@ public class Musee {
 	public void setEmailMusee(String emailMusee) {
 		this.emailMusee.set(emailMusee);
 	}
-	
+
 	@Column(name = "TELMUSEE")
 	public String getTelMusee() {
 		return telMusee.get();

@@ -28,26 +28,22 @@ import javafx.beans.property.StringProperty;
 @Entity
 @Table(name = "OBJET")
 public class Objet {
-	
-	
-    private final IntegerProperty objetId = new SimpleIntegerProperty() ; 
-    private final BooleanProperty selected= new SimpleBooleanProperty() ;
-    private final StringProperty identification = new SimpleStringProperty() ;
-    private final StringProperty prefixeMusee = new SimpleStringProperty() ;
-    private final StringProperty inventaire = new SimpleStringProperty() ;
-    private final StringProperty localisation = new SimpleStringProperty() ;
-    private byte[] image;
-    private final StringProperty imageName = new SimpleStringProperty() ;
-    private Musee musee;
 
-
-	
+	private final IntegerProperty objetId = new SimpleIntegerProperty();
+	private final BooleanProperty selected = new SimpleBooleanProperty();
+	private final StringProperty identification = new SimpleStringProperty();
+	private final StringProperty prefixeMusee = new SimpleStringProperty();
+	private final StringProperty inventaire = new SimpleStringProperty();
+	private final StringProperty localisation = new SimpleStringProperty();
+	private byte[] image;
+	private final StringProperty imageName = new SimpleStringProperty();
+	private Musee musee;
 
 	public Objet() {
 		super();
 	}
 
-	public Objet(Integer objetId,Boolean selected, String identification, String prefixeMusee, String inventaire,
+	public Objet(Integer objetId, Boolean selected, String identification, String prefixeMusee, String inventaire,
 			String localisation, byte[] image, String imageName, Musee musee) {
 		super();
 		setObjetId(objetId);
@@ -59,12 +55,12 @@ public class Objet {
 		setImage(image);
 		setImageName(imageName);
 		setMusee(musee);
-		
+
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "OBJETID", updatable = false, nullable =false)
+	@Column(name = "OBJETID", updatable = false, nullable = false)
 	public Integer getObjetId() {
 		return objetId.get();
 	}
@@ -72,27 +68,26 @@ public class Objet {
 	public void setObjetId(Integer objetId) {
 		this.objetId.set(objetId);
 	}
-	
+
 	@ManyToOne
-	@JoinColumn(name = "fk_musee", nullable =false)
+	@JoinColumn(name = "fk_musee", nullable = false)
 	public Musee getMusee() {
 		return musee;
 	}
-	
+
 	public void setMusee(Musee musee) {
 		this.musee = musee;
 	}
-	
-	
+
 	public BooleanProperty selectedProperty() {
 		return selected;
 	}
 
-	@Column(name = "SELECTED", nullable = false)	
+	@Column(name = "SELECTED", nullable = false)
 	public Boolean getSelected() {
 		return selected.get();
 	}
-	
+
 	public void setSelected(Boolean selected) {
 		this.selected.set(selected);
 	}
@@ -132,7 +127,7 @@ public class Objet {
 	public void setLocalisation(String localisation) {
 		this.localisation.set(localisation);
 	}
-	
+
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
@@ -142,7 +137,7 @@ public class Objet {
 	public byte[] getImage() {
 		return image;
 	}
-	
+
 	@Column(name = "IMAGENAME")
 	public String getImageName() {
 		return imageName.get();
