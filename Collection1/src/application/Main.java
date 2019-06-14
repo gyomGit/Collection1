@@ -1,16 +1,20 @@
 package application;
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Classe de démarrage de l'application 'Collection'
+ */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-//View Layer of MVC
-/* Our front-end object is implemented in JavaFX. Main.java acts as a View layer for our 
-* application. The View layer translates data for visual rendering in response to the client. 
-* The data is supplied primarily by the Controller, ObjetController.java in this case.
-*/
 
 public class Main extends Application {
 
@@ -25,7 +29,6 @@ public class Main extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("/application/Login.fxml"));
 
 		Scene scene = new Scene(root, 300, 300);
-
 
 		loginStage.setScene(scene);
 		loginStage.show();

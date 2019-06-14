@@ -83,6 +83,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *          Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *          que j'appelle 'Collection' servant à gérer les objets dans les
+ *          Musées.
+ * 
+ *          Classe Contrôleur Principal de l'application 'Collection'
+ */
+
 public class MainController implements Initializable {
 
 	@FXML
@@ -155,17 +166,17 @@ public class MainController implements Initializable {
 
 // --------------------------------------	
 
-    @FXML
-    private TextField userNameField;
+	@FXML
+	private TextField userNameField;
 
-    @FXML
-    private PasswordField passWordField;
+	@FXML
+	private PasswordField passWordField;
 
-    @FXML
-    private Label statusLabel;
+	@FXML
+	private Label statusLabel;
 
 //  ---------------------------------------
-	
+
 	@FXML
 	private TextField objetIdField;
 
@@ -321,8 +332,20 @@ public class MainController implements Initializable {
 		TextFields.bindAutoCompletion(searchField, objetService.listInventaire());
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Upload Image' de l'IHM servant à aller
+	 * chercher une image dans le système de fichiers, affiche l'image dans l'IHM,
+	 * converti cette dernière en byte[] et enfin la place dans une variable prête
+	 * pour éventuellement être chargée dans la base de données. La méthode active
+	 * par la même occasion les boutons 'Update Image' et 'Add New' de l'IHM qui
+	 * sont initialement désactivés.
+	 * 
+	 * @param t
+	 * @throws IOException
+	 */
+
 	@FXML
-	public void handleImage(ActionEvent t) throws IOException {
+	public void handleImage() throws IOException {
 
 		FileChooser fileChooser = new FileChooser();
 
@@ -362,9 +385,23 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Export' de l'IHM servant à choisir une
+	 * destination dans le système de fichiers pour ensuite y placer un fichier
+	 * tableur Excel avec à l'intèrieur une sélection d'objets et leurs attributs
+	 * placés respectivement dans chaque ligne du tableur après que ces derniers
+	 * aient été cochés dans le tableau de l'IHM par l'utilisateur.
+	 * 
+	 * La méthode déclanche tout d'abord une alerte d'introduction indiquant à
+	 * l'utilisateur de choisir un dossier de destination. Puis pour finir à nouveau
+	 * une alerte en conclusion pour informer en cas de succès de l'opération.
+	 * 
+	 * @param event
+	 */
+
 	@SuppressWarnings("resource")
 	@FXML
-	public void handleExport(ActionEvent event) {
+	public void handleExport() {
 
 		Alert alert1 = new Alert(AlertType.INFORMATION);
 		alert1.setTitle("Information Dialog");
@@ -485,14 +522,39 @@ public class MainController implements Initializable {
 
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Import' de l'IHM servant à choisir un
+	 * fichier tableur Excel au format .xlsx dans le système de fichiers pour
+	 * ensuite importer chaque attribut situés dans chaque ligne du tableur Excel
+	 * pour les placer respectivement dans chaque tuple coorespondant dans la base
+	 * de données.
+	 * 
+	 * La méthode déclanche tout d'abord une alerte d'introduction indiquant à
+	 * l'utilisateur de choisir un dossier Excel à importer puis pour finir à
+	 * nouveau une alerte en conclusion pour informer en cas de succès de
+	 * l'opération.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
+
 	@SuppressWarnings("resource")
 	@FXML
-	public void handleImport(ActionEvent event) throws IOException {
+	public void handleImport() throws IOException {
 
-		Alert alert1 = new Alert(AlertType.INFORMATION);
+		Alert alert1 = new Alert(AlertType.WARNING);
 		alert1.setTitle("Information Dialog");
 		alert1.setHeaderText(null);
-		alert1.setContentText("Veuiller choisir un fichier au format .xlsx");
+		alert1.setContentText("Chaque donnée importée depuis un fichier Excel "
+				+ "ne possèderont ni référence à un Musée "
+				+ "ni image. Bien que les données seront importées et "
+				+ "visibles dans la base et dans le tableau de l'interface, "
+				+ "ces dernières, sans leur référence à un "
+				+ "Musée et sans leur image, ne seront ni consultable "
+				+ "ni modifiable. L'application 'Collection' version 0.1 ne "
+				+ "permet malheureusement pas de traiter le problème à ce stade. "
+				+ "Veuillez nous en excusez, et maintenant: choisir un fichier au "
+				+ "format .xlsx ou bien Annuler.");
 		alert1.showAndWait();
 
 		FileChooser fileChooser = new FileChooser();
@@ -515,7 +577,7 @@ public class MainController implements Initializable {
 				XSSFWorkbook wb = new XSSFWorkbook(fileIn);
 				XSSFSheet sheet = wb.getSheetAt(0);
 				Row row;
-				for (int i = 1; i < sheet.getLastRowNum(); i++) {
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 					row = (Row) sheet.getRow(i);
 
 //				String objetId;
@@ -569,6 +631,7 @@ public class MainController implements Initializable {
 				alert.showAndWait();
 
 				fileIn.close();
+				populate();
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -581,7 +644,23 @@ public class MainController implements Initializable {
 
 	public void handleAddMusees() {
 
+//		"ADN", "CEC", "CG04", "EXPO", "FOR",
+//		"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
+
 		MuseeService museeService = new MuseeServiceImpl();
+
+		while (!museeService.listNomMusee().contains("Musée de la Vallée")) {
+
+			Musee museeDelaValM = new Musee();
+			museeDelaValM.setNomMusee("Musée de la Vallée");
+			museeDelaValM.setEmailMusee("musse@ville-barcellonnette.fr");
+			museeDelaValM.setTelMusee("04 92 81 27 15");
+			museeDelaValM.setAdressMusee("Villa la Sapinière - 10 avenue de la Libération 04400 Barcelonnette");
+			museeDelaValM.setPrefixeMusee("MDLV");
+
+			controllerMus.addMusee(museeDelaValM);
+
+		}
 
 		while (!museeService.listNomMusee().contains("Musée de Salagon")) {
 
@@ -622,7 +701,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleAdd(ActionEvent event) {
+	public void handleAdd() {
 
 		Objet c = new Objet();
 
@@ -664,7 +743,7 @@ public class MainController implements Initializable {
 					}
 					updateFields.setDisable(true);
 					menuItemUpdateFields.setDisable(true);
-				} else {				
+				} else {
 					return;
 				}
 				return;
@@ -673,7 +752,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleUpdateFields(ActionEvent event) {
+	public void handleUpdateFields() {
 
 		Objet c = new Objet();
 
@@ -738,7 +817,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleUpdateImage(ActionEvent event) {
+	public void handleUpdateImage() {
 
 		Objet c = new Objet();
 
@@ -812,7 +891,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleDeleteIndex(ActionEvent event) {
+	public void handleDeleteIndex() {
 
 		Objet c = (Objet) controller.getObjetList().get(index);
 
@@ -842,7 +921,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleDeleteRow(ActionEvent event) {
+	public void handleDeleteRow() {
 
 		Objet row = table.getSelectionModel().getSelectedItem();
 
@@ -874,7 +953,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleBack(ActionEvent event) {
+	public void handleBack() {
 		index = 0;
 		populate();
 	}
@@ -900,7 +979,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleUpfront(ActionEvent event) {
+	public void handleUpfront() {
 
 		index = controller.getObjetList().size() - 1;
 		populate();
@@ -932,6 +1011,20 @@ public class MainController implements Initializable {
 			return;
 
 		Objet c = (Objet) controller.getObjetList().get(i);
+
+		if (c.getMusee() == null || c.getImage() == null) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Avertissement");
+			alert.setHeaderText(null);
+			alert.setContentText("Cet objet N° "+ c.getObjetId() + " qui a probablement été importé "
+					+ "depuis un fichier Excel ne possède pas de référence à un Musée "
+					+ "ou pas d'image ou bien les deux à la fois. "
+					+ "L'objet est par conséquent ni consultable ni modifiable. "
+					+ "L'application 'Collection' version 0.1 ne permet pas de traiter le problème à ce stade.");
+			alert.showAndWait();
+//			populateTable();
+			return;
+		}
 
 		objetIdField.setText(c.getObjetId().toString());
 		identificationField.setText(c.getIdentification());
@@ -1177,6 +1270,21 @@ public class MainController implements Initializable {
 			long diff = now.getTime() - lastClickTime.getTime();
 			if (diff < 300) { // another click registered in 300 millis
 
+				if (row.getMusee() == null || row.getImage() == null) {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Avertissement");
+					alert.setHeaderText(null);
+					alert.setContentText("Cet objet N° "+ row.getObjetId() + " qui a probablement été importé "
+							+ "depuis un fichier Excel ne possède pas de référence à un Musée "
+							+ "ou pas d'image ou bien les deux à la fois. "
+							+ "L'objet est par conséquent ni consultable ni modifiable. "
+							+ "L'application 'Collection' version 0.1 ne permet pas de traiter le problème à ce stade. "
+							+ "Vous pouvez choisir de suprimer cet objet en clickant le bouton 'Delete Row'");
+					alert.showAndWait();
+					deleteRow.setDisable(false);
+					return;
+				}
+				
 				deleteIndex.setDisable(true);
 				menuItemDeleteIndex.setDisable(true);
 				deleteRow.setDisable(false);
@@ -1334,7 +1442,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	private void closeApp(ActionEvent event) {
+	private void closeApp() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation de fermeture de l'application");

@@ -70,7 +70,7 @@ public class Objet {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "fk_musee", nullable = false)
+	@JoinColumn(name = "fk_musee")
 	public Musee getMusee() {
 		return musee;
 	}
