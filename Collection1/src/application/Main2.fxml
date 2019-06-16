@@ -81,7 +81,7 @@
                            <tooltip>
                               <Tooltip text="Champ non modifiable, généré automatiquement par la base de données." wrapText="true">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -104,7 +104,7 @@
                            <tooltip>
                               <Tooltip text="Ensemble de lettres identifiant un Musée.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -113,7 +113,7 @@
                            <tooltip>
                               <Tooltip text="Champ indiquant le N° d'inventaire de l'objet, composé de l'année d'acquisition de l'objet.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -122,7 +122,7 @@
                            <tooltip>
                               <Tooltip text="Champ de localisation de l'objet au sein du Musée.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -152,7 +152,7 @@
                            <tooltip>
                               <Tooltip text="Charge une Image depuis l'ordinateur.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -166,7 +166,7 @@
                            <tooltip>
                               <Tooltip text="Champ non modifiable, généré automatiquement par la base de données." wrapText="true">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -197,7 +197,7 @@
                            <tooltip>
                               <Tooltip text="Champ non modifiable indiquant le N° de téléphone du Musée.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -214,7 +214,7 @@
                            <tooltip>
                               <Tooltip text="Champ non modifiable indiquant le nom du Musée.">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Tooltip>
                            </tooltip>
@@ -258,19 +258,22 @@
                <tooltip>
                   <Tooltip text="Export un fichier Excel de la selection. ">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
             <Button fx:id="importButton" disable="true" mnemonicParsing="false" onAction="#handleImport" prefHeight="150.0" prefWidth="116.0" text="Import">
                <tooltip>
-                  <Tooltip text="Import un fichier Excel dans la base de données." />
+                  <Tooltip text="Import un fichier Excel dans la base de données.">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Tooltip>
                </tooltip></Button>
             <Button fx:id="addNew" disable="true" mnemonicParsing="false" onAction="#handleAdd" prefHeight="150.0" prefWidth="116.0" text="Add New" textAlignment="CENTER">
                <tooltip>
                   <Tooltip text="Ajoute un objet à la base de données.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -302,7 +305,7 @@
                <tooltip>
                   <Tooltip text="Suprime la ligne activée dans le tableau.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -318,7 +321,7 @@
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité haute tel qu'il figure dans la base de données index 0.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -326,7 +329,7 @@
                <tooltip>
                   <Tooltip text="Remonte un par un les indexes tel qu'ils figurent dans la base de données">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -334,7 +337,7 @@
                <tooltip>
                   <Tooltip text="Descent un par un les indexes tel qu'ils figurent dans la base de données.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -342,7 +345,7 @@
                <tooltip>
                   <Tooltip text="Va chercher l'objet à l'extémité basse tel qu'il figure dans la base de données à l'index maximum.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip></Button>
@@ -361,14 +364,14 @@
                <tooltip>
                   <Tooltip text="Champ recherche par Identification ou par  N° Inventaire.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip>
             </TextField>
-            <TextField fx:id="identificationView" editable="false" onKeyPressed="#enableDisableFiels" prefWidth="900.0" promptText="Identification" style="-fx-background-color: #FFC719;">
+            <Label fx:id="identificationView" alignment="CENTER" prefHeight="23.0" prefWidth="2000.0" text="Identification">
                <tooltip>
-                  <Tooltip text="Champ renseignant le nom de l'objet.">
+                  <Tooltip text="Label renseignant le nom de l'objet.">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -377,7 +380,10 @@
                <font>
                   <Font size="18.0" />
                </font>
-            </TextField>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
             <AnchorPane fx:id="anchorPane" minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;" />
             <Label text="  Titre de l'image:">
                <font>
@@ -388,7 +394,7 @@
                <tooltip>
                   <Tooltip text="Champ non modifiable renseignant le titre du fichier image.">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Tooltip>
                </tooltip>
@@ -396,7 +402,10 @@
             <AnchorPane minHeight="30.0" prefHeight="103.0" prefWidth="637.0" style="-fx-background-color: #FFC719;" />
             <Button fx:id="loadDatabase" cache="true" mnemonicParsing="false" onAction="#loadDatabase" prefWidth="2000.0" text="Charger la base de données">
                <tooltip>
-                  <Tooltip text="Boutton qui rempli le tableau tel qu'il figure dans la base de données." />
+                  <Tooltip text="Boutton qui rempli le tableau tel qu'il figure dans la base de données.">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Tooltip>
                </tooltip>
                <font>
                   <Font size="15.0" />

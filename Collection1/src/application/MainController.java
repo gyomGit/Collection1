@@ -184,7 +184,7 @@ public class MainController implements Initializable {
 	private TextField identificationField;
 
 	@FXML
-	private TextField identificationView;
+	private Label identificationView;
 
 	@FXML
 	private TextField inventaireField;
@@ -340,11 +340,8 @@ public class MainController implements Initializable {
 	 * par la même occasion les boutons 'Update Image' et 'Add New' de l'IHM qui
 	 * sont initialement désactivés.
 	 * 
-	 * @param t
 	 * @throws IOException
 	 */
-
-	@FXML
 	public void handleImage() throws IOException {
 
 		FileChooser fileChooser = new FileChooser();
@@ -396,7 +393,6 @@ public class MainController implements Initializable {
 	 * l'utilisateur de choisir un dossier de destination. Puis pour finir à nouveau
 	 * une alerte en conclusion pour informer en cas de succès de l'opération.
 	 * 
-	 * @param event
 	 */
 
 	@SuppressWarnings("resource")
@@ -534,7 +530,6 @@ public class MainController implements Initializable {
 	 * nouveau une alerte en conclusion pour informer en cas de succès de
 	 * l'opération.
 	 * 
-	 * @param event
 	 * @throws IOException
 	 */
 
@@ -545,16 +540,13 @@ public class MainController implements Initializable {
 		Alert alert1 = new Alert(AlertType.WARNING);
 		alert1.setTitle("Information Dialog");
 		alert1.setHeaderText(null);
-		alert1.setContentText("Chaque donnée importée depuis un fichier Excel "
-				+ "ne possèderont ni référence à un Musée "
-				+ "ni image. Bien que les données seront importées et "
+		alert1.setContentText("Attention! Chaque donnée importée depuis un fichier Excel "
+				+ "ne possèderont ni référence à un Musée ni image. Bien que les données seront importées et "
 				+ "visibles dans la base et dans le tableau de l'interface, "
-				+ "ces dernières, sans leur référence à un "
-				+ "Musée et sans leur image, ne seront ni consultable "
-				+ "ni modifiable. L'application 'Collection' version 0.1 ne "
+				+ "ces dernières, sans leur référence à un Musée et sans leur image, ne seront ni consultable "
+				+ "ni modifiable. L'application 'Collection' (version 0.1) ne "
 				+ "permet malheureusement pas de traiter le problème à ce stade. "
-				+ "Veuillez nous en excusez, et maintenant: choisir un fichier au "
-				+ "format .xlsx ou bien Annuler.");
+				+ "Veuillez nous en excusez, et maintenant: choisir un fichier Excel au format .xlsx ou bien Annuler.");
 		alert1.showAndWait();
 
 		FileChooser fileChooser = new FileChooser();
@@ -1016,7 +1008,7 @@ public class MainController implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
-			alert.setContentText("Cet objet N° "+ c.getObjetId() + " qui a probablement été importé "
+			alert.setContentText("Cet objet N° " + c.getObjetId() + " qui a probablement été importé "
 					+ "depuis un fichier Excel ne possède pas de référence à un Musée "
 					+ "ou pas d'image ou bien les deux à la fois. "
 					+ "L'objet est par conséquent ni consultable ni modifiable. "
@@ -1274,7 +1266,7 @@ public class MainController implements Initializable {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Avertissement");
 					alert.setHeaderText(null);
-					alert.setContentText("Cet objet N° "+ row.getObjetId() + " qui a probablement été importé "
+					alert.setContentText("Cet objet N° " + row.getObjetId() + " qui a probablement été importé "
 							+ "depuis un fichier Excel ne possède pas de référence à un Musée "
 							+ "ou pas d'image ou bien les deux à la fois. "
 							+ "L'objet est par conséquent ni consultable ni modifiable. "
@@ -1282,9 +1274,20 @@ public class MainController implements Initializable {
 							+ "Vous pouvez choisir de suprimer cet objet en clickant le bouton 'Delete Row'");
 					alert.showAndWait();
 					deleteRow.setDisable(false);
+					identificationField.setDisable(true);
+					prefixeBox.setDisable(true);
+					inventaireField.setDisable(true);
+					localisationField.setDisable(true);
+					browseImage.setDisable(true);
 					return;
 				}
-				
+
+				identificationField.setDisable(false);
+				prefixeBox.setDisable(false);
+				inventaireField.setDisable(false);
+				localisationField.setDisable(false);
+				browseImage.setDisable(false);
+
 				deleteIndex.setDisable(true);
 				menuItemDeleteIndex.setDisable(true);
 				deleteRow.setDisable(false);
