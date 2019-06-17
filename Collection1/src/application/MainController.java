@@ -236,8 +236,8 @@ public class MainController implements Initializable {
 
 	private byte[] imageByteUpdate;
 
-	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "CG04", "EXPO", "FOR",
-			"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
+	ObservableList<String> prefixeList = FXCollections.observableArrayList("", "ADN", "CEC", "FOR", "MAR", "MDLV",
+			"MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
 
 	@FXML
 	private ChoiceBox<String> prefixeBox;
@@ -385,13 +385,16 @@ public class MainController implements Initializable {
 	/**
 	 * Méthode déclanchée par le bouton 'Export' de l'IHM servant à choisir une
 	 * destination dans le système de fichiers pour ensuite y placer un fichier
-	 * tableur Excel avec à l'intèrieur une sélection d'objets et leurs attributs
-	 * placés respectivement dans chaque ligne du tableur après que ces derniers
-	 * aient été cochés dans le tableau de l'IHM par l'utilisateur.
+	 * tableur Excel avec à l'intèrieur une sélection d'objets et leurs attributs.
+	 * La sélection d'objets correspond aux objets qui ont été préalablement cochés
+	 * dans le tableau de l'IHM par l'utilisateur. Les Objet sont placés avec la
+	 * valeur de leurs attributs respectivement dans chaque ligne du tableur Excel à
+	 * l'aide d'une boucle.
 	 * 
-	 * La méthode déclanche tout d'abord une alerte d'introduction indiquant à
+	 * La méthode déclanchera tout d'abord une alerte d'introduction indiquant à
 	 * l'utilisateur de choisir un dossier de destination. Puis pour finir à nouveau
-	 * une alerte en conclusion pour informer en cas de succès de l'opération.
+	 * une alerte en conclusion pour informer en cas de succès de l'opération c'est
+	 * à dire de la sauvegarde du fichier Excel à l'emplacement choisi.
 	 * 
 	 */
 
@@ -632,7 +635,15 @@ public class MainController implements Initializable {
 		}
 	}
 
-	// Ajoute les musées à la base de données si il n'y sont pas encore.
+	/**
+	 * Méthode déclanchée à chaque démarrage de l'Application par la méthode
+	 * intialize() qui consiste à détecter si les Musées suseptibles d'être présents
+	 * dans la table Musée de la base de données le sont bien. Si un ou plusieurs
+	 * Musées n'y sont pas il sont alors systématiquement ajoutés par cette méthode.
+	 * Ainsi, dans la bas de données, la table Musée est toujours vérifiée et
+	 * complétée le cas échéant au démarrage de l'Application 'Collection'.
+	 * 
+	 */
 
 	public void handleAddMusees() {
 
@@ -640,6 +651,123 @@ public class MainController implements Initializable {
 //		"MAR", "MDLV", "MGD", "MMHV", "MMV", "MPGV", "MST", "SIST", "SLG", "UBAY");
 
 		MuseeService museeService = new MuseeServiceImpl();
+
+		while (!museeService.listNomMusee().contains("Musée au fil de la vallée")) {
+
+			Musee ubayeValleeM = new Musee();
+			ubayeValleeM.setNomMusee("Musée au fil de la vallée");
+			ubayeValleeM.setEmailMusee("patrimoine@ubaye.com");
+			ubayeValleeM.setTelMusee("04 92 81 27 15");
+			ubayeValleeM.setAdressMusee("4 av des 3 frères Arnaud 04400 BARCELONNETTE");
+			ubayeValleeM.setPrefixeMusee("UBAY");
+
+			controllerMus.addMusee(ubayeValleeM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée de la Faience")) {
+
+			Musee moustierFaienceM = new Musee();
+			moustierFaienceM.setNomMusee("Musée de la Faience");
+			moustierFaienceM.setEmailMusee("musee@moustiers.eu");
+			moustierFaienceM.setTelMusee("04 92 74 61 64");
+			moustierFaienceM.setAdressMusee("Rue du Seigneur de la Clue 04360 Moustiers-Sainte-Marie");
+			moustierFaienceM.setPrefixeMusee("MST");
+
+			controllerMus.addMusee(moustierFaienceM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée de la Préhistoire des Gorges du Verdon")) {
+
+			Musee prehistoireQuinsonM = new Musee();
+			prehistoireQuinsonM.setNomMusee("Musée de la Préhistoire des Gorges du Verdon");
+			prehistoireQuinsonM.setEmailMusee("contact@museeprehistoire.com");
+			prehistoireQuinsonM.setTelMusee("04 92 74 09 59");
+			prehistoireQuinsonM.setAdressMusee("Route de Montmeyan 04500 Quinson");
+			prehistoireQuinsonM.setPrefixeMusee("MPGV");
+
+			controllerMus.addMusee(prehistoireQuinsonM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée Pierre Martel")) {
+
+			Musee martelVachereM = new Musee();
+			martelVachereM.setNomMusee("Musée Pierre Martel");
+			martelVachereM.setEmailMusee("mairievach@orange.fr");
+			martelVachereM.setTelMusee("04 92 75 62 15");
+			martelVachereM.setAdressMusee("place de la mairie 04110 VACHERES");
+			martelVachereM.setPrefixeMusee("MMV");
+
+			controllerMus.addMusee(martelVachereM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Maison-Musée du Haut-Verdon")) {
+
+			Musee maisonHautVerdonM = new Musee();
+			maisonHautVerdonM.setNomMusee("Maison-Musée du Haut-Verdon");
+			maisonHautVerdonM.setEmailMusee("maisonmusee.hautverdon@gmail.com");
+			maisonHautVerdonM.setTelMusee("04 92 83 41 92");
+			maisonHautVerdonM.setAdressMusee("Place Neuve 04370 Colmars les Alpes");
+			maisonHautVerdonM.setPrefixeMusee("MMHV");
+
+			controllerMus.addMusee(maisonHautVerdonM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée Gassendi à Digne")) {
+
+			Musee digneGassendiM = new Musee();
+			digneGassendiM.setNomMusee("Musée Gassendi à Digne");
+			digneGassendiM.setEmailMusee("musee@musee-gassendi.org");
+			digneGassendiM.setTelMusee("04 92 31 45 29");
+			digneGassendiM.setAdressMusee("64, Boulevard Gassendi 04000 Digne-les-Bains");
+			digneGassendiM.setPrefixeMusee("MGD");
+
+			controllerMus.addMusee(digneGassendiM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée Archéologique de Riez")) {
+
+			Musee archeoRiezM = new Musee();
+			archeoRiezM.setNomMusee("Musée Archéologique de Riez");
+			archeoRiezM.setEmailMusee("mairie.riez@wanadoo.fr");
+			archeoRiezM.setTelMusee("04 92 77 99 09");
+			archeoRiezM.setAdressMusee("route de Marseille 04500 Riez-la-Romaine");
+			archeoRiezM.setPrefixeMusee("MAR");
+
+			controllerMus.addMusee(archeoRiezM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Musée du Moyen Verdon")) {
+
+			Musee moyenVerdonM = new Musee();
+			moyenVerdonM.setNomMusee("Musée du Moyen Verdon");
+			moyenVerdonM.setEmailMusee("maisonnaturepatrimoines@gmail.com");
+			moyenVerdonM.setTelMusee("04 92 83 19 23");
+			moyenVerdonM.setAdressMusee("Place Marcel Sauvaire 04120 Castellane");
+			moyenVerdonM.setPrefixeMusee("CEC");
+
+			controllerMus.addMusee(moyenVerdonM);
+
+		}
+
+		while (!museeService.listNomMusee().contains("Maison Alexandra David Néel")) {
+
+			Musee maisonAlexDavNel = new Musee();
+			maisonAlexDavNel.setNomMusee("Maison Alexandra David Néel");
+			maisonAlexDavNel.setEmailMusee("association.davidneel@gmail.com");
+			maisonAlexDavNel.setTelMusee("04 92 31 32 38");
+			maisonAlexDavNel.setAdressMusee("27, avenue du Maréchal Juin 04000 Digne-les-Bains");
+			maisonAlexDavNel.setPrefixeMusee("ADN");
+
+			controllerMus.addMusee(maisonAlexDavNel);
+
+		}
 
 		while (!museeService.listNomMusee().contains("Musée de la Vallée")) {
 
@@ -692,6 +820,24 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Add New' de l'IHM servant à ajouter les
+	 * données d'un objet de collection dans la base de données. La méthode commence
+	 * à attribuer chacune des valeurs entrées par l'utilisateur à l'objet, mais
+	 * quand arrive la question de l'attribution du Musée, c'est alors grâce à une
+	 * boucle que la méthode va faire correspondre le bon péfixe Musée parmi ceux de
+	 * la base de données avec celui qui a été sélectionné par l'utilisateur. Elle
+	 * va ensuite attribuer le Musée à l'objet. Puis pour finir l'objet est
+	 * enregisté dans la base de données avec tous ses attributs et la référence à
+	 * son Musée.
+	 * 
+	 * La méthode déclanche dans la boucle une alerte de confirmation demandant à
+	 * l'utilisateur si il veut vraiment ajouter les données du nouvel objet à la
+	 * base. Si l'utilisateur choisit OK une alerte apparait l'informant du succès
+	 * de l'opération en donnant quelque détails.
+	 * 
+	 */
+
 	@FXML
 	public void handleAdd() {
 
@@ -699,6 +845,16 @@ public class MainController implements Initializable {
 
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
+
+		if (prefixeBox.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Avertissement");
+			alert.setHeaderText(null);
+			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
+			alert.showAndWait();
+			return;
+		}
+
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 		c.setImage(imageBytes);
@@ -751,6 +907,16 @@ public class MainController implements Initializable {
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
+		
+		if (prefixeBox.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Avertissement");
+			alert.setHeaderText(null);
+			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
+			alert.showAndWait();
+			return;
+		}
+		
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 
@@ -816,6 +982,16 @@ public class MainController implements Initializable {
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
+		
+		if (prefixeBox.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Avertissement");
+			alert.setHeaderText(null);
+			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
+			alert.showAndWait();
+			return;
+		}
+		
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 
@@ -1354,13 +1530,6 @@ public class MainController implements Initializable {
 			alert.setTitle("Avertissement");
 			alert.setHeaderText(null);
 			alert.setContentText("Le champ Identification est vide");
-			alert.showAndWait();
-			return false;
-		} else if (prefixeBox.getValue().isEmpty()) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Avertissement");
-			alert.setHeaderText(null);
-			alert.setContentText("Le Préfixe du Musée n'a pas été sélèctionné");
 			alert.showAndWait();
 			return false;
 		} else if (inventaireField.getText().isEmpty()) {

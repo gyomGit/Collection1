@@ -37,7 +37,7 @@ public class MuseeController
           return museeList;
      }
 
-     public void removeObjet(Integer id)     {
+     public void removeMusee(Integer id)     {
           museeService.removeMusee(id);
      }
 
