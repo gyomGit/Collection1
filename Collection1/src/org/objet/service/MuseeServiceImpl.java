@@ -6,14 +6,16 @@ import org.objet.dao.MuseeDAO;
 import org.objet.dao.MuseeDAOImpl;
 import org.objet.entity.Musee;
 
-
-/* ObjetServiceImpl.java is the concrete implementation 
- * of the ObjetService.java interface. It provides a 
- * public interface of underlying model objects.
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Concrète implémentation de l'Interface service Musée du modèle DAO de 
+ *         l'application 'Collection'.
  */
-
-// ObjetServiceImpl.java
-
 public class MuseeServiceImpl implements MuseeService {
 
 	private MuseeDAO museeDAO = new MuseeDAOImpl();

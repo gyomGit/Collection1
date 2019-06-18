@@ -1,0 +1,5 @@
+application
+org.objet.dao
+org.objet.entity
+org.objet.service
+test

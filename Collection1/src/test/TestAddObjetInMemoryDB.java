@@ -13,6 +13,19 @@ import org.junit.jupiter.api.Test;
 import org.objet.entity.Musee;
 import org.objet.entity.Objet;
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *          Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *          que j'appelle 'Collection' servant à gérer les objets dans les
+ *          Musées.
+ * 
+ *          Classe composée de test cases Junit 5 utilisant une in_memory
+ *          database appelée HSQLDB pour tester certaines méthodes de
+ *          l'application 'Collection' evitant ainsi d'inter agir avec la réelle
+ *          base de données.
+ */
 class TestAddObjetInMemoryDB {
 
 	static Session sessionTest = HibernateUtilTest.openSession();

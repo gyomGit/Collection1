@@ -1,18 +1,7 @@
 package application;
 
-/**
- * @author Nom: Balourdet, Prenom: Guillaume
- * @version 0.1
- * 
- *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
- *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
- * 
- *         Classe Login de l'application 'Collection'
- */
-
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +12,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Classe Login de l'application 'Collection'
+ *         en relation avec les données graphiques du fichier Login.fxml
+ */
 public class LoginController {
 
 	@FXML
@@ -39,7 +38,14 @@ public class LoginController {
 
 	Stage loginStage = null;
 
-	public void Login(ActionEvent event) throws IOException {
+	/**
+	 * Méthode qui permet de comparer les données user name et password entrées par
+	 * l'utilsateur. Si elles sont correctes: charge l'IHM de l'application qui
+	 * démarre.
+	 * 
+	 * @throws IOException
+	 */
+	public void Login() throws IOException {
 		if (userNameField.getText().equals("lambda") && passWordField.getText().equals("marty")) {
 			statusLabel.setText("Login Success");
 
@@ -61,9 +67,12 @@ public class LoginController {
 		}
 	}
 
+	/**
+	 * Méthode qui ferme la fenêtre de Login si l'IHM est chargée et que
+	 * l'application démarre.
+	 */
 	public void closeLogin() {
 		loginStage = (Stage) loginButton.getScene().getWindow();
 		loginStage.close();
 	}
-
 }

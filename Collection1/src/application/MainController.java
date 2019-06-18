@@ -92,8 +92,8 @@ import javafx.util.Callback;
  *          Musées.
  * 
  *          Classe Contrôleur Principal de l'application 'Collection'
+ *          en relation avec les données graphiques du fichier Main2.fxml
  */
-
 public class MainController implements Initializable {
 
 	@FXML
@@ -242,6 +242,10 @@ public class MainController implements Initializable {
 	@FXML
 	private ChoiceBox<String> prefixeBox;
 
+	/**
+	 * Méthode servant à activer certains boutons et certains champs.
+	 */
+
 	private void enableButtons() {
 
 		back.setDisable(false);
@@ -255,6 +259,11 @@ public class MainController implements Initializable {
 		telMuseeField.setDisable(false);
 		adresseMuseeField.setDisable(false);
 	}
+	
+	/**
+	 * Méthode servant à désactiver les boutons de navigation par saut d'index
+	 * dans la base.
+	 */
 
 	private void disableButtons() {
 
@@ -287,6 +296,18 @@ public class MainController implements Initializable {
 		populate();
 
 	}
+
+	/**
+	 * Méthode d'initialisation déclanchée systématiquement au démarrage de
+	 * l'application servant tout d'abord à déclancher la méthode handleAddMusees()
+	 * qui est appelée ici pour assurer la création et le bon remplissage de la
+	 * table Musée dans la base de données. Ensuite, pour attribuer la liste des
+	 * préfixes Musée à la ChoiceBox nommée prefixeBox. Puis pour rendre des champs
+	 * et une vignette image vierges. Et enfin, instancie un petit 'Hamburger Back
+	 * Arrow' avec son petit tiroir coulissant pour faire apparaitre dans une
+	 * vignette tiroir la même image que celle affichée dans la vignette de
+	 * l'interface IHM située en dessous (petit gadget graphique).
+	 */
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -322,6 +343,18 @@ public class MainController implements Initializable {
 		});
 
 	}
+
+	/**
+	 * Méthode déclanchée par le champ 'recherche' de l'IHM quand un ou plusieurs
+	 * charactères sont rentrés et que la touche du clavier est pressée. Cette
+	 * méthode complète ansi la méthode handleSearch() qui elle se déclanche quand
+	 * la touche du clavier est relachée. Cette méthode sert à rechercher les
+	 * occurences d'un charactère ou d'une suite de charactères correspondant à un
+	 * mot ou une suite de chiffres. La méthode recherche ici uniquement dans les
+	 * colonnes 'identification' et 'N° Inventaire'. Chaque mot ou suite de chiffres
+	 * ainsi entré va déclancher une proposition d'auto remplissage du champ
+	 * recherche dans un menu déroulant juste en dessous de ce champ 'recherche'.
+	 */
 
 	@FXML
 	private void handleAutoComplete() {
@@ -361,7 +394,7 @@ public class MainController implements Initializable {
 			imageNameField.setText(file.getName());
 			String imageURL = (file.toURI().toString());
 			Image image = new Image(imageURL);
-//	            	Alternative of the 2 lines just above:
+//	            	Alternative aux deux lignes du dessus:
 //	                BufferedImage bufferedImage = ImageIO.read(file);
 //	                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
 
@@ -370,9 +403,9 @@ public class MainController implements Initializable {
 			imv.setFitHeight(130);
 			imv.setPreserveRatio(true);
 
-			byte[] imageInBytes = new byte[(int) file.length()]; // image convert in byte form
-			FileInputStream inputStream = new FileInputStream(file); // input stream object create to read the file
-			inputStream.read(imageInBytes); // here inputstream object read the file
+			byte[] imageInBytes = new byte[(int) file.length()]; // image convertie en byte
+			FileInputStream inputStream = new FileInputStream(file); // inputstream objet créé pour lire le fichier
+			inputStream.read(imageInBytes); // ici inputstream lit le fichier
 			inputStream.close();
 
 			imageBytes = imageInBytes;
@@ -412,19 +445,20 @@ public class MainController implements Initializable {
 		File selectedDirectory = directoryChooser.showDialog(null);
 
 		if (selectedDirectory == null) {
-			// No Directory selected
+			// Aucun dossier sélectionné
 		} else {
 
 			try {
 
-				XSSFWorkbook wb = new XSSFWorkbook(); // for earlier version use HSSF
+				XSSFWorkbook wb = new XSSFWorkbook(); // pour des versions anciennes utiliser HSSF
 
 				CreationHelper helper = wb.getCreationHelper();
 
-				// create sheet
+				// crée la page
 				XSSFSheet sheet = wb.createSheet("Objets selection");
 
 				// auto-size picture relative to its top-left corner
+				// dimenssionne l'image en fonction de son coin en haut à gauche
 
 				XSSFRow header = sheet.createRow(0);
 				header.createCell(0).setCellValue("Objet ID");
@@ -454,8 +488,9 @@ public class MainController implements Initializable {
 						row.createCell(3).setCellValue(objet.getInventaire());
 						row.createCell(4).setCellValue(objet.getLocalisation());
 
-						// get image from the database to a file named "photo2.jpg"
-						byte[] getImageInBytes2 = objet.getImage(); // image convert in byte form
+						// prend l'image depuis la base de données et la place dans un fichier nommé
+						// "photo2.jpg"
+						byte[] getImageInBytes2 = objet.getImage(); // image convertie en tableau de bytes
 
 						try {
 							FileOutputStream outputstream = new FileOutputStream(new File("photo2.jpg"));
@@ -468,7 +503,7 @@ public class MainController implements Initializable {
 							e.printStackTrace();
 						}
 
-						// resize this image before adding it to this workbook:
+						// redimenssionne l'image avant de l'ajouter au classeur:
 
 						BufferedImage originalImage = ImageIO.read(new File("photo2.jpg"));
 						int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
@@ -476,20 +511,21 @@ public class MainController implements Initializable {
 						BufferedImage resizeImageJpg = resizeImage(originalImage, type, 50, 50);
 						ImageIO.write(resizeImageJpg, "jpg", new File("photo3.jpg"));
 
-						// add picture data to this workbook.
+						// ajoute les données de l'image au classeur
 						InputStream is = new FileInputStream("photo3.jpg");
 						byte[] bytes = IOUtils.toByteArray(is);
 						int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
 						is.close();
 
-						// Create the drawing patriarch. This is the top level container for all shapes.
+						// Crée patriarchze du dessin. C'est le conteneur de base de toutes les
+						// représentations.
 						@SuppressWarnings("rawtypes")
 						Drawing drawing = sheet.createDrawingPatriarch();
 
-						// add a picture shape
+						// ajoute une représentation de l'image
 						ClientAnchor anchor = helper.createClientAnchor();
-						// set top-left corner of the picture,
-						// subsequent call of Picture#resize() will operate relative to it
+						// attribue le coin en haut à gauche à l'image,
+						// Chaque operation de redimession Picture#resize() opererons depuis ce coin là.
 
 						anchor.setCol1(5); // Column F
 
@@ -502,7 +538,7 @@ public class MainController implements Initializable {
 					}
 
 				FileOutputStream fileOut = new FileOutputStream(
-						selectedDirectory.getAbsolutePath() + "/ObjetSelection1.xlsx"); // before 2007 version xls
+						selectedDirectory.getAbsolutePath() + "/ObjetSelection1.xlsx"); // avant 2007 version xls
 				wb.write(fileOut);
 				fileOut.close();
 
@@ -525,8 +561,8 @@ public class MainController implements Initializable {
 	 * Méthode déclanchée par le bouton 'Import' de l'IHM servant à choisir un
 	 * fichier tableur Excel au format .xlsx dans le système de fichiers pour
 	 * ensuite importer chaque attribut situés dans chaque ligne du tableur Excel
-	 * pour les placer respectivement dans chaque tuple coorespondant dans la base
-	 * de données.
+	 * pour les placer respectivement dans chaque tuple corespondant dans la base de
+	 * données.
 	 * 
 	 * La méthode déclanche tout d'abord une alerte d'introduction indiquant à
 	 * l'utilisateur de choisir un dossier Excel à importer puis pour finir à
@@ -549,7 +585,7 @@ public class MainController implements Initializable {
 				+ "ces dernières, sans leur référence à un Musée et sans leur image, ne seront ni consultable "
 				+ "ni modifiable. L'application 'Collection' (version 0.1) ne "
 				+ "permet malheureusement pas de traiter le problème à ce stade. "
-				+ "Veuillez nous en excusez, et maintenant: choisir un fichier Excel au format .xlsx ou bien Annuler.");
+				+ "Veuillez m'en excusez, et maintenant: choisir un fichier Excel au format .xlsx ou bien Annuler.");
 		alert1.showAndWait();
 
 		FileChooser fileChooser = new FileChooser();
@@ -636,12 +672,12 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Méthode déclanchée à chaque démarrage de l'Application par la méthode
-	 * intialize() qui consiste à détecter si les Musées suseptibles d'être présents
-	 * dans la table Musée de la base de données le sont bien. Si un ou plusieurs
-	 * Musées n'y sont pas il sont alors systématiquement ajoutés par cette méthode.
-	 * Ainsi, dans la bas de données, la table Musée est toujours vérifiée et
-	 * complétée le cas échéant au démarrage de l'Application 'Collection'.
+	 * Méthode déclanchée à chaque démarrage de l'Application appelée par la méthode
+	 * intialize(). Cette méthode consiste à détecter si les Musées suseptibles
+	 * d'être présents dans la table Musée de la base de données le sont bien. Si un
+	 * ou plusieurs Musées n'y sont pas il sont alors systématiquement ajoutés par
+	 * cette méthode. Ainsi, dans la base de données, la table Musée est toujours
+	 * vérifiée et complétée le cas échéant au démarrage de l'Application.
 	 * 
 	 */
 
@@ -824,18 +860,22 @@ public class MainController implements Initializable {
 	 * Méthode déclanchée par le bouton 'Add New' de l'IHM servant à ajouter les
 	 * données d'un objet de collection dans la base de données. La méthode commence
 	 * à attribuer chacune des valeurs entrées par l'utilisateur à l'objet, mais
-	 * quand arrive la question de l'attribution du Musée, c'est alors grâce à une
-	 * boucle que la méthode va faire correspondre le bon péfixe Musée parmi ceux de
-	 * la base de données avec celui qui a été sélectionné par l'utilisateur. Elle
-	 * va ensuite attribuer le Musée à l'objet. Puis pour finir l'objet est
-	 * enregisté dans la base de données avec tous ses attributs et la référence à
-	 * son Musée.
+	 * quand arrive la question de l'attribution du Musée à cet objet, c'est alors
+	 * grâce à une boucle que la méthode va faire correspondre le bon péfixe Musée
+	 * sélectionné par l'utilisateur parmi ceux de la base de données. Elle va
+	 * ensuite attribuer le Musée à l'objet. Puis, pour finir, l'objet est enregisté
+	 * dans la base de données avec la référence à son Musée et tous ses attributs.
 	 * 
-	 * La méthode déclanche dans la boucle une alerte de confirmation demandant à
-	 * l'utilisateur si il veut vraiment ajouter les données du nouvel objet à la
-	 * base. Si l'utilisateur choisit OK une alerte apparait l'informant du succès
-	 * de l'opération en donnant quelque détails.
-	 * 
+	 * Concernant le déclanchement des messages d'alerte: tout d'abord, si
+	 * l'utilisateur omet de sélectionner un préfixe Musée la méthode déclanche une
+	 * alerte d'avertissement. Ensuite, la méthode déclanche, dans la boucle, une
+	 * alerte de confirmation demandant à l'utilisateur si il veut vraiment ajouter
+	 * les données du nouvel objet à la base. Si l'utilisateur choisit 'OK', la
+	 * métohode vérifie à nouveau si les champs obligatoitres, restant à remplir,
+	 * sont bien tous remplis sans quoi, une alerte d'avertissement est déclanchée
+	 * pour chacune de ommissions. Enfin, si tout est bien rempli, une alerte
+	 * apparait informant l'utilisateur du succès de l'opération et en donnant en
+	 * plus à ce dernier, quelques détails sur cette opération finale.
 	 */
 
 	@FXML
@@ -899,6 +939,22 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Update Fields' de l'IHM servant à mettre à
+	 * jour toutes les valeurs des attributs de l'objet mais pas son image. Méthode
+	 * identique à la méthode addNew() décrite précédement à deux exceptions prêt:
+	 * la première execption est que la méthode recopie l'image déjà attribuée à
+	 * l'objet de manière à ce que cette dernière soit remplacée à l'identique au
+	 * côtés de son objet comme si elle n'avait jamais été touchée. Il n'est pas
+	 * question ici de modifier l'image de l'objet. La deuxième exception qui fait
+	 * que cette méthode est différente de addNew() décrite précédement est que
+	 * cette méthode là va opérer une simple mise à jour corrective de l'objet et
+	 * non pas la création d'un nouvel objets en plus aux côtés des autres déjà
+	 * présents. Enfin concernant les messages d'alerte: la méthode se comporte
+	 * exactement de la même manière que la méthode addNew() décrite précédement.
+	 * 
+	 */
+
 	@FXML
 	public void handleUpdateFields() {
 
@@ -907,7 +963,7 @@ public class MainController implements Initializable {
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
-		
+
 		if (prefixeBox.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Avertissement");
@@ -916,7 +972,7 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
-		
+
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 
@@ -974,6 +1030,23 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'Update Image' de l'IHM servant à mettre à
+	 * jour uniquement l'image de l'objet. Méthode identique à la méthode
+	 * updateFields() décrite précédement à une exceptions prêt: la méthode copie la
+	 * nouvelle image qui vient juste d'être selectionnée par l'utilisateur dans son
+	 * système de fichiers et qui est par conséquent bien présente dans la variable
+	 * 'imageBytes'. Si l'utilisateur ne sélectionne pas d'image, change d'avi en
+	 * clickant 'Cancel', cette variable 'imageBytes' est alors null et par
+	 * conséquent, la méthode n'a d'autre choix que de recopier l'image qui été déjà
+	 * attribuée à l'objet, de manière à ce que cette image soit remplacée à
+	 * l'identique au côtés de son objet comme si elle n'avait jamais été touchée.
+	 * Il est question ici de ne pas laiser un objet dans la base avec une image
+	 * attribuée ayant une valeur null. Enfin concernant les messages d'alerte: la
+	 * méthode se comporte exactement de la même manière que la méthode addNew() ou
+	 * updateFields() décrites précédement.
+	 */
+
 	@FXML
 	public void handleUpdateImage() {
 
@@ -982,7 +1055,7 @@ public class MainController implements Initializable {
 		c.setObjetId(Integer.parseInt(objetIdField.getText()));
 		c.setIdentification(identificationField.getText());
 		c.setPrefixeMusee(prefixeBox.getValue());
-		
+
 		if (prefixeBox.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Avertissement");
@@ -991,7 +1064,7 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
-		
+
 		c.setInventaire(inventaireField.getText());
 		c.setLocalisation(localisationField.getText());
 
@@ -1047,16 +1120,21 @@ public class MainController implements Initializable {
 
 				} else {
 					return;
-//			populate(); // ... user chose CANCEL or closed the dialog
 				}
-
 				return;
-
 			}
-
 		}
-
 	}
+
+	/**
+	 * Méthode déclanchée par le bouton 'Delete Index' de l'IHM servant à effacer un
+	 * objet et ses attributs de la base de donnés qui à préalablement été
+	 * sélectionné par sa position dans la base de données c'est à dire: son index.
+	 * La méthode place ensuite le curseur sur l'index = 0. Concernant les messages
+	 * d'alerte, un premier message de confirmation est déclanché et si l'option
+	 * 'Ok' est choisie, un deuxième message apparait informant l'utilisateur du
+	 * succès de l'opération en donnant à ce dernier quelques détails.
+	 */
 
 	@FXML
 	public void handleDeleteIndex() {
@@ -1084,9 +1162,19 @@ public class MainController implements Initializable {
 
 		} else {
 			return;
-			// ... user chose CANCEL or closed the dialog
 		}
 	}
+
+	/**
+	 * Méthode déclanchée par le bouton 'Delete Row' de l'IHM servant à effacer un
+	 * objet et ses attributs de la base de donnés qui à préalablement été
+	 * sélectionné dans le tableau de l'IHM par un double click de l'utilisateur sur
+	 * la ligne attribuée à l'objet dans le tableau. La méthode place ensuite le
+	 * curseur sur l'index = 0. Concernant les messages d'alerte, un premier message
+	 * de confirmation est déclanché et si l'option 'Ok' est choisie, un deuxième
+	 * message apparait informant l'utilisateur du succès de l'opération en donnant
+	 * à ce dernier, quelques détails.
+	 */
 
 	@FXML
 	public void handleDeleteRow() {
@@ -1120,11 +1208,22 @@ public class MainController implements Initializable {
 			return;
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'flêche retour au début' de l'IHM servant à
+	 * revenir au début de liste dans la base de données c'est à dire à l'index = 0
+	 */
+
 	@FXML
 	public void handleBack() {
 		index = 0;
 		populate();
 	}
+
+	/**
+	 * Méthode déclanchée par le bouton 'flêche retour en arrière' de l'IHM servant
+	 * à se déplacer par saut de curseur en remontant les lignes une par une de la
+	 * liste dans la base de données.
+	 */
 
 	@FXML
 	public void handleBackward(ActionEvent event) {
@@ -1136,6 +1235,12 @@ public class MainController implements Initializable {
 		populate();
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'flêche avancer en avant' de l'IHM servant à
+	 * se dépplacer par saut de curseur en descendant les lignes une par une de la
+	 * liste dans la base de données.
+	 */
+
 	@FXML
 	public void handleForward(ActionEvent event) {
 
@@ -1146,12 +1251,23 @@ public class MainController implements Initializable {
 		populate();
 	}
 
+	/**
+	 * Méthode déclanchée par le bouton 'flêche aller à la fin' de l'IHM servant à
+	 * aller de la liste dans la base de données c'est à dire à l'index maximum.
+	 */
+
 	@FXML
 	public void handleUpfront() {
 
 		index = controller.getObjetList().size() - 1;
 		populate();
 	}
+
+	/**
+	 * Méthode fréquemment appelée par les autres méthodes consistant à rafrachir
+	 * les données affichées dans l'IHM et par la même occasion rendant actifs ou
+	 * inactifs certains boutons de commande de l'IHM.
+	 */
 
 	private void populate() {
 
@@ -1173,6 +1289,24 @@ public class MainController implements Initializable {
 		localisationField.setEditable(true);
 		hamburger.setVisible(true);
 	}
+
+	/**
+	 * Méthode généralement appelée par la méthode populate() qui consiste à
+	 * renseigner les champs et images de l'IHM avec les valeurs attribuées à
+	 * l'objet qui est selectionné par son index dans la base de données. La méthode
+	 * vérifie tout d'abord que la valeur des attributs 'Musée' et 'image' n'est pas
+	 * null car si c'est le cas, un message d'alerte averti du problème et la
+	 * méthode est alors avortée. Sinon elle se poursuit en affichant toutes les
+	 * données. Concernant l'image attribuée à l'objet: la méthode crée 3 fichiers
+	 * jpg différents. Le premier sert pour l'affichage d'une vignette dans
+	 * l'interface, le deuxième sert si l'utilisateur click sur la vignette pour
+	 * faire apparaitre une grande image zoomée et la troisième sert si
+	 * l'utilisateur click sur le petit hamburder flêche pour faire apparaître
+	 * l'image dans un petit tiroir glissant en venant du bord en haut à gauche de
+	 * la fenêtre.
+	 * 
+	 * @param i
+	 */
 
 	private void populateForm(int i) {
 		if (controller.getObjetList().isEmpty())
@@ -1243,6 +1377,18 @@ public class MainController implements Initializable {
 		}
 
 	}
+
+	/**
+	 * Méthode généralement appelée par la méthode populate() qui consiste à remplir
+	 * le tableau de l'IHM avec les données provenant de la base. Une opération
+	 * complexe consistant à déployer les cases à cocher pour chaque ligne est
+	 * opérée ici au niveau de la colonne 'sectectCol' de type booléen. Cette
+	 * opération implémente une interface 'Callback' avec une méthode 'Call' une
+	 * méthode 'updateItem' une classe 'ListBinding' offrant des fonctions de
+	 * type'binding' permettant à l'utilisateur de cocher, décocher pour
+	 * selectionner et deselectionner des objets créant ainsi une liste utilisable
+	 * pour, par exemple, un export de selection sous forme de tableur Excel.
+	 */
 
 	@SuppressWarnings("unchecked")
 	private void populateTable() {
@@ -1322,27 +1468,35 @@ public class MainController implements Initializable {
 		};
 
 // -------------------------------------------------------------------------------------------------------------		
+
 		lb.addListener(new ChangeListener<ObservableList<Boolean>>() {
 			@Override
 			public void changed(ObservableValue<? extends ObservableList<Boolean>> arg0, ObservableList<Boolean> arg1,
 					ObservableList<Boolean> l) {
 			}
 		});
-
-// -------------------------------------------------------------------------------------------------------------			
-
 	}
+
+// -------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Méthode qui retourne une case à cocher destinnée à être placée en tête de
+	 * colonne permettant de selectionner ou déselectionner toutes les cases à la
+	 * fois de la colonne. La méthode s'occupe en plus d'activer ou désactiver en
+	 * conséquence, le bouton 'Export' et menu item 'Export' de la barre de menu.
+	 * 
+	 * @return une case à cocher liée aux autre servant à les cocher/décocher toute
+	 */
 
 	public CheckBox getSelectAllCheckBox() {
 		if (selectAllCheckBox == null) {
 			final CheckBox selectAllCheckBox = new CheckBox();
-
-			// Adding EventHandler to the CheckBox to select/deselect all employees in
-			// table.
+			// Ajoute un 'EventHandler' aux cases à cocher pour selectionner/deselectionner
+			// tous les objets dans le tableau.
 			selectAllCheckBox.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					// Setting the value in all the employees.
+					// Attribue la valeur à tout les objets.
 					for (Objet item : table.getItems()) {
 						item.setSelected(selectAllCheckBox.isSelected());
 					}
@@ -1350,11 +1504,18 @@ public class MainController implements Initializable {
 					getMenuItemExport().setDisable(!selectAllCheckBox.isSelected());
 				}
 			});
-
 			this.selectAllCheckBox = selectAllCheckBox;
 		}
 		return selectAllCheckBox;
 	}
+
+	/**
+	 * Méthode appelée par les méthodes updateItem(boolean, boolean) et
+	 * getSelectAllCheckBox() permettant à ces dernières d'opérer un chagement
+	 * d'état sur le bouton 'Export'.
+	 * 
+	 * @return Le bouton 'Export' désactivé.
+	 */
 
 	public Button getExportButton() {
 		if (this.exportButton == null) {
@@ -1365,6 +1526,14 @@ public class MainController implements Initializable {
 		return this.exportButton;
 	}
 
+	/**
+	 * Méthode appelée par les méthodes updateItem(boolean, boolean) et
+	 * getSelectAllCheckBox() permettant à ces dernières d'opérer un chagement
+	 * d'état sur le menu item 'Export'.
+	 * 
+	 * @return Le menu item 'Export' désactivé.
+	 */
+
 	public MenuItem getMenuItemExport() {
 		if (this.menuItemExport == null) {
 			final MenuItem exportMenuItem = new MenuItem();
@@ -1374,15 +1543,29 @@ public class MainController implements Initializable {
 		return this.menuItemExport;
 	}
 
+	/**
+	 * Méthode déclanchée par le champ 'recherche' de l'IHM quand un ou plusieurs
+	 * charactères sont rentrés et que la touche du clavier est relachée. Cette
+	 * méthode complète ansi la méthode autoComplete qui elle se déclanche quand la
+	 * touche du clavier est pressée. Cette méthode sert à rechercher les occurences
+	 * d'un charactère ou d'une suite de charactères correspondant à un mot ou une
+	 * suite de chiffres. La méthode recherche ici uniquement dans les colonnes
+	 * 'identification' et 'N° Inventaire'. Chaque objet ainsi trouvé dans les
+	 * listes viens s'afficher dans l'extrémité haute du tableau de l'IHM laissant
+	 * le reste du tableau vide.
+	 * 
+	 */
+
 	@FXML
 	private void handleSearch() {
 
-		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
+		// Emballe l'ObservableList dans une FilteredList (affichant initialement toutes
+		// les données).
 		FilteredList<Objet> filteredData = new FilteredList<>(controller.getObjetList(), e -> true);
 
 		searchField.textProperty().addListener((observableValue, oldValue, newValue) -> {
 			filteredData.setPredicate(objet -> {
-				// If filter text is empty, display all objets.
+				// Si le texte filtre est vide, tous les objets sont affichés.
 				if (newValue == null || newValue.isEmpty()) {
 					return true;
 				}
@@ -1390,17 +1573,17 @@ public class MainController implements Initializable {
 				String lowerCaseFilter = newValue.toLowerCase();
 
 				if (objet.getIdentification().toLowerCase().contains(lowerCaseFilter)) {
-					return true;// Filter matches identification.
+					return true;// Le filtre correspond à 'identification'.
 				} else if (objet.getInventaire().toLowerCase().contains(lowerCaseFilter)) {
-					return true;// Filter matches inventaire.
+					return true;// Le filtre correspond à 'inventaire'.
 				}
-				return false;// Does not match.
+				return false;// Ne correspond à rien.
 			});
 		});
-		// 3. Wrap the FilteredList in a SortedList.
+		// Emballe la FilteredList dans une SortedList.
 		SortedList<Objet> sortedData = new SortedList<>(filteredData);
 
-		// 4. Bind the SortedList comparator to the TableView comparator.
+		// Join le SortedList comparator avec le TableView comparator.
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 
 		table.setItems(sortedData);
@@ -1414,6 +1597,23 @@ public class MainController implements Initializable {
 		disableButtons();
 
 	}
+
+	/**
+	 * Méthode déclanchée par un double click sur une ligne du tableau dans l'IHM
+	 * servant à la sélectionner puis ainsi renseigner les champs et images de l'IHM
+	 * avec les valeurs attribuées à l'objet dont la ligne est selectionnée dans le
+	 * tableau. identique à la méthode poulateForm(int), la méthode vérifie tout
+	 * d'abord que la valeur des attributs 'Musée' et 'image' n'est pas null car si
+	 * c'est le cas, un mesaage d'alerte averti du problème en suggérant d'effacer
+	 * cette objet. Puis certain boutons son désactivés et la méthode est alors
+	 * avortée. Sinon elle se poursuit en affichant toutes les données. Concernant
+	 * l'image attribuée à l'objet: la méthode crée 3 fichiers jpg différents. Le
+	 * premier sert pour l'affichage d'une vignette dans l'interface, le deuxième
+	 * sert si l'utilisateur click sur la vignette pour faire apparaitre une grande
+	 * image zoomée et la troisième sert si l'utilisateur click sur le petit
+	 * hamburder flêche pour faire apparaître l'image dans un petit tiroir glissant
+	 * en venant du bord en haut à gauche de la fenêtre.
+	 */
 
 	@FXML
 	private void handleRowSelect() {
@@ -1523,6 +1723,14 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Méthode appelée par les méthodes handleAdd(), handleUpdateFields() et
+	 * handleUpdateImage() servant à détecter si un champ et vide. Si cela est le
+	 * cas déclanche l'alerte d'avertissement appropriée.
+	 * 
+	 * @return true si aucun champ n'est vide
+	 */
+
 	private boolean validateFields() {
 
 		if (identificationField.getText().isEmpty()) {
@@ -1558,8 +1766,19 @@ public class MainController implements Initializable {
 		return true;
 	}
 
+	/**
+	 * Méthode appelée par la méthode handleExport() servant à redimenssionnéer une
+	 * image afin qu'elle puisse figurer dans le tableur Excel.
+	 * 
+	 * @param originalImage
+	 * @param type
+	 * @param newWidth
+	 * @param newHeight
+	 * @return l'image redimenssionnée
+	 */
+
 	private static BufferedImage resizeImage(BufferedImage originalImage, int type, int newWidth, int newHeight) {
-		// Make sure the aspect ratio is maintained, so the image is not distorted
+		// Contôle du respect des proportions, ainsi l'image n'est pas distordue
 		double thumbRatio = (double) newWidth / (double) newHeight;
 		int imageWidth = originalImage.getWidth(null);
 		int imageHeight = originalImage.getHeight(null);
@@ -1571,7 +1790,7 @@ public class MainController implements Initializable {
 			newWidth = (int) (newHeight * aspectRatio);
 		}
 
-		// Draw the scaled image
+		// Dessine l'image ajustée
 		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, type);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
@@ -1585,6 +1804,13 @@ public class MainController implements Initializable {
 
 		return resizedImage;
 	}
+
+	/**
+	 * Méthode déclanchée par un double click sur la vignette image de l'IHM servant
+	 * à obtenir cette image en grand sur tout l'écran. La méthode se sert du
+	 * fichier jpg généré par: soit la méthode populateForm(int), soit la méthode
+	 * handleRow() et affiche dans une nouvelle fenêtre la grande image.
+	 */
 
 	@FXML
 	private void display() {
@@ -1612,6 +1838,10 @@ public class MainController implements Initializable {
 
 		popupwindow.showAndWait();
 	}
+
+	/**
+	 * Méthode servant à quitter l'application.
+	 */
 
 	@FXML
 	private void closeApp() {

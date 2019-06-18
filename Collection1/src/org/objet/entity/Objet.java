@@ -17,12 +17,16 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-// Model Layer: Entity Class
-/* The model layer implements the domain logic of 
- * the application with strong separation from the way 
- * that the user requests and sees results. 
- * Objet.java is our annotation-based entity class 
- * for creating the Objets database table.
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *          Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *          que j'appelle 'Collection' servant à gérer les objets dans les
+ *          Musées.
+ * 
+ *          Classe entité pour la crétion de la table objet dans la base de
+ *          données de l'application 'Collection'
  */
 
 @Entity

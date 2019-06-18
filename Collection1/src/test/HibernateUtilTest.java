@@ -9,8 +9,21 @@ import org.hibernate.service.ServiceRegistry;
 import org.objet.entity.Musee;
 import org.objet.entity.Objet;
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *          Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *          que j'appelle 'Collection' servant à gérer les objets dans les
+ *          Musées.
+ * 
+ *          Classe de configurations requises pour une interaction entre la
+ *          in_memory database appelée HSQLDB et l'application 'Collection' afin
+ *          de pouvoir réaliser des tests avec Junit 5 sans inter agir avec la
+ *          réelle base de données.
+ */
 public class HibernateUtilTest {
-	
+
 	private static final SessionFactory sessionFactory;
 	private static final ServiceRegistry serviceRegistry;
 
@@ -59,5 +72,4 @@ public class HibernateUtilTest {
 		cfg.setProperty("hibernate.current_session_context_class", "thread");
 		return cfg;
 	}
-
 }

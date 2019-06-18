@@ -11,6 +11,17 @@ import org.hibernate.service.ServiceRegistry;
 // for our project to interact with the database. The Hibernate configuration
 // can also be established through XML, but in this case I used annotation-based configuration.
 
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *          Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *          que j'appelle 'Collection' servant à gérer les objets dans les
+ *          Musées.
+ * 
+ *          Classe de configurations requises pour une interaction entre la base
+ *          de données et l'application 'Collection'
+ */
 public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory;

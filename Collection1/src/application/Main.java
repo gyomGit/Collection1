@@ -1,5 +1,11 @@
 package application;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 /**
  * @author Nom: Balourdet, Prenom: Guillaume
  * @version 0.1
@@ -9,20 +15,17 @@ package application;
  * 
  *         Classe de démarrage de l'application 'Collection'
  */
-
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 public class Main extends Application {
 
+	/**
+	 * Méthode principale de démarrage
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		Application.launch(args);
-
 	}
-
 	@Override
 	public void start(Stage loginStage) throws Exception {
 		loginStage.setTitle("Collection");
@@ -33,5 +36,4 @@ public class Main extends Application {
 		loginStage.setScene(scene);
 		loginStage.show();
 	}
-
 }

@@ -7,15 +7,16 @@ import org.hibernate.Session;
 import org.objet.entity.HibernateUtil;
 import org.objet.entity.Musee;
 
-/* A concrete implementation of this interface is 
- * provided by the ContactDAOImpl.java class. This 
- * approach isolates domain-specific objects and data 
- * types, abstracting the application needs and how they 
- * are satisfied.
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Concrète implémentation de l'Interface presistance Musée du modèle DAO de 
+ *         l'application 'Collection'.
  */
-
-// ContactDAOImpl.java
-
 public class MuseeDAOImpl implements MuseeDAO{
 	
      @Override

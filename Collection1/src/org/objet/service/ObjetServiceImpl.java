@@ -6,13 +6,16 @@ import org.objet.dao.ObjetDAO;
 import org.objet.dao.ObjetDAOImpl;
 import org.objet.entity.Objet;
 
-/* ObjetServiceImpl.java is the concrete implementation 
- * of the ObjetService.java interface. It provides a 
- * public interface of underlying model objects.
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Concrète implémentation de l'Interface service objet du modèle DAO de 
+ *         l'application 'Collection'.
  */
-
-// ObjetServiceImpl.java
-
 public class ObjetServiceImpl implements ObjetService {
 
 	private ObjetDAO objetDAO = new ObjetDAOImpl();
