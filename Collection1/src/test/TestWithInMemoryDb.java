@@ -26,9 +26,9 @@ import org.objet.entity.Objet;
  *          l'application 'Collection' evitant ainsi d'inter agir avec la réelle
  *          base de données.
  */
-class TestAddObjetInMemoryDB {
+public class TestWithInMemoryDb {
 
-	static Session sessionTest = HibernateUtilTest.openSession();
+	public static Session sessionTest = HibernateUtilTest.openSession();
 
 	@BeforeAll
 	public static final void initHandleAddMuseesForTest() {
@@ -131,7 +131,7 @@ class TestAddObjetInMemoryDB {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	@DisplayName("Le nom du Musée correspond bien à celui du premier objet dans la base")
+	@DisplayName("Le nom du Musée et bien référencé avec celui du premier objet dans la base")
 	public void testFirstObjetWithMusee() {
 		List<Objet> TestObjetList = new ArrayList<>();
 		TestObjetList = sessionTest.createQuery("from Objet").list();
@@ -140,7 +140,7 @@ class TestAddObjetInMemoryDB {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	@DisplayName("Le nom du Musée correspond bien à celui du deuxième objet dans la base")
+	@DisplayName("Le nom du Musée et bien référencé avec celui du deuxième objet dans la base")
 	public void testSecondObjetWithMusee() {
 		List<Objet> TestObjetList = new ArrayList<>();
 		TestObjetList = sessionTest.createQuery("from Objet").list();
