@@ -69,6 +69,5 @@ public class MuseeDAOImpl implements MuseeDAO{
           s.getTransaction().commit();
           s.close();
           return listI;
-     }
-     
+     }  
 }

@@ -1,4 +1,12 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/**
+ * @author Nom: Balourdet, Prenom: Guillaume
+ * @version 0.1
+ * 
+ *         Projet du 22 juin 2019 CNAM Implementation d'une application en Java
+ *         que j'appelle 'Collection' servant à gérer les objets dans les Musées.
+ * 
+ *         Feuille CSS de l'application 'Collection'
+ */
 
 .jfx-hamburger StackPane {
 	-fx-background-color: white;
